@@ -1,0 +1,31 @@
+{
+  "name": "fullstack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-dev": "concurrently --kill-others \"npm run start-server\" \"npm run start-dev-client\"",
+    "build": "cd client-angular && ng build --prod --outputPath=../server-express/public/angular/",
+    "start-prod": "npm run start-server",
+    "start-server": "cd server-express && npm start",
+    "start-dev-client": "cd client-angular && npm start",
+    "postinstall": "npm run install-server && npm run install-client",
+    "install-server": "cd server-express && npm install",
+    "install-client": "cd client-angular && npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shisho585/fullstack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shisho585/fullstack/issues"
+  },
+  "homepage": "https://github.com/shisho585/fullstack#readme",
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
+  }
+}
