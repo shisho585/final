@@ -1,0 +1,16 @@
+input[type=datetime-local] {
+   font-size: 15px;
+}
+::ng-deep {
+    .ng5-slider {
+        .ng5-slider-selection {
+            background-color: #3f51b5 !important;
+        }
+        .ng5-slider-pointer {
+            background-color: #3f51b5 !important;
+        }
+        .ng5-slider-active::after{
+                background-color: white !important;
+        }
+    }
+}

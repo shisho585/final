@@ -1,0 +1,48 @@
+<h2>לאן אתה רוצה לטוס איתנו?</h2>
+<mat-grid-list cols="2">
+    <mat-grid-tile style="border: solid 1px;">
+        <div>
+            <h5>חיפוש לפי</h5>
+            <mat-label>שעת המראה</mat-label>
+            <br />
+            <mat-form-field>
+                <input matInput type="datetime-local"><!-- TODO set default value and minimum for now -->
+            </mat-form-field>
+            ---
+            <mat-form-field>
+                <input matInput type="datetime-local"><!-- TODO set minimum value as input above -->
+            </mat-form-field>
+            <br />
+            <mat-form-field>
+                <mat-label>מוצא</mat-label>
+                <mat-select>
+                    <mat-option value="*">הכל</mat-option>
+                    <!-- TODO ng-for with all countries -->
+                </mat-select>
+            </mat-form-field>
+            <br />
+            <mat-form-field>
+                <mat-label>יעד</mat-label>
+                <mat-select>
+                    <mat-option value="*">הכל</mat-option>
+                    <!-- TODO ng-for with all countries -->
+                </mat-select>
+            </mat-form-field>
+            <br />
+            <p>מחיר</p>
+            <ng5-slider [value]=10 [highValue]=50 [options]={floor:0,ceil:100}></ng5-slider>
+            <br />
+            <button mat-raised-button color="primary">חיפוש</button>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile style="border: solid 1px;">
+        <div routerLink="" routerLinkActive="active">
+            <h5>מיון לפי</h5>
+            <p>שעת המראה</p>
+            <p>יעד</p>
+            <p>מחיר</p>
+            <p>מרחק טיסה</p>
+            <p>טיסת ניסוי למטוס ראש הממשלה</p><!-- ng-for for all flights matchs -->
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>
