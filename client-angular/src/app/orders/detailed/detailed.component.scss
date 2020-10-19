@@ -10,3 +10,10 @@
         -moz-appearance: textfield; /* Firefox */
     }
 }
+
+#passengerDetailes {
+    mat-form-field {
+        width: 140px;
+        margin: 5px;
+    }
+}

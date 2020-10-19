@@ -1,7 +1,7 @@
-<mat-grid-list cols="2">
-    <mat-grid-tile>
-        <mat-accordion>
-            <mat-expansion-panel>
+<mat-grid-list cols="3">
+    <mat-grid-tile [colspan]="2">
+        <mat-accordion class="up-div">
+            <mat-expansion-panel id="contactDetails">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         פרטים ליצירת קשר
@@ -33,25 +33,10 @@
             </mat-expansion-panel>
         </mat-accordion>
     </mat-grid-tile>
-    <mat-grid-tile>
-        <mat-radio-group>
-            <mat-radio-button value="visa">
-                <div>
-                    hsfh
-                    dfds
-                    sdfdsf
-                    sdfdsf
-                </div>
-            </mat-radio-button>
-            <br />
-            <mat-radio-button value="paypal">
-                <div>
-                    hsfh
-                    dfds
-                    sdfdsf
-                    sdfdsf
-                </div>
-            </mat-radio-button>
-        </mat-radio-group>
+    <mat-grid-tile [colspan]="1">
+        <div class="up-div">
+            <mat-label>אנא בחר את שיטת התשלום הרצויה<br/>שים לב! התשלום הינו סופי ואינו ניתן לביטול</mat-label>
+            <ngx-paypal [config]="payPalConfig" style="width: 80%;"></ngx-paypal>
+        </div>
     </mat-grid-tile>
 </mat-grid-list>

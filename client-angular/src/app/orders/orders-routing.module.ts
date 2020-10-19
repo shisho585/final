@@ -8,7 +8,7 @@ import { PickaflightComponent } from './pick-a-flight/pick-a-flight.component';
 const routes: Routes = [
   { path: '', redirectTo: 'pick-a-flight' },
   { path: 'pick-a-flight', component: PickaflightComponent },
-  { path: 'detailed', component: DetailedComponent },
+  { path: 'detailed/:flightID', component: DetailedComponent },
   { path: 'finish', component: FinishComponent }
 ];
 

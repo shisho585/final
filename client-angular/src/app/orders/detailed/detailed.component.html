@@ -1,42 +1,41 @@
-<mat-grid-list cols="2">
+<mat-grid-list cols="3">
     <mat-grid-tile [colspan]="1" style="border: solid 1px;">
         <div>
             <h4>פרטי הטיסה שלך</h4>
-            <p>שעת המראה - שעת נחיתה</p><!-- TODO fill with real information -->
-            <p>מוצא (ארץ - שדה) - יעד (ארץ - שדה)</p><!-- TODO fill with real information -->
-            <p>מרחק בק"מ</p><!-- TODO fill with real information -->
-            <p>זמן טיסה משוער</p><!-- TODO fill with real information -->
-            <p>מטוס</p><!-- TODO fill with real information -->
-            <p>מחיר כרטיס</p><!-- TODO fill with real information -->
+            <p>{{ELEMENT_DATA.landingTime | date:'HH:mm dd/MM/yy'}} -
+                {{ELEMENT_DATA.arrivalTime | date:'HH:mm dd/MM/yy'}}</p>
+            <p>{{ELEMENT_DATA.sourceCountry}} ({{ELEMENT_DATA.sourceTerminal}}) - {{ELEMENT_DATA.targetCountry}}
+                ({{ELEMENT_DATA.targetTerminal}})</p>
+            <p>{{ELEMENT_DATA.distance}}</p>
+            <p>{{ELEMENT_DATA.estimatedTime}}</p>
+            <p>{{ELEMENT_DATA.plainType}}</p>
+            <p>{{ELEMENT_DATA.cost}}</p>
         </div>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="1" style="border: solid 1px;">
-        <div>
+    <mat-grid-tile [colspan]="2" style="border: solid 1px;">
+        <div class="up-div">
             <mat-form-field>
                 <mat-label>כמה נוסעים אתם?</mat-label>
-                <input matInput type="number" min="1" value="1" />
+                <input matInput type="number" min="1" [(ngModel)]="passengers" />
             </mat-form-field>
-            <br />
-            <div>
+            <div id="passengerDetailes" *ngFor="let i of [].constructor(passengers); let x = index">
                 <!-- TODO ngfor as number of input -->
+                <mat-label>{{x+1}}.  </mat-label>
                 <mat-form-field>
                     <mat-label>שם מלא בעברית</mat-label>
                     <input matInput type="text" />
                 </mat-form-field>
-                <br />
                 <mat-form-field>
                     <mat-label>שם מלא באנגלית</mat-label>
                     <input matInput type="text" />
                 </mat-form-field>
-                <br />
                 <mat-form-field id="id-number">
                     <mat-label>מספר דרכון</mat-label>
                     <input matInput type="number" />
                 </mat-form-field>
             </div>
-            <br />
-            <p>מחיר כולל: </p><!-- TODO fill with real information -->
-            <button mat-raised-button color="primary" routerLink="../finish" routerLinkActive="active">אישור</button>
+            <span>מחיר כולל: {{ELEMENT_DATA.cost * passengers}}</span><!-- TODO fill with real information -->
+            <button mat-raised-button color="primary" (click)="saveData()" routerLink="../../finish" routerLinkActive="active">אישור</button>
         </div>
     </mat-grid-tile>
 </mat-grid-list>

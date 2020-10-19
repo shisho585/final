@@ -1,0 +1,11 @@
+::ng-deep {
+    mat-grid-tile {
+        overflow: auto !important;
+    }
+    .mat-figure {
+        .up-div {
+            position: absolute;
+            top: 30px;
+        }
+    }
+}
