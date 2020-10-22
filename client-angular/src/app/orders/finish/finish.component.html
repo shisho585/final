@@ -1,7 +1,7 @@
 <mat-grid-list cols="3">
     <mat-grid-tile [colspan]="2">
         <mat-accordion class="up-div">
-            <mat-expansion-panel id="contactDetails">
+            <mat-expansion-panel id="contactDetails" [expanded]="true">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         פרטים ליצירת קשר
@@ -9,33 +9,68 @@
                 </mat-expansion-panel-header>
                 <mat-form-field>
                     <mat-label>טלפון</mat-label>
-                    <input matInput type="tel" required>
+                    <input matInput type="tel" [(ngModel)]="tel" required>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>אימייל</mat-label>
-                    <input matInput type="email" required>
+                    <input matInput type="email" [(ngModel)]="email" required>
                 </mat-form-field>
             </mat-expansion-panel>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>בחירת מושב</mat-panel-title>
+                    <mat-panel-description>20₪ לבחירה של מושב</mat-panel-description>
                 </mat-expansion-panel-header>
-                באיזה מושב ברצונך לשבת?
-            </mat-expansion-panel>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>שירותים נוספים</mat-panel-title>
-                </mat-expansion-panel-header>
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                <p>4</p>
+                <div *ngFor="let person of service.persons; let i = index">
+                    <span>{{i+1}}. {{person.heName.split(' ')[0]}}</span>
+                    <mat-form-field class="small-form-field">
+                        <mat-label>שורה</mat-label>
+                        <mat-select [(ngModel)]="person.selectedRow" (selectionChange)="catchSeat(person)"
+                            (valueChange)="releaseSeat(person)">
+                            <mat-option *ngFor="let i of freeRows" [value]="i">{{i+1}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="small-form-field">
+                        <mat-label>מושב</mat-label>
+                        <mat-select [(ngModel)]="person.selectedSeat" (selectionChange)="catchSeat(person)"
+                            (valueChange)="releaseSeat(person)">
+                            <mat-option *ngFor="let x of service.flight.seats[person.selectedRow] | seatMapFilter"
+                                [value]="x">
+                                {{"ABCDEFGHIJK"[x]}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="clearChoises(person)">ניקוי</button>
+                </div>
             </mat-expansion-panel>
         </mat-accordion>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1">
         <div class="up-div">
-            <mat-label>אנא בחר את שיטת התשלום הרצויה<br/>שים לב! התשלום הינו סופי ואינו ניתן לביטול</mat-label>
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            כרטיסי טיסה : {{service.persons.length * service.flight.cost}}
+                        </mat-panel-title>
+                        <mat-panel-description>לפירוט</mat-panel-description>
+                    </mat-expansion-panel-header>
+                    כמות : {{service.persons.length}}
+                    <br />
+                    מחיר ליחידה : {{service.flight.cost}}₪
+                </mat-expansion-panel>
+                <mat-expansion-panel *ngIf="seatsNumber>0">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            מושבים : {{seatsNumber * 20}}
+                        </mat-panel-title>
+                        <mat-panel-description>לפירוט</mat-panel-description>
+                    </mat-expansion-panel-header>
+                    כמות : {{seatsNumber}}
+                    <br />
+                    מחיר ליחידה : 20₪
+                </mat-expansion-panel>
+            </mat-accordion>
             <ngx-paypal [config]="payPalConfig" style="width: 80%;"></ngx-paypal>
         </div>
     </mat-grid-tile>

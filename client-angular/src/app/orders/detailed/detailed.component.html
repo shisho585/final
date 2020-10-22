@@ -16,26 +16,27 @@
         <div class="up-div">
             <mat-form-field>
                 <mat-label>כמה נוסעים אתם?</mat-label>
-                <input matInput type="number" min="1" [(ngModel)]="passengers" />
+                <input matInput type="number" min="1" [(ngModel)]="passengers" (change)="changePassengersNumber()" />
             </mat-form-field>
-            <div id="passengerDetailes" *ngFor="let i of [].constructor(passengers); let x = index">
+            <div id="passengerDetailes" *ngFor="let person of service.persons; let x = index">
                 <!-- TODO ngfor as number of input -->
-                <mat-label>{{x+1}}.  </mat-label>
+                <mat-label>{{x+1}}. </mat-label>
                 <mat-form-field>
                     <mat-label>שם מלא בעברית</mat-label>
-                    <input matInput type="text" />
+                    <input matInput type="text" [(ngModel)]=person.heName required />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>שם מלא באנגלית</mat-label>
-                    <input matInput type="text" />
+                    <input matInput type="text" [(ngModel)]=person.enName required />
                 </mat-form-field>
                 <mat-form-field id="id-number">
                     <mat-label>מספר דרכון</mat-label>
-                    <input matInput type="number" />
+                    <input matInput type="number" [(ngModel)]=person.passpord required />
                 </mat-form-field>
             </div>
             <span>מחיר כולל: {{ELEMENT_DATA.cost * passengers}}</span><!-- TODO fill with real information -->
-            <button mat-raised-button color="primary" (click)="saveData()" routerLink="../../finish" routerLinkActive="active">אישור</button>
+            <button mat-raised-button color="primary" [disabled]="!isTherePersons()" (click)="saveData()"
+                routerLink="../../finish" routerLinkActive="active">אישור</button>
         </div>
     </mat-grid-tile>
 </mat-grid-list>
