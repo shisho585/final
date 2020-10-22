@@ -1,0 +1,27 @@
+<h4>הזמנתך הושלמה בהצלחה</h4>
+<table>
+    <tr>
+        <th>מוצר</th>
+        <th>מחיר</th>
+        <th>כמות</th>
+        <th>ס"ה</th>
+    </tr>
+    <tr>
+        <td>כרטיסי טיסה לטיסה {{service.flight.id}}</td>
+        <td>{{service.flight.cost}}</td>
+        <td>{{service.persons.length}}</td>
+        <td>{{service.flight.cost * service.persons.length}}</td>
+    </tr>
+    <tr *ngIf="seats > 0">
+        <td>תוספת מושבים</td>
+        <td>20</td>
+        <td>{{seats}}</td>
+        <td>{{seats * 20}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>ס"ה</td>
+        <td>{{service.flight.cost * service.persons.length + seats * 20}}</td>
+    </tr>
+</table>

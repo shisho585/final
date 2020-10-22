@@ -1,1 +1,11 @@
-<
+<div>
+    <mat-form-field>
+        <mat-label>שם משתמש</mat-label>
+        <input matInput type="text" [(ngModel)]="userName" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>סיסמה</mat-label>
+        <input matInput type="password" [(ngModel)]="pass" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="enter()">כניסה</button>
+</div>

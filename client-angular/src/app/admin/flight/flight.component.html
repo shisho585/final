@@ -1,1 +1,43 @@
-<p>flight works!</p>
+<div>
+    <mat-form-field>
+        <mat-label>מספר טיסה</mat-label>
+        <input matInput type="text" [(ngModel)]="flight.id" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>מוצא</mat-label>
+        <mat-select [(ngModel)]="flight.sourceCountry">
+            <mat-option *ngFor="let country of sourcesCountries" value="{{country}}">{{country}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>מוצא</mat-label>
+        <mat-select [(ngModel)]="flight.targetCountry">
+            <mat-option *ngFor="let country of targetCountries" value="{{country}}">{{country}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div>
+    <mat-form-field>
+        <mat-label>סוג מטוס</mat-label>
+        <mat-select [(ngModel)]="flight.plainType">
+            <mat-option *ngFor="let i of plainTypes" [value]="i">{{i+1}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>זמן המראה</mat-label>
+        <input matInput type="datetime-local" [(ngModel)]="flight.landingTime"
+            min="{{today | date:'yyyy-MM-ddThh:mm'}}">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>זמן הגעה</mat-label>
+        <input matInput type="datetime-local" [(ngModel)]="flight.arrivalTime"
+            min="{{today | date:'yyyy-MM-ddThh:mm'}}">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>מחיר</mat-label>
+        <input matInput type="number" [(ngModel)]="flight.cost" />
+    </mat-form-field>
+    <br />
+    <button mat-raised-button color="primary" (click)="save()" routerLink="../dashboard"
+        routerLinkActive="active">שמור</button>
+</div>

@@ -20,9 +20,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { Ng5SliderModule } from 'ng5-slider';
 import { NgxPayPalModule } from "ngx-paypal";
 import { SeatMapFilterPipe } from './seat-map-filter.pipe';
+import { DoneComponent } from './done/done.component';
 
 @NgModule({
-  declarations: [PickaflightComponent, DetailedComponent, FinishComponent, SeatMapFilterPipe],
+  declarations: [PickaflightComponent, DetailedComponent, FinishComponent, SeatMapFilterPipe, DoneComponent],
   imports: [
     CommonModule,
     OrdersRoutingModule,

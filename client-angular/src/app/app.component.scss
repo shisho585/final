@@ -8,4 +8,21 @@
             top: 30px;
         }
     }
+
+    .row-flight {
+        cursor: pointer;
+    }
+
+    .row-flight:hover {
+        td {
+            border-top: 1px solid;
+            border-bottom: 1px solid;
+        }
+        td:first-child {
+            border-right: 1px solid;
+        }
+        td:last-child {
+            border-left: 1px solid;
+        }
+    }
 }

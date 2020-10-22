@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IPayPalConfig, ICreateOrderRequest, ITransactionItem } from 'ngx-paypal';
 import { OrdersService, Person } from '../orders.service';
 
@@ -17,7 +18,7 @@ export class FinishComponent implements OnInit {
 
   seatsNumber: number = 0;
 
-  constructor(public service: OrdersService) {
+  constructor(public service: OrdersService, private router: Router) {
     this.freeRows = service.flight.seats.map((row, index) => index).filter(rowIndex => service.flight.seats[rowIndex].some(seat => !seat));
   }
 
@@ -77,7 +78,7 @@ export class FinishComponent implements OnInit {
               }
             },
             items: [{
-              name: 'כרטיסי טיסה',
+              name: 'כרטיסי טיסה לטיסה ' + this.service.flight.id,
               quantity: this.service.persons.length.toString(),
               unit_amount: {
                 currency_code: 'ILS',
@@ -88,7 +89,7 @@ export class FinishComponent implements OnInit {
         }
         if (this.seatsNumber > 0) {
           data.purchase_units[0].items.push({
-            name: 'מושבים',
+            name: 'תוספת מושבים',
             quantity: this.seatsNumber.toString(),
             unit_amount: {
               currency_code: 'ILS',
@@ -108,18 +109,17 @@ export class FinishComponent implements OnInit {
         label: 'pay',
       },
       onApprove: (data, actions) => {
-        console.log('onApprove - transaction was approved, but not authorized', data, actions);
+        alert('הזמנך נקלטה והיא מאושרת ברגעים אלה. אל תסגור את החלון');
         actions.order.get().then(details => {
           console.log('onApprove - you can get full order details inside onApprove: ', details);
         });
 
       },
       onClientAuthorization: (data) => {
-
+        this.router.navigate(['orders', 'done']);
       },
       onCancel: (data, actions) => {
         console.log('OnCancel', data, actions);
-
       },
       onError: err => {
         console.log('OnError', err);

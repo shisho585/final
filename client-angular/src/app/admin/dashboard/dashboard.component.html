@@ -1,1 +1,56 @@
-<p>admin works!</p>
+<h3>כל הטיסות במערכת</h3>
+<table mat-table [dataSource]="dataSource" matSort style="width:85%">
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר טיסה </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="plainType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> סוג מטוס </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.plainType}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="landingTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> שעת המראה </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.landingTime | date:'HH:mm dd/MM/yy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="arrivalTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> זמן נחיתה </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.arrivalTime | date:'HH:mm dd/MM/yy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="source">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> מוצא </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.sourceCountry + ' (' + flight.sourceTerminal + ')'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="target">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> יעד </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.targetCountry + ' (' + flight.targetTerminal + ')'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="distance">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> מרחק </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.distance}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estimatedTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> זמן טיסה משוער </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.estimatedTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cost">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> מחיר כרטיס </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.cost}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="freeSeats">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> מקומות פנויים </th>
+        <td mat-cell *matCellDef="let flight"> {{flight.freeSeats}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<button mat-raised-button color="primary" routerLink="../flight" routerLinkActive="active">הוסף טיסה</button>
