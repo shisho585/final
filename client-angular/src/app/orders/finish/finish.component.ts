@@ -19,7 +19,11 @@ export class FinishComponent implements OnInit {
   seatsNumber: number = 0;
 
   constructor(public service: OrdersService, private router: Router) {
+    if (service.flight == undefined) {
+      router.navigate(['orders', 'pick-a-flight'])
+    }
     this.freeRows = service.flight.seats.map((row, index) => index).filter(rowIndex => service.flight.seats[rowIndex].some(seat => !seat));
+
   }
 
   clearChoises(person: Person) {
@@ -49,6 +53,11 @@ export class FinishComponent implements OnInit {
 
   ngOnInit(): void {
     this.initConfig();
+  }
+
+  paypalScriptLoaded = false;
+  done() {
+    this.paypalScriptLoaded = true;
   }
 
   private initConfig(): void {

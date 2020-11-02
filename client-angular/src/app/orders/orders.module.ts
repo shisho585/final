@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from "@angular/common/http";
 
 import { OrdersRoutingModule } from './orders-routing.module';
 import { PickaflightComponent } from './pick-a-flight/pick-a-flight.component';
@@ -16,8 +17,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { Ng5SliderModule } from 'ng5-slider';
+import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxPayPalModule } from "ngx-paypal";
 import { SeatMapFilterPipe } from './seat-map-filter.pipe';
 import { DoneComponent } from './done/done.component';
@@ -36,9 +38,11 @@ import { DoneComponent } from './done/done.component';
     MatRadioModule,
     MatTableModule,
     MatSortModule,
-    Ng5SliderModule,
+    NgxSliderModule,
     NgxPayPalModule,
-    FormsModule
+    FormsModule,
+    MatProgressSpinnerModule,
+    HttpClientModule
   ]
 })
 export class OrdersModule { }

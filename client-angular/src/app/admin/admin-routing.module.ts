@@ -7,7 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { TicketComponent } from './ticket/ticket.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login' },
+  { path: '', redirectTo: 'dashboard' },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'flight', component: FlightComponent },

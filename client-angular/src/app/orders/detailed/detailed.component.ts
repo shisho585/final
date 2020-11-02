@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { OrdersService } from '../orders.service';
 
+// This class and array after it, is just for illustrate data from DB.
+// In the prod, i will remove the class and run query on real DB. 
 export interface PeriodicElement {
   landingTime: Date;
   arrivalTime: Date;
@@ -21,8 +23,8 @@ const ELEMENT_DATA_BASE: PeriodicElement[] = [
   {
     landingTime: new Date(2020, 1, 11, 20), arrivalTime: new Date(2020, 1, 13, 0, 15), sourceCountry: 'ישראל', sourceTerminal: 'TLV',
     targetCountry: 'ארה"ב', targetTerminal: 'NYS', distance: 25350, estimatedTime: 1340, plainType: 'airbus',
-     seats: new Array(30).fill([false,true,true,false,false,false])
-     , cost: 2060, id: 'FX5366'
+    seats: new Array(30).fill([false, true, true, false, false, false])
+    , cost: 2060, id: 'FX5366'
   },
   {
     landingTime: new Date(2020, 0, 13, 22, 15), arrivalTime: new Date(2020, 0, 14, 0, 15), sourceCountry: 'ישראל', sourceTerminal: 'TLV',
@@ -46,7 +48,10 @@ export class DetailedComponent implements OnInit {
 
   ELEMENT_DATA: PeriodicElement = ELEMENT_DATA_BASE.find((flight) => this.route.snapshot.paramMap.get('flightID') == flight.id);
 
-  constructor(private route: ActivatedRoute, public service: OrdersService) {
+  constructor(private router: Router, private route: ActivatedRoute, public service: OrdersService) {
+    if (this.ELEMENT_DATA == undefined) {
+      router.navigate(['orders', 'pick-a-flight'])
+    }
     this.passengers = service.persons.length;
   }
 

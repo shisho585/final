@@ -8,13 +8,11 @@
             <mat-form-field>
                 <input matInput type="datetime-local" [(ngModel)]="minTime"
                     min="{{firstTime | date:'yyyy-MM-ddThh:mm'}}" max="{{lastTime | date:'yyyy-MM-ddThh:mm'}}">
-                <!-- TODO set default value and minimum for now -->
             </mat-form-field>
             ---
             <mat-form-field>
                 <input matInput type="datetime-local" [(ngModel)]="maxTime"
                     min="{{firstTime | date:'yyyy-MM-ddThh:mm'}}" max="{{lastTime | date:'yyyy-MM-ddThh:mm'}}">
-                <!-- TODO set minimum value as input above -->
             </mat-form-field>
             <br />
             <mat-form-field>
@@ -22,7 +20,6 @@
                 <mat-select [(value)]="source">
                     <mat-option value="*">הכל</mat-option>
                     <mat-option *ngFor="let country of sourcesCountries" value="{{country}}">{{country}}</mat-option>
-                    <!-- TODO ng-for with all countries -->
                 </mat-select>
             </mat-form-field>
             <br />
@@ -32,13 +29,12 @@
                     <mat-option value="*">הכל</mat-option>
                     <mat-option *ngFor="let country of destinationsCountries" value="{{country}}">{{country}}
                     </mat-option>
-                    <!-- TODO ng-for with all countries -->
                 </mat-select>
             </mat-form-field>
             <br />
             <p>מחיר</p>
-            <ng5-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="{floor:lowestPrice,ceil:highestPrice}">
-            </ng5-slider>
+            <ngx-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="{floor:lowestPrice,ceil:highestPrice}">
+            </ngx-slider>
             <br />
             <button mat-raised-button color="primary" (click)="search()">חיפוש</button>
         </div>

@@ -1,5 +1,6 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,24 +11,23 @@ export class LoginComponent implements OnInit {
 
   userName: string;
   pass: string;
+  urlToRoute: string;
 
   constructor(private router: Router) {
-    if (localStorage.getItem('loggedIn') != undefined) {
-      router.navigate(['admin', 'dashboard']);
-    }
+    let state = router.getCurrentNavigation().extras.state;
+    this.urlToRoute = state != undefined ? state.url : 'admin/dashboard';
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   enter() {
     if (this.userName == "shisho" && this.pass == "shisho") {
       localStorage.setItem('loggedIn', this.userName);
-      this.router.navigate(['admin', 'dashboard']);
+      this.router.navigate([this.urlToRoute]);
     } else {
-      console.log("incorrect");      
-      console.log(this.userName);      
-      console.log(this.pass);      
+      console.log("incorrect");
+      console.log(this.userName);
+      console.log(this.pass);
     }
   }
 

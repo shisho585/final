@@ -71,7 +71,10 @@
                     מחיר ליחידה : 20₪
                 </mat-expansion-panel>
             </mat-accordion>
-            <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+            <div style="margin-top: 20px;">
+                <ngx-paypal [config]="payPalConfig" (scriptLoaded)="done()"></ngx-paypal>
+                <mat-spinner *ngIf="!paypalScriptLoaded" style="margin:auto"></mat-spinner>
+            </div>
         </div>
     </mat-grid-tile>
 </mat-grid-list>

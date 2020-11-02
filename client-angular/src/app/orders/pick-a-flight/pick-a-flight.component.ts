@@ -1,7 +1,11 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
+
+// This class and array after it, is just for illustrate data from DB.
+// In the prod, i will remove the class and fill the array with real data from DB. 
 export interface PeriodicElement {
   landingTime: Date;
   source: string;
@@ -39,7 +43,7 @@ export class PickaflightComponent implements OnInit, AfterViewInit {
   minPrice: number;
   maxPrice: number;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     ELEMENT_DATA_BASE.forEach((flight) => {
       if (this.firstTime == null || flight.landingTime < this.firstTime) {
         this.firstTime = flight.landingTime;
