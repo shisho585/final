@@ -35,15 +35,5 @@ export class LoginComponent implements OnInit {
           console.log(this.pass);
         }
       )
-
-    // if (this.userName == "shisho" && this.pass == "shisho") {
-    //   localStorage.setItem('loggedIn', this.userName);
-    //   this.router.navigate([this.urlToRoute]);
-    // } else {
-    //   console.log("incorrect");
-    //   console.log(this.userName);
-    //   console.log(this.pass);
-    // }
   }
-
 }

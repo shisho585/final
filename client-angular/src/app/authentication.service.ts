@@ -20,7 +20,7 @@ export class AuthenticationService implements CanActivate {
           catchError(err => {
             console.log('err: ' + JSON.stringify(err));
 
-            this.router.navigate(['admin', 'login'], { state: { url: state.url } })
+            this.router.navigate(['login'], { state: { url: state.url } })
             return EMPTY
           }),
           map((data) => {
@@ -29,6 +29,6 @@ export class AuthenticationService implements CanActivate {
           })
         )
     }
-    this.router.navigate(['admin', 'login'], { state: { url: state.url } })
+    this.router.navigate(['login'], { state: { url: state.url } })
   }
 }

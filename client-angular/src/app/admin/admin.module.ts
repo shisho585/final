@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LoginComponent } from './login/login.component';
 import { FlightComponent } from './flight/flight.component';
 import { TicketComponent } from './ticket/ticket.component';
 
@@ -17,7 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
-  declarations: [DashboardComponent, LoginComponent, FlightComponent, TicketComponent],
+  declarations: [DashboardComponent, FlightComponent, TicketComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
