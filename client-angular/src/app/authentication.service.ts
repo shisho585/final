@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from "rxjs/operators";
+import { Observable, EMPTY } from 'rxjs';
+import { map, catchError } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,15 @@ export class AuthenticationService implements CanActivate {
         'http://localhost:3000/login',
         { token: localStorage.getItem('loggedInToken') },
         { responseType: 'text' }).pipe(
-          map(data => true)
+          catchError(err => {
+            this.router.navigate(['admin', 'login'], { state: { url: state.url } })
+            return EMPTY
+          }),
+          map((data) => {
+            return true;
+          })
         )
     }
     this.router.navigate(['admin', 'login'], { state: { url: state.url } })
-    return false;
   }
 }
