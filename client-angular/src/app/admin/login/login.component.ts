@@ -1,6 +1,6 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   pass: string;
   urlToRoute: string;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private http: HttpClient) {
     let state = router.getCurrentNavigation().extras.state;
     this.urlToRoute = state != undefined ? state.url : 'admin/dashboard';
   }
@@ -21,14 +21,32 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void { }
 
   enter() {
-    if (this.userName == "shisho" && this.pass == "shisho") {
-      localStorage.setItem('loggedIn', this.userName);
-      this.router.navigate([this.urlToRoute]);
-    } else {
-      console.log("incorrect");
-      console.log(this.userName);
-      console.log(this.pass);
-    }
+    this.http.post(
+      'http://localhost:3000/login',
+      { userName: this.userName, password: this.pass },
+      { responseType: 'text' }).subscribe(
+        res => {
+          console.log('res: ' + res)
+          localStorage.setItem('loggedInToken', res);
+          this.router.navigate([this.urlToRoute]).then(
+            () => console.log('redirect to ' + this.urlToRoute)
+          );
+        },
+        err => {
+          console.log("incorrect");
+          console.log(this.userName);
+          console.log(this.pass);
+        }
+      )
+
+    // if (this.userName == "shisho" && this.pass == "shisho") {
+    //   localStorage.setItem('loggedIn', this.userName);
+    //   this.router.navigate([this.urlToRoute]);
+    // } else {
+    //   console.log("incorrect");
+    //   console.log(this.userName);
+    //   console.log(this.pass);
+    // }
   }
 
 }

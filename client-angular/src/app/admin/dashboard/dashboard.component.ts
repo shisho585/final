@@ -44,9 +44,6 @@ const ELEMENT_DATA_BASE: PeriodicElement[] = [
 export class DashboardComponent implements OnInit {
 
   constructor(private router: Router) {
-    if (localStorage.getItem('loggedIn') == undefined) {
-      router.navigate(['admin', 'login']);
-    }
     ELEMENT_DATA_BASE.forEach(ELEMENT_DATA => {
       ELEMENT_DATA.freeSeats = ELEMENT_DATA.seats.map<number>(row => row.filter(seat => !seat).length).reduce((a, b) => a + b);
     });
