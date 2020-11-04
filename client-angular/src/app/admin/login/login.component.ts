@@ -21,16 +21,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void { }
 
   enter() {
-    this.http.post(
+    this.http.get(
       'http://localhost:3000/login',
-      { userName: this.userName, password: this.pass },
-      { responseType: 'text' }).subscribe(
+      { headers: { userName: this.userName, password: this.pass }, responseType: 'text' })
+      .subscribe(
         res => {
-          console.log('res: ' + res)
-          localStorage.setItem('loggedInToken', res);
-          this.router.navigate([this.urlToRoute]).then(
-            () => console.log('redirect to ' + this.urlToRoute)
-          );
+          localStorage.setItem('loggedInToken', res.toString());
+          this.router.navigate([this.urlToRoute]);
         },
         err => {
           console.log("incorrect");

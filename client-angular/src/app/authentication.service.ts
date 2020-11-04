@@ -13,15 +13,18 @@ export class AuthenticationService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     if (localStorage.getItem('loggedInToken') != undefined) {
-      return this.http.post(
+      return this.http.get(
         'http://localhost:3000/login',
-        { token: localStorage.getItem('loggedInToken') },
-        { responseType: 'text' }).pipe(
+        { headers: { Authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' })
+        .pipe(
           catchError(err => {
+            console.log('err: ' + JSON.stringify(err));
+
             this.router.navigate(['admin', 'login'], { state: { url: state.url } })
             return EMPTY
           }),
           map((data) => {
+            console.log('err: ' + JSON.stringify(data));
             return true;
           })
         )
