@@ -2,6 +2,12 @@
     mat-grid-tile {
         overflow: auto !important;
     }
+
+    .copyright {
+        position: absolute;
+        bottom: 0px; 
+    }
+
     .mat-figure {
         .up-div {
             position: absolute;

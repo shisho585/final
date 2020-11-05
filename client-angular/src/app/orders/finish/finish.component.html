@@ -27,16 +27,16 @@
                         <mat-label>שורה</mat-label>
                         <mat-select [(ngModel)]="person.selectedRow" (selectionChange)="catchSeat(person)"
                             (valueChange)="releaseSeat(person)">
-                            <mat-option *ngFor="let i of freeRows" [value]="i">{{i+1}}</mat-option>
+                            <mat-option *ngFor="let x of freeRows" [value]="x">{{x+1}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="small-form-field">
                         <mat-label>מושב</mat-label>
                         <mat-select [(ngModel)]="person.selectedSeat" (selectionChange)="catchSeat(person)"
                             (valueChange)="releaseSeat(person)">
-                            <mat-option *ngFor="let x of service.flight.seats[person.selectedRow] | seatMapFilter"
-                                [value]="x">
-                                {{"ABCDEFGHIJK"[x]}}
+                            <mat-option *ngFor="let y of service.flight.seats[person.selectedRow] | seatMapFilter"
+                                [value]="y">
+                                {{"ABCDEFGHIJK"[y]}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

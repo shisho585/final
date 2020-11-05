@@ -23,7 +23,6 @@ export class FinishComponent implements OnInit {
       router.navigate(['orders', 'pick-a-flight'])
     }
     this.freeRows = service.flight.seats.map((row, index) => index).filter(rowIndex => service.flight.seats[rowIndex].some(seat => !seat));
-
   }
 
   clearChoises(person: Person) {
@@ -45,7 +44,6 @@ export class FinishComponent implements OnInit {
       this.seatsNumber++;
       this.service.flight.seats[person.selectedRow][person.selectedSeat] = true;
       console.log(person.selectedRow + "," + person.selectedSeat + ". taken");
-      this.tel.match(/^\d+$/)
     }
   }
 
