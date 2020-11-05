@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatGridListModule } from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [DashboardComponent, FlightComponent, TicketComponent],
@@ -27,7 +28,8 @@ import { MatSortModule } from '@angular/material/sort';
     FormsModule,
     MatSortModule,
     MatTableModule,
-    HttpClientModule
+    HttpClientModule,
+    MatGridListModule
   ]
 })
 export class AdminModule { }

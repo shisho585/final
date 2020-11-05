@@ -30,14 +30,9 @@ export class FlightComponent implements OnInit {
   targetCountries = ['ישראל', 'יפן', 'קנדה'];
   plainTypes = ['בואינג 747', 'איירבוס 430', 'בואינג 556'];
 
-  constructor(private router: Router) {
-    if (localStorage.getItem('loggedIn') == undefined) {
-      router.navigate(['admin', 'login']);
-    }
-  }
+  constructor(private router: Router) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   save() {
     //send to DB
@@ -63,5 +58,4 @@ export class FlightComponent implements OnInit {
     }
     this.flight.seats = new Array(rows).fill(new Array(false));
   }
-
 }

@@ -1,1 +1,18 @@
-<p>ticket works!</p>
+<mat-grid-list cols="3">
+    <mat-grid-tile [colspan]="1" style="border: solid 1px;">
+        <div>
+            <h4>פרטי הטיסה שלך</h4>
+            <p>{{ELEMENT_DATA.landingTime | date:'HH:mm dd/MM/yy'}} -
+                {{ELEMENT_DATA.arrivalTime | date:'HH:mm dd/MM/yy'}}</p>
+            <p>{{ELEMENT_DATA.sourceCountry}} ({{ELEMENT_DATA.sourceTerminal}}) - {{ELEMENT_DATA.targetCountry}}
+                ({{ELEMENT_DATA.targetTerminal}})</p>
+            <p>{{ELEMENT_DATA.distance}}</p>
+            <p>{{ELEMENT_DATA.estimatedTime}}</p>
+            <p>{{ELEMENT_DATA.plainType}}</p>
+            <p>{{ELEMENT_DATA.cost}}</p>
+        </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" style="border: solid 1px;">
+        <img src="assets/2962343-46.jpg" />
+   </mat-grid-tile>
+</mat-grid-list>
