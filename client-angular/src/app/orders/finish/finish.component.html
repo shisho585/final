@@ -27,7 +27,10 @@
                         <mat-label>שורה</mat-label>
                         <mat-select [(ngModel)]="person.selectedRow" (selectionChange)="catchSeat(person)"
                             (valueChange)="releaseSeat(person)">
-                            <mat-option *ngFor="let x of freeRows" [value]="x">{{x+1}}</mat-option>
+                            <ng-container *ngFor="let x of service.flight.seats; let z = index;">
+                                <mat-option *ngIf="freeRows.includes(z) || person.selectedRow == z" [value]="z">{{z+1}}
+                                </mat-option>
+                            </ng-container>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="small-form-field">

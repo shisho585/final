@@ -11,7 +11,6 @@ import { OrdersService, Person } from '../orders.service';
 export class FinishComponent implements OnInit {
 
   freeRows: number[];
-  freeSeatsForRow: string[];
 
   tel: string;
   email: string;
