@@ -34,10 +34,10 @@
                         <mat-label>מושב</mat-label>
                         <mat-select [(ngModel)]="person.selectedSeat" (selectionChange)="catchSeat(person)"
                             (valueChange)="releaseSeat(person)">
-                            <mat-option *ngFor="let y of service.flight.seats[person.selectedRow] | seatMapFilter"
-                                [value]="y">
-                                {{"ABCDEFGHIJK"[y]}}
-                            </mat-option>
+                            <ng-container *ngFor="let y of service.flight.seats[person.selectedRow]; let z = index;">
+                                <mat-option *ngIf="!y || person.selectedSeat == z" [value]="z"> {{"ABCDEFGHIJK"[z]}}
+                                </mat-option>
+                            </ng-container>
                         </mat-select>
                     </mat-form-field>
                     <button mat-raised-button color="primary" (click)="clearChoises(person)">ניקוי</button>

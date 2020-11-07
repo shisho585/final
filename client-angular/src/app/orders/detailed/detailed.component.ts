@@ -53,6 +53,11 @@ export class DetailedComponent implements OnInit {
       router.navigate(['orders', 'pick-a-flight'])
     }
     this.passengers = service.persons.length;
+    for (let ELEMENT of ELEMENT_DATA_BASE) {
+      for (let index = 0; index < 30; index++) {
+        ELEMENT.seats[index] = [false,false,false,false,false,false];
+      }
+    }
   }
 
   ngOnInit(): void { }

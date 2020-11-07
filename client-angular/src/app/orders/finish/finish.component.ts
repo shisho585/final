@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPayPalConfig, ICreateOrderRequest, ITransactionItem } from 'ngx-paypal';
 import { OrdersService, Person } from '../orders.service';
@@ -36,13 +36,18 @@ export class FinishComponent implements OnInit {
       this.service.flight.seats[person.selectedRow][person.selectedSeat] = false;
       this.seatsNumber--;
       console.log(person.selectedRow + "," + person.selectedSeat + ". realese");
+      this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
     }
   }
 
   catchSeat(person: Person) {
     if (Number.isInteger(person.selectedRow) && Number.isInteger(person.selectedSeat)) {
       this.seatsNumber++;
+      if (this.service.flight.seats[person.selectedRow][person.selectedSeat]) {
+        person.selectedSeat = this.service.flight.seats[person.selectedRow].findIndex(seat => !seat);
+      }
       this.service.flight.seats[person.selectedRow][person.selectedSeat] = true;
+      this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
       console.log(person.selectedRow + "," + person.selectedSeat + ". taken");
     }
   }

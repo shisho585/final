@@ -5,7 +5,7 @@ export interface Person {
   enName: string,
   passpord: number,
   selectedRow?: number,
-  selectedSeat?: string
+  selectedSeat?: number
 }
 
 export interface Flight {
