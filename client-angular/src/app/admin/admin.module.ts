@@ -5,8 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { FlightComponent } from './flight/flight.component';
-import { TicketComponent } from './ticket/ticket.component';
+import { AddFlightComponent } from './add-flight/add-flight.component';
+import { DetailedComponent } from './detailed/detailed.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,7 +17,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatGridListModule } from "@angular/material/grid-list";
 
 @NgModule({
-  declarations: [DashboardComponent, FlightComponent, TicketComponent],
+  declarations: [DashboardComponent, AddFlightComponent, DetailedComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

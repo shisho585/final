@@ -37,11 +37,11 @@ const ELEMENT_DATA_BASE: PeriodicElement[] = [
 
 
 @Component({
-  selector: 'app-ticket',
-  templateUrl: './ticket.component.html',
-  styleUrls: ['./ticket.component.scss']
+  selector: 'app-detailed',
+  templateUrl: './detailed.component.html',
+  styleUrls: ['./detailed.component.scss']
 })
-export class TicketComponent implements OnInit {
+export class DetailedComponent implements OnInit {
 
   ELEMENT_DATA: PeriodicElement = ELEMENT_DATA_BASE.find((flight) => this.route.snapshot.paramMap.get('ID') == flight.id);
 

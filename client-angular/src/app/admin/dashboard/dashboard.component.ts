@@ -37,7 +37,7 @@ const ELEMENT_DATA_BASE: PeriodicElement[] = [
 ];
 
 @Component({
-  selector: 'app-main',
+  selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

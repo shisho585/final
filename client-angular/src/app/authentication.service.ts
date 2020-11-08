@@ -18,13 +18,10 @@ export class AuthenticationService implements CanActivate {
         { headers: { Authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' })
         .pipe(
           catchError(err => {
-            console.log('err: ' + JSON.stringify(err));
-
             this.router.navigate(['login'], { state: { url: state.url } })
             return EMPTY
           }),
           map((data) => {
-            console.log('err: ' + JSON.stringify(data));
             return true;
           })
         )

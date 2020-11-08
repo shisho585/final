@@ -10,9 +10,23 @@
             <p>{{ELEMENT_DATA.estimatedTime}}</p>
             <p>{{ELEMENT_DATA.plainType}}</p>
             <p>{{ELEMENT_DATA.cost}}</p>
+            <button mat-raised-button style="background-color: rgb(230, 0, 0); color: white;">מחק טיסה</button>
         </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="2" style="border: solid 1px;">
-        <img src="assets/2962343-46.jpg" />
-   </mat-grid-tile>
+        <div style="direction: ltr;" class="up-div">
+            <div class="flexed-div">
+                <div class="texted-div"></div>
+                <div *ngFor="let i of ELEMENT_DATA.seats[0];index as index" class="texted-div">
+                    {{"ABCDEFGH"[index]}}
+                </div>
+            </div>
+            <div *ngFor="let i of ELEMENT_DATA.seats; index as index" class="flexed-div">
+                <div class="texted-div">{{index+1}}</div>
+                <div *ngFor="let x of i" class="texted-div">
+                    {{x}}
+                </div>
+            </div>
+        </div>
+    </mat-grid-tile>
 </mat-grid-list>

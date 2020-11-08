@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start-dev": "concurrently --kill-others \"npm run start-server\" \"npm run start-dev-client\"",
-    "build": "cd client-angular && ng build --prod --outputPath=../server-express/public/angular/",
+    "build": "cd client-angular && ng build --prod --outputPath=../server-nest/public/angular/",
     "start-prod": "npm run start-server",
-    "start-server": "cd server-express && npm start",
+    "start-server": "cd server-nest && npm start",
     "start-dev-client": "cd client-angular && npm start",
     "postinstall": "npm run install-server && npm run install-client",
-    "install-server": "cd server-express && npm install",
+    "install-server": "cd server-nest && npm install",
     "install-client": "cd client-angular && npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

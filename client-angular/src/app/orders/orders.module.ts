@@ -21,11 +21,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxPayPalModule } from "ngx-paypal";
-import { SeatMapFilterPipe } from './seat-map-filter.pipe';
 import { DoneComponent } from './done/done.component';
 
 @NgModule({
-  declarations: [PickaflightComponent, DetailedComponent, FinishComponent, SeatMapFilterPipe, DoneComponent],
+  declarations: [PickaflightComponent, DetailedComponent, FinishComponent, DoneComponent],
   imports: [
     CommonModule,
     OrdersRoutingModule,

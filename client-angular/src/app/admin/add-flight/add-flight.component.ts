@@ -17,11 +17,11 @@ export class PeriodicElement {
 }
 
 @Component({
-  selector: 'app-flight',
-  templateUrl: './flight.component.html',
-  styleUrls: ['./flight.component.scss']
+  selector: 'app-add-flight',
+  templateUrl: './add-flight.component.html',
+  styleUrls: ['./add-flight.component.scss']
 })
-export class FlightComponent implements OnInit {
+export class AddFlightComponent implements OnInit {
 
   flight: PeriodicElement = new PeriodicElement();
   today = new Date();

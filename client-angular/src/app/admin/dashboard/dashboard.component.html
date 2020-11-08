@@ -51,7 +51,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="../ticket/{{row.id}}"
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="../detailed/{{row.id}}"
         routerLinkActive="active" class="row-flight"></tr>
 </table>
-<button mat-raised-button color="primary" routerLink="../flight" routerLinkActive="active">הוסף טיסה</button>
+<button mat-raised-button color="primary" routerLink="../add-flight" routerLinkActive="active">הוסף טיסה</button>

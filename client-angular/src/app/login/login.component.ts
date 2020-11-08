@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
       { headers: { userName: this.userName, password: this.pass }, responseType: 'text' })
       .subscribe(
         res => {
-          localStorage.setItem('loggedInToken', res.toString());
+          localStorage.setItem('loggedInToken', res.toString());          
           this.router.navigate([this.urlToRoute]);
         },
         err => {
