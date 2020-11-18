@@ -1,12 +1,37 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Plain } from './db/entities/plain.entity';
+import { User } from './db/entities/user.entity';
+import { Flight } from './db/entities/flight.entity';
+import { Ticket } from './db/entities/ticket.entity';
 
-@Controller()
+@Controller('api')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
-  getHello(): string {
+  getHello() {
     return this.appService.getHello();
   }
+
+  @Post('plain')
+  createNewPlain(@Body(ValidationPipe) newPlain: Plain) {
+    return Plain.save(newPlain);
+  }
+
+  @Post('user')
+  createNewUser(@Body(ValidationPipe) newUser: User) {
+    return User.save(newUser);
+  }
+
+  @Post('flight')
+  createNewFlight(@Body(ValidationPipe) newFlight: Flight) {
+    return Flight.save(newFlight);
+  }
+
+  @Post('ticket')
+  createNewTicket(@Body(ValidationPipe) newTicket: Ticket) {
+    return Ticket.save(newTicket);
+  }
+
 }
