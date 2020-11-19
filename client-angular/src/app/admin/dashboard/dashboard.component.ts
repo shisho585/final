@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 export interface PeriodicElement {
   landingTime: Date;
@@ -19,22 +20,19 @@ export interface PeriodicElement {
   freeSeats?: number;
 }
 
-const ELEMENT_DATA_BASE: PeriodicElement[] = [
-  {
-    landingTime: new Date(2020, 1, 11, 20), arrivalTime: new Date(2020, 1, 13, 0, 15), sourceCountry: 'ישראל', sourceTerminal: 'TLV',
-    targetCountry: 'ארה"ב', targetTerminal: 'NYS', distance: 25350, estimatedTime: 1340, plainType: 'airbus',
-    seats: new Array(30).fill([false, true, true, false, false, false])
-    , cost: 2060, id: 'FX5366'
-  },
-  {
-    landingTime: new Date(2020, 0, 13, 22, 15), arrivalTime: new Date(2020, 0, 14, 0, 15), sourceCountry: 'ישראל', sourceTerminal: 'TLV',
-    targetCountry: 'איטליה', targetTerminal: 'ITL', distance: 2520, estimatedTime: 120, plainType: 'airbus', seats: new Array(30).fill(new Array(6).fill(false)), cost: 400, id: 'DW6624'
-  },
-  {
-    landingTime: new Date(2020, 4, 1), arrivalTime: new Date(2020, 4, 1, 2, 35), sourceCountry: 'ישראל', sourceTerminal: 'TLV',
-    targetCountry: 'יוון', targetTerminal: 'WSX', distance: 2715, estimatedTime: 155, plainType: 'airbus', seats: new Array(30).fill(new Array(6).fill(false)), cost: 500, id: 'PL9277'
-  }
-];
+export class Flight {
+  number: number;
+  departure: Date;
+  from_country: string;
+  from_terminal: string;
+  to_country: string;
+  to_terminal: string;
+  distance: number;
+  plain_type: string;
+  price: number;
+}
+
+let ELEMENT_DATA_BASE: PeriodicElement[];
 
 @Component({
   selector: 'app-dashboard',
@@ -43,23 +41,28 @@ const ELEMENT_DATA_BASE: PeriodicElement[] = [
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private router: Router) {
-    ELEMENT_DATA_BASE.forEach(ELEMENT_DATA => {
-      ELEMENT_DATA.freeSeats = ELEMENT_DATA.seats.map<number>(row => row.filter(seat => !seat).length).reduce((a, b) => a + b);
-    });
+  constructor(private router: Router, private http: HttpClient) {
+    http.get<[]>('http://localhost:3000/api/flight').subscribe(
+      data => {
+        ELEMENT_DATA_BASE = data
+        // ELEMENT_DATA_BASE.forEach(ELEMENT_DATA => {
+        //   ELEMENT_DATA.freeSeats = ELEMENT_DATA.seats.map<number>(row => row.filter(seat => !seat).length).reduce((a, b) => a + b);
+        // });
+        this.dataSource = new MatTableDataSource(ELEMENT_DATA_BASE);
+        this.dataSource.sort = this.sort;
+      }
+    )
   }
+
+  dataSource;
+  displayedColumns: string[] = ['number', 'plain_type', 'departure', 'from', 'to', 'distance', 'price'];
+
+  @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
   }
 
-  displayedColumns: string[] = ['id', 'plainType', 'landingTime', 'arrivalTime', 'source',
-    'target', 'distance', 'estimatedTime', 'cost', 'freeSeats'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA_BASE);
-
-  @ViewChild(MatSort) sort: MatSort;
-
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
   }
 
 }

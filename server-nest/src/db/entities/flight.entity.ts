@@ -1,19 +1,48 @@
-import { Entity, BaseEntity, PrimaryColumn, Column, ManyToOne, OneToMany, JoinColumn } from "typeorm";
-import { Plain } from "./plain.entity";
-import { Ticket } from "./ticket.entity";
-import { IsNumberString, MaxLength, IsOptional, IsDateString, IsAlpha, IsString } from "class-validator";
+import { Entity, BaseEntity, PrimaryColumn, Column, ManyToOne, OneToMany, JoinColumn, AfterLoad, BeforeInsert, BeforeUpdate, } from 'typeorm';
+import { Plain } from './plain.entity';
+import { Ticket } from './ticket.entity';
+import { MaxLength, IsOptional, IsDateString, IsAlpha, IsString, IsDate, IsNumber, Matches, } from 'class-validator';
+import { Type } from 'class-transformer';
 
 @Entity('flights')
 export class Flight extends BaseEntity {
+
+    // @BeforeInsert()
+    // @BeforeUpdate()
+    // async saveLandindg() {
+    //     this.landing = this.departure;
+    //     if (this.landing != null) {
+    //         if (this.plain == null) {
+    //             await Plain.findOne(this.plain_type).then(plain => this.plain = plain)
+    //         }
+    //         console.log(this.distance);
+    //         console.log(this.plain.speed);
+
+    //         this.landing.setMinutes(this.departure.getMinutes() + (this.distance / this.plain.speed) * 60);
+    //     }
+    //     console.log(this);
+    // }
+
     @PrimaryColumn()
-    @IsNumberString()
-    number: number;
+    @Matches(/^[0-9a-zA-Z\s]*$/)
+    number: string;
 
     @Column()
-    @IsDateString()
+    @IsDate()
+    @Type(() => Date)
     departure: Date;
 
-    @Column({ nullable: true }/*TODO nullable*/)
+    @Column({
+        // default: () => {
+        //     console.log(this.departure);
+
+        //     if (this.departure != null) {
+        //         const landing = this.departure;
+        //         landing.setMinutes(this.departure.getMinutes() + (this.distance / this.plain.speed) * 60);
+        //         return landing;
+        //     }
+        // }
+    } /*TODO nullable*/)
     @IsDateString()
     @IsOptional()
     landing: Date;
@@ -41,7 +70,7 @@ export class Flight extends BaseEntity {
     plain_type: string;
 
     @Column()
-    @IsNumberString()
+    @IsNumber()
     price: number;
 
     @ManyToOne('Plain')
@@ -49,8 +78,8 @@ export class Flight extends BaseEntity {
     plain: Plain;
 
     @OneToMany('Ticket', 'flight')
-    tickets: Ticket[]
+    tickets: Ticket[];
 
+    @IsNumber()
     distance: number;
-
 }

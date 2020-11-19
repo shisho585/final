@@ -7,11 +7,21 @@ import { Ticket } from './db/entities/ticket.entity';
 
 @Controller('api')
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Get()
   getHello() {
     return this.appService.getHello();
+  }
+
+  @Get('plain/type')
+  getAllPlainTypes() {
+    return Plain.find({ select: ['type'] });
+  }
+
+  @Get('flight')
+  getAllFlights() {
+    return Flight.find();
   }
 
   @Post('plain')
@@ -33,5 +43,4 @@ export class AppController {
   createNewTicket(@Body(ValidationPipe) newTicket: Ticket) {
     return Ticket.save(newTicket);
   }
-
 }

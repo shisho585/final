@@ -3,7 +3,7 @@ import { User } from './db/entities/user.entity';
 
 @Injectable()
 export class AppService {
-    getHello() {
-        return User.find();
-    }
+  getHello() {
+    return User.find();
+  }
 }

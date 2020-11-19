@@ -1,33 +1,33 @@
 <h3>כל הטיסות במערכת</h3>
 <table mat-table [dataSource]="dataSource" matSort style="width:85%">
-    <ng-container matColumnDef="id">
+    <ng-container matColumnDef="number">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר טיסה </th>
-        <td mat-cell *matCellDef="let flight"> {{flight.id}} </td>
+        <td mat-cell *matCellDef="let flight"> {{flight.number}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="plainType">
+    <ng-container matColumnDef="plain_type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> סוג מטוס </th>
-        <td mat-cell *matCellDef="let flight"> {{flight.plainType}} </td>
+        <td mat-cell *matCellDef="let flight"> {{flight.plain_type}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="landingTime">
+    <ng-container matColumnDef="departure">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> שעת המראה </th>
-        <td mat-cell *matCellDef="let flight"> {{flight.landingTime | date:'HH:mm dd/MM/yy'}} </td>
+        <td mat-cell *matCellDef="let flight"> {{flight.departure | date:'HH:mm dd/MM/yy'}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="arrivalTime">
+    <!-- <ng-container matColumnDef="arrivalTime">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> זמן נחיתה </th>
         <td mat-cell *matCellDef="let flight"> {{flight.arrivalTime | date:'HH:mm dd/MM/yy'}} </td>
-    </ng-container>
+    </ng-container> -->
 
-    <ng-container matColumnDef="source">
+    <ng-container matColumnDef="from">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> מוצא </th>
-        <td mat-cell *matCellDef="let flight"> {{flight.sourceCountry + ' (' + flight.sourceTerminal + ')'}} </td>
+        <td mat-cell *matCellDef="let flight"> {{flight.from_country + ' (' + flight.from_terminal + ')'}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="target">
+    <ng-container matColumnDef="to">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> יעד </th>
-        <td mat-cell *matCellDef="let flight"> {{flight.targetCountry + ' (' + flight.targetTerminal + ')'}} </td>
+        <td mat-cell *matCellDef="let flight"> {{flight.to_country + ' (' + flight.to_terminal + ')'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="distance">
@@ -35,23 +35,23 @@
         <td mat-cell *matCellDef="let flight"> {{flight.distance}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="estimatedTime">
+    <!-- <ng-container matColumnDef="estimatedTime">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> זמן טיסה משוער </th>
         <td mat-cell *matCellDef="let flight"> {{flight.estimatedTime}} </td>
-    </ng-container>
+    </ng-container> -->
 
-    <ng-container matColumnDef="cost">
+    <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> מחיר כרטיס </th>
-        <td mat-cell *matCellDef="let flight"> {{flight.cost}} </td>
+        <td mat-cell *matCellDef="let flight"> {{flight.price}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="freeSeats">
+    <!-- <ng-container matColumnDef="freeSeats">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> מקומות פנויים </th>
         <td mat-cell *matCellDef="let flight"> {{flight.freeSeats}} </td>
-    </ng-container>
+    </ng-container> -->
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="../detailed/{{row.id}}"
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="../detailed/{{row.number}}"
         routerLinkActive="active" class="row-flight"></tr>
 </table>
 <button mat-raised-button color="primary" routerLink="../add-flight" routerLinkActive="active">הוסף טיסה</button>

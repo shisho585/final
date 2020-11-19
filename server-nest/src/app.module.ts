@@ -9,9 +9,9 @@ import { AppService } from './app.service';
     ServeStaticModule.forRoot({
       rootPath: './public/angular/',
     }),
-    DbModule
+    DbModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

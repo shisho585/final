@@ -1,12 +1,12 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from "typeorm";
-import { IsString, IsNumber, IsOptional, IsNumberString } from "class-validator";
-import { User } from "./user.entity";
-import { Flight } from "./flight.entity";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn, } from 'typeorm';
+import { IsString, IsNumber, IsOptional, IsNumberString, } from 'class-validator';
+import { User } from './user.entity';
+import { Flight } from './flight.entity';
 
 @Entity('tickets')
 export class Ticket extends BaseEntity {
     @PrimaryGeneratedColumn()
-    ticket_no: number;
+    readonly ticket_no: number;
 
     @Column()
     @IsNumberString()
@@ -17,12 +17,12 @@ export class Ticket extends BaseEntity {
     flight_number: string;
 
     @Column()
-    @IsNumberString()//TODO only number
+    @IsNumberString() //TODO only number
     @IsOptional()
     row: number;
 
     @Column()
-    @IsNumberString()//TODO only number
+    @IsNumberString() //TODO only number
     @IsOptional()
     seat: number;
 
