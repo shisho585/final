@@ -1,2 +1,3 @@
 node_modules/
 server-nest/client-static/
+server-nest/src/db/db.module.ts
