@@ -39,7 +39,7 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>סוג מטוס</mat-label>
-        <mat-select [(ngModel)]="flight.plain_type">
+        <mat-select [(ngModel)]="flight.plain.type">
             <mat-option *ngFor="let i of plainTypes" [value]="i">{{i+1}}</mat-option>
         </mat-select>
     </mat-form-field>

@@ -3,34 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-
-export interface PeriodicElement {
-  landingTime: Date;
-  arrivalTime: Date;
-  sourceCountry: string;
-  sourceTerminal: string;
-  targetCountry: string;
-  targetTerminal: string;
-  distance: number;
-  estimatedTime: number;
-  plainType: string;
-  seats: boolean[][];
-  cost: number;
-  id: string;
-  freeSeats?: number;
-}
-
-export class Flight {
-  number: number;
-  departure: Date;
-  from_country: string;
-  from_terminal: string;
-  to_country: string;
-  to_terminal: string;
-  distance: number;
-  plain_type: string;
-  price: number;
-}
+import { Flight } from 'src/app/models/flight.interface';
 
 let ELEMENT_DATA_BASE: Flight[];
 

@@ -32,7 +32,7 @@ export class FinishComponent implements OnInit {
 
   releaseSeat(person: Person) {
     if (Number.isInteger(person.selectedRow) && Number.isInteger(person.selectedSeat)) {
-      this.service.flight.seats[person.selectedRow][person.selectedSeat] = false;
+      this.service.flight.seats[person.selectedRow][person.selectedSeat] = null;
       this.seatsNumber--;
       console.log(person.selectedRow + "," + person.selectedSeat + ". realese");
       this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
@@ -45,7 +45,7 @@ export class FinishComponent implements OnInit {
       if (this.service.flight.seats[person.selectedRow][person.selectedSeat]) {
         person.selectedSeat = this.service.flight.seats[person.selectedRow].findIndex(seat => !seat);
       }
-      this.service.flight.seats[person.selectedRow][person.selectedSeat] = true;
+      this.service.flight.seats[person.selectedRow][person.selectedSeat] = person.passpord;
       this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
       console.log(person.selectedRow + "," + person.selectedSeat + ". taken");
     }
@@ -80,20 +80,20 @@ export class FinishComponent implements OnInit {
           purchase_units: [{
             amount: {
               currency_code: 'ILS',
-              value: (this.service.flight.cost * this.service.persons.length + this.seatsNumber * 20).toString(),
+              value: (this.service.flight.price * this.service.persons.length + this.seatsNumber * 20).toString(),
               breakdown: {
                 item_total: {
                   currency_code: 'ILS',
-                  value: (this.service.flight.cost * this.service.persons.length + this.seatsNumber * 20).toString()
+                  value: (this.service.flight.price * this.service.persons.length + this.seatsNumber * 20).toString()
                 }
               }
             },
             items: [{
-              name: 'כרטיסי טיסה לטיסה ' + this.service.flight.id,
+              name: 'כרטיסי טיסה לטיסה ' + this.service.flight.number,
               quantity: this.service.persons.length.toString(),
               unit_amount: {
                 currency_code: 'ILS',
-                value: this.service.flight.cost.toString()
+                value: this.service.flight.price.toString()
               },
             }]
           }]

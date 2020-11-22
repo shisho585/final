@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Flight } from '../models/flight.interface';
 
 export interface Person {
   heName: string,
@@ -8,20 +9,6 @@ export interface Person {
   selectedSeat?: number
 }
 
-export interface Flight {
-  landingTime: Date;
-  arrivalTime: Date;
-  sourceCountry: string;
-  sourceTerminal: string;
-  targetCountry: string;
-  targetTerminal: string;
-  distance: number;
-  estimatedTime: number;
-  plainType: string;
-  seats: boolean[][];
-  cost: number;
-  id: string;
-}
 
 @Injectable({
   providedIn: 'root'

@@ -2,23 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Options } from '@angular-slider/ngx-slider';
 
-
-// This class and array after it, is just for illustrate data from DB.
-// In the prod, i will remove the class and fill the array with real data from DB. 
-export interface PeriodicElement {
-  landingTime: Date;
-  source: string;
-  target: string;
-  cost: number;
-  id: string;
+export interface LightFlight {
+  number: number;
+  departure: Date;
+  from_country: string;
+  to_country: string;
+  price: number;
 }
-
-const ELEMENT_DATA_BASE: PeriodicElement[] = [
-  { landingTime: new Date(2020, 0, 13, 22, 15), source: 'ישראל', target: 'איטליה', cost: 400, id: 'DW6624' },
-  { landingTime: new Date(2020, 4, 1), source: 'ישראל', target: 'יוון', cost: 500, id: 'PL9277' },
-  { landingTime: new Date(2020, 1, 11, 20), source: 'ישראל', target: 'ארה"ב', cost: 2060, id: 'FX5366' }
-];
 
 @Component({
   selector: 'app-pick-a-flight',
@@ -26,6 +18,8 @@ const ELEMENT_DATA_BASE: PeriodicElement[] = [
   styleUrls: ['./pick-a-flight.component.scss']
 })
 export class PickaflightComponent implements OnInit, AfterViewInit {
+
+  ELEMENT_DATA_BASE: LightFlight[];
 
   firstTime: Date;
   lastTime: Date;
@@ -40,59 +34,72 @@ export class PickaflightComponent implements OnInit, AfterViewInit {
   source = '*';
   destination = '*';
 
-  minPrice: number;
-  maxPrice: number;
+  minPrice = 0;
+  maxPrice = 0;
+
+  ngx_slider_options = { floor: 0, ceil: 0 };
 
   constructor(private http: HttpClient) {
-    ELEMENT_DATA_BASE.forEach((flight) => {
-      if (this.firstTime == null || flight.landingTime < this.firstTime) {
-        this.firstTime = flight.landingTime;
-      }
-      if (this.lastTime == null || flight.landingTime > this.lastTime) {
-        this.lastTime = flight.landingTime;
-      }
-      if (!this.sourcesCountries.includes(flight.source)) {
-        this.sourcesCountries.push(flight.source);
-      }
-      if (!this.destinationsCountries.includes(flight.target)) {
-        this.destinationsCountries.push(flight.target);
-      }
-      if (this.lowestPrice == null || flight.cost < this.lowestPrice) {
-        this.lowestPrice = flight.cost;
-      }
-      if (this.highestPrice == null || flight.cost > this.highestPrice) {
-        this.highestPrice = flight.cost;
-      }
-    });
+    http.get<LightFlight[]>("http://localhost:3000/api/flight/light").subscribe(
+      data => {
+        this.ELEMENT_DATA_BASE = data;
 
-    this.minTime = this.firstTime.toLocaleString("sv-SE").replace(' ', 'T');
-    this.maxTime = this.lastTime.toLocaleString("sv-SE").replace(' ', 'T');
+        this.ELEMENT_DATA_BASE.forEach((flight) => {
+          flight.departure = new Date(flight.departure);
+          if (this.firstTime == null || flight.departure < this.firstTime) {
+            this.firstTime = flight.departure;
+          }
+          if (this.lastTime == null || flight.departure > this.lastTime) {
+            this.lastTime = flight.departure;
+          }
+          if (!this.sourcesCountries.includes(flight.from_country)) {
+            this.sourcesCountries.push(flight.from_country);
+          }
+          if (!this.destinationsCountries.includes(flight.to_country)) {
+            this.destinationsCountries.push(flight.to_country);
+          }
+          if (this.lowestPrice == null || flight.price < this.lowestPrice) {
+            this.lowestPrice = flight.price;
+          }
+          if (this.highestPrice == null || flight.price > this.highestPrice) {
+            this.highestPrice = flight.price;
+          }
+        });
 
-    this.minPrice = this.lowestPrice;
-    this.maxPrice = this.highestPrice;
+        this.minTime = this.firstTime.toLocaleString("sv-SE").replace(' ', 'T');
+        this.maxTime = this.lastTime.toLocaleString("sv-SE").replace(' ', 'T');
+
+        this.minPrice = this.lowestPrice;
+        this.maxPrice = this.highestPrice;
+
+        this.ngx_slider_options = { floor: this.lowestPrice, ceil: this.highestPrice }
+
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA_BASE);
+        this.dataSource.sort = this.sort;
+      }
+    )
   }
 
   ngOnInit(): void {
   }
 
   search() {
-    this.dataSource.data = ELEMENT_DATA_BASE.filter((flight) => {
-      return flight.landingTime >= new Date(this.minTime) &&
-        flight.landingTime <= new Date(this.maxTime) &&
-        (this.source == '*' || flight.source == this.source) &&
-        (this.destination == '*' || flight.target == this.destination) &&
-        flight.cost >= this.minPrice &&
-        flight.cost <= this.maxPrice;
+    this.dataSource.data = this.ELEMENT_DATA_BASE.filter((flight) => {
+      return flight.departure >= new Date(this.minTime) &&
+        flight.departure <= new Date(this.maxTime) &&
+        (this.source == '*' || flight.from_country == this.source) &&
+        (this.destination == '*' || flight.to_country == this.destination) &&
+        flight.price >= this.minPrice &&
+        flight.price <= this.maxPrice;
     })
   }
 
-  displayedColumns: string[] = ['landingTime', 'source', 'target', 'cost'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA_BASE);
+  displayedColumns: string[] = ['departure', 'from_country', 'to_country', 'price'];
+  dataSource;
 
   @ViewChild(MatSort) sort: MatSort;
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
   }
 
 }

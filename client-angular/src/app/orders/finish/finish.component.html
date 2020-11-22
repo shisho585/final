@@ -54,13 +54,13 @@
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            כרטיסי טיסה : {{service.persons.length * service.flight.cost}}
+                            כרטיסי טיסה : {{service.persons.length * service.flight.price}}
                         </mat-panel-title>
                         <mat-panel-description>לפירוט</mat-panel-description>
                     </mat-expansion-panel-header>
                     כמות : {{service.persons.length}}
                     <br />
-                    מחיר ליחידה : {{service.flight.cost}}₪
+                    מחיר ליחידה : {{service.flight.price}}₪
                 </mat-expansion-panel>
                 <mat-expansion-panel *ngIf="seatsNumber>0">
                     <mat-expansion-panel-header>

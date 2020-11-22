@@ -24,6 +24,11 @@ export class AppController {
     return Flight.find();
   }
 
+  @Get('flight/light')
+  getAllFlightsLight() {
+    return Flight.find({ select: ['number', 'departure', 'from_country', 'to_country', 'price'] });
+  }
+
   @Get('flight/:flightNumber')
   getFlight(@Param('flightNumber') flightNumber: number) {
     return Flight.findOne(flightNumber, { relations: ['plain', 'tickets'] });

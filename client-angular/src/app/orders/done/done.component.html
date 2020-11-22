@@ -7,10 +7,10 @@
         <th>ס"ה</th>
     </tr>
     <tr>
-        <td>כרטיסי טיסה לטיסה {{service.flight.id}}</td>
-        <td>{{service.flight.cost}}</td>
+        <td>כרטיסי טיסה לטיסה {{service.flight.number}}</td>
+        <td>{{service.flight.price}}</td>
         <td>{{service.persons.length}}</td>
-        <td>{{service.flight.cost * service.persons.length}}</td>
+        <td>{{service.flight.price * service.persons.length}}</td>
     </tr>
     <tr *ngIf="seats > 0">
         <td>תוספת מושבים</td>
@@ -22,6 +22,6 @@
         <td></td>
         <td></td>
         <td>ס"ה</td>
-        <td>{{service.flight.cost * service.persons.length + seats * 20}}</td>
+        <td>{{service.flight.price * service.persons.length + seats * 20}}</td>
     </tr>
 </table>

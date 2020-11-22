@@ -2,14 +2,15 @@
     <mat-grid-tile [colspan]="1" style="border: solid 1px;">
         <div>
             <h4>פרטי הטיסה שלך</h4>
-            <p>{{ELEMENT_DATA.landingTime | date:'HH:mm dd/MM/yy'}} -
-                {{ELEMENT_DATA.arrivalTime | date:'HH:mm dd/MM/yy'}}</p>
-            <p>{{ELEMENT_DATA.sourceCountry}} ({{ELEMENT_DATA.sourceTerminal}}) - {{ELEMENT_DATA.targetCountry}}
-                ({{ELEMENT_DATA.targetTerminal}})</p>
+            <p>{{ELEMENT_DATA.departure | date:'HH:mm dd/MM/yy'}} - {{ELEMENT_DATA.landing | date:'HH:mm dd/MM/yy'}}
+                <br />
+                (זמן משוער : {{ELEMENT_DATA.estimated_time_string}})
+            </p>
+            <p>{{ELEMENT_DATA.from_country}} ({{ELEMENT_DATA.from_terminal}}) -
+                {{ELEMENT_DATA.to_country}} ({{ELEMENT_DATA.to_terminal}})</p>
             <p>{{ELEMENT_DATA.distance}}</p>
-            <p>{{ELEMENT_DATA.estimatedTime}}</p>
-            <p>{{ELEMENT_DATA.plainType}}</p>
-            <p>{{ELEMENT_DATA.cost}}</p>
+            <p>{{ELEMENT_DATA.plain.type}}</p>
+            <p>{{ELEMENT_DATA.price}}</p>
         </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="2" style="border: solid 1px;">
@@ -34,7 +35,7 @@
                     <input matInput type="number" [(ngModel)]=person.passpord required />
                 </mat-form-field>
             </div>
-            <span>מחיר כולל: {{ELEMENT_DATA.cost * passengers}}</span><!-- TODO fill with real information -->
+            <span>מחיר כולל: {{ELEMENT_DATA.price * passengers}}</span><!-- TODO fill with real information -->
             <button mat-raised-button color="primary" [disabled]="!isTherePersons()" (click)="saveData()"
                 routerLink="../../finish" routerLinkActive="active">אישור</button>
         </div>

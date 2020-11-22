@@ -1,41 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { OrdersService } from '../orders.service';
-
-// This class and array after it, is just for illustrate data from DB.
-// In the prod, i will remove the class and run query on real DB. 
-export interface PeriodicElement {
-  landingTime: Date;
-  arrivalTime: Date;
-  sourceCountry: string;
-  sourceTerminal: string;
-  targetCountry: string;
-  targetTerminal: string;
-  distance: number;
-  estimatedTime: number;
-  plainType: string;
-  seats: boolean[][];
-  cost: number;
-  id: string;
-}
-
-const ELEMENT_DATA_BASE: PeriodicElement[] = [
-  {
-    landingTime: new Date(2020, 1, 11, 20), arrivalTime: new Date(2020, 1, 13, 0, 15), sourceCountry: 'ישראל', sourceTerminal: 'TLV',
-    targetCountry: 'ארה"ב', targetTerminal: 'NYS', distance: 25350, estimatedTime: 1340, plainType: 'airbus',
-    seats: new Array(30).fill([false, true, true, false, false, false])
-    , cost: 2060, id: 'FX5366'
-  },
-  {
-    landingTime: new Date(2020, 0, 13, 22, 15), arrivalTime: new Date(2020, 0, 14, 0, 15), sourceCountry: 'ישראל', sourceTerminal: 'TLV',
-    targetCountry: 'איטליה', targetTerminal: 'ITL', distance: 2520, estimatedTime: 120, plainType: 'airbus', seats: new Array(30).fill(new Array(6).fill(false)), cost: 400, id: 'DW6624'
-  },
-  {
-    landingTime: new Date(2020, 4, 1), arrivalTime: new Date(2020, 4, 1, 2, 35), sourceCountry: 'ישראל', sourceTerminal: 'TLV',
-    targetCountry: 'יוון', targetTerminal: 'WSX', distance: 2715, estimatedTime: 155, plainType: 'airbus', seats: new Array(30).fill(new Array(6).fill(false)), cost: 500, id: 'PL9277'
-  }
-];
-
+import { HttpClient } from '@angular/common/http';
+import { Flight } from 'src/app/models/flight.interface';
 
 @Component({
   selector: 'app-detailed',
@@ -44,20 +11,42 @@ const ELEMENT_DATA_BASE: PeriodicElement[] = [
 })
 export class DetailedComponent implements OnInit {
 
-  passengers: number;
+  passengers = 1;
 
-  ELEMENT_DATA: PeriodicElement = ELEMENT_DATA_BASE.find((flight) => this.route.snapshot.paramMap.get('flightID') == flight.id);
+  ELEMENT_DATA;
 
-  constructor(private router: Router, private route: ActivatedRoute, public service: OrdersService) {
-    if (this.ELEMENT_DATA == undefined) {
-      router.navigate(['orders', 'pick-a-flight'])
-    }
-    this.passengers = service.persons.length;
-    for (let ELEMENT of ELEMENT_DATA_BASE) {
-      for (let index = 0; index < 30; index++) {
-        ELEMENT.seats[index] = [false,false,false,false,false,false];
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    public service: OrdersService,
+  ) {
+    http.get<Flight>("http://localhost:3000/api/flight/" + this.route.snapshot.paramMap.get('flightID')).subscribe(
+      data => {
+        if (data == null) router.navigate(['orders', 'pick-a-flight']);
+        this.ELEMENT_DATA = data;
+
+        this.ELEMENT_DATA.seats = new Array(this.ELEMENT_DATA.plain.number_of_rows);
+        for (let index = 0; index < this.ELEMENT_DATA.plain.number_of_rows; index++) {
+          this.ELEMENT_DATA.seats[index] = Array(this.ELEMENT_DATA.plain.seats_to_row);
+        }
+        this.ELEMENT_DATA.estimated_time = Math.round(data.distance / data.plain.speed * 60);
+        this.ELEMENT_DATA.estimated_time_string = Math.floor(this.ELEMENT_DATA.estimated_time / 60).toLocaleString('il', { minimumIntegerDigits: 2 }) + ":" + (this.ELEMENT_DATA.estimated_time % 60).toLocaleString('il', { minimumIntegerDigits: 2 });
+        this.ELEMENT_DATA.departure = new Date(this.ELEMENT_DATA.departure);
+        this.ELEMENT_DATA.landing = new Date(this.ELEMENT_DATA.departure);
+        this.ELEMENT_DATA.landing.setMinutes(data.departure.getMinutes() + this.ELEMENT_DATA.estimated_time);
+      },
+      error => {
+        console.log(error.error.message);
+        router.navigate(['orders', 'pick-a-flight']);
       }
-    }
+    )
+    // this.passengers = service.persons.length;
+    // for (let ELEMENT of ELEMENT_DATA_BASE) {
+    //   for (let index = 0; index < 30; index++) {
+    //     ELEMENT.seats[index] = [false, false, false, false, false, false];
+    //   }
+    // }
   }
 
   ngOnInit(): void { }
