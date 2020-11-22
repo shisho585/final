@@ -1,14 +1,3 @@
 node_modules/
-server-nest/public/angular/
-server-nest/client-static/1.cbdbf3e50712e842704f.js
-server-nest/client-static/3rdpartylicenses.txt
-server-nest/client-static/5.0e1b52e639e753ec0628.js
-server-nest/client-static/6.2524555565fab27dfaff.js
-server-nest/client-static/favicon.ico
-server-nest/client-static/index.html
-server-nest/client-static/main.2078936693b2a9dbc49c.js
-server-nest/client-static/polyfills.2b9efda34b919da8fe8a.js
-server-nest/client-static/runtime.2299804357065b97f0ef.js
-server-nest/client-static/styles.fd6b61cc6c2b84baa94a.css
-server-nest/client-static/assets/737-900_Sep2019.jpg
-server-nest/client-static/assets/2962343-46.jpg
+server-nest/client-static/
+server-nest/ormconfig.json
