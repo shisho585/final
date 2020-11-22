@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Flight } from '../models/flight.interface';
-
-export interface Person {
-  heName: string,
-  enName: string,
-  passpord: number,
-  selectedRow?: number,
-  selectedSeat?: number
-}
-
+import { Flight } from '../models/flight';
+import { Ticket } from '../models/ticket';
+import { User } from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +9,8 @@ export interface Person {
 export class OrdersService {
 
   flight: Flight;
-  persons: Person[] = [{ heName: '', enName: '', passpord: null }];
+  users = [new User()];
+  tickets = [new Ticket()];
 
   constructor() { }
 }

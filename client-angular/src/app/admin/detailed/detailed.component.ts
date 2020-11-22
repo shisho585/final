@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Flight } from 'src/app/models/flight.interface';
+import { Flight } from 'src/app/models/flight';
 
 @Component({
   selector: 'app-detailed',

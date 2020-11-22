@@ -1,7 +1,7 @@
-import { Ticket } from './ticket.interface';
-import { Plain } from './plain.interface';
+import { Ticket } from './ticket';
+import { Plain } from './plain';
 
-export interface Flight {
+export class Flight {
     number: number;
     departure: Date;
     from_country: string;
@@ -12,7 +12,8 @@ export interface Flight {
     estimated_time?: number;
     estimated_time_string?: string;
     landing?: Date;
-    plain: Plain;
+    plain_type: string;
+    plain?: Plain;
     price: number;
     tickets: Ticket[];
     seats?: number[][];

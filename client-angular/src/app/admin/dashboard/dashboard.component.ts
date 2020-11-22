@@ -3,7 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Flight } from 'src/app/models/flight.interface';
+import { Flight } from 'src/app/models/flight';
 
 let ELEMENT_DATA_BASE: Flight[];
 

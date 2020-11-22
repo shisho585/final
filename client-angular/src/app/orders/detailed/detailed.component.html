@@ -1,5 +1,5 @@
 <mat-grid-list cols="3">
-    <mat-grid-tile [colspan]="1" style="border: solid 1px;">
+    <mat-grid-tile *ngIf="ELEMENT_DATA" [colspan]="1" style="border: solid 1px;">
         <div>
             <h4>פרטי הטיסה שלך</h4>
             <p>{{ELEMENT_DATA.departure | date:'HH:mm dd/MM/yy'}} - {{ELEMENT_DATA.landing | date:'HH:mm dd/MM/yy'}}
@@ -19,24 +19,24 @@
                 <mat-label>כמה נוסעים אתם?</mat-label>
                 <input matInput type="number" min="1" [(ngModel)]="passengers" (change)="changePassengersNumber()" />
             </mat-form-field>
-            <div id="passengerDetailes" *ngFor="let person of service.persons; let x = index">
+            <div id="passengerDetailes" *ngFor="let user of service.users; let x = index">
                 <!-- TODO ngfor as number of input -->
                 <mat-label>{{x+1}}. </mat-label>
                 <mat-form-field>
                     <mat-label>שם מלא בעברית</mat-label>
-                    <input matInput type="text" [(ngModel)]=person.heName required />
+                    <input matInput type="text" [(ngModel)]=user.hebrew_name required />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>שם מלא באנגלית</mat-label>
-                    <input matInput type="text" [(ngModel)]=person.enName required />
+                    <input matInput type="text" [(ngModel)]=user.english_name required />
                 </mat-form-field>
                 <mat-form-field id="id-number">
                     <mat-label>מספר דרכון</mat-label>
-                    <input matInput type="number" [(ngModel)]=person.passpord required />
+                    <input matInput type="number" [(ngModel)]=user.id required />
                 </mat-form-field>
             </div>
-            <span>מחיר כולל: {{ELEMENT_DATA.price * passengers}}</span><!-- TODO fill with real information -->
-            <button mat-raised-button color="primary" [disabled]="!isTherePersons()" (click)="saveData()"
+            <span>מחיר כולל: {{ELEMENT_DATA?.price * passengers}}</span><!-- TODO fill with real information -->
+            <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
                 routerLink="../../finish" routerLinkActive="active">אישור</button>
         </div>
     </mat-grid-tile>

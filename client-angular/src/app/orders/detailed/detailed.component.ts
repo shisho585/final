@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { OrdersService } from '../orders.service';
 import { HttpClient } from '@angular/common/http';
-import { Flight } from 'src/app/models/flight.interface';
+import { Flight } from 'src/app/models/flight';
+import { User } from 'src/app/models/user';
+import { Ticket } from 'src/app/models/ticket';
 
 @Component({
   selector: 'app-detailed',
@@ -41,7 +43,7 @@ export class DetailedComponent implements OnInit {
         router.navigate(['orders', 'pick-a-flight']);
       }
     )
-    // this.passengers = service.persons.length;
+    // this.passengers = service.users.length;
     // for (let ELEMENT of ELEMENT_DATA_BASE) {
     //   for (let index = 0; index < 30; index++) {
     //     ELEMENT.seats[index] = [false, false, false, false, false, false];
@@ -52,19 +54,19 @@ export class DetailedComponent implements OnInit {
   ngOnInit(): void { }
 
   changePassengersNumber() {
-    if (this.passengers > this.service.persons.length) {
-      this.service.persons.push({ heName: '', enName: '', passpord: null });
-    } else if (this.passengers < this.service.persons.length) {
-      this.service.persons.pop();
+    if (this.passengers > this.service.users.length) {
+      this.service.users.push(new User());
+    } else if (this.passengers < this.service.users.length) {
+      this.service.users.pop();
     }
   }
 
-  isTherePersons(): boolean {
-    return this.service.persons.some(person => person.heName != '' && person.enName != '' && person.passpord != null);
+  isThereUsers(): boolean {
+    return this.service.users.some(user => user.hebrew_name != '' && user.english_name != '' && user.id != null);
   }
 
   saveData() {
-    this.service.persons = this.service.persons.filter(person => person.heName != '' && person.enName != '' && person.passpord != null);
+    this.service.users = this.service.users.filter(user => user.hebrew_name != '' && user.english_name != '' && user.id != null);
     this.service.flight = this.ELEMENT_DATA;
   }
 

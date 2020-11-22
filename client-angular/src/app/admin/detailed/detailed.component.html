@@ -1,4 +1,4 @@
-<mat-grid-list cols="3">
+<mat-grid-list *ngIf="ELEMENT_DATA" cols="3">
     <mat-grid-tile [colspan]="1" style="border: solid 1px;">
         <div>
             <h4>פרטי הטיסה שלך</h4>
@@ -27,7 +27,7 @@
                     <p>{{index+1}}</p>
                 </div>
                 <div *ngFor="let x of i" class="texted-div" style="border-color:black;">
-                    <p>{{x}}</p>
+                    <p>{{x || 'פנוי'}}</p>
                 </div>
             </div>
         </div>

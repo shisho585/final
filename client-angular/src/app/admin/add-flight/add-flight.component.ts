@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Flight } from 'src/app/models/flight.interface';
+import { Flight } from 'src/app/models/flight';
 
 @Component({
   selector: 'app-add-flight',
@@ -11,7 +11,7 @@ import { Flight } from 'src/app/models/flight.interface';
 })
 export class AddFlightComponent implements OnInit {
 
-  flight: Flight;
+  flight = new Flight();
   today = new Date();
 
   sourcesCountries = ['Israel', 'Japan', 'Italy'];

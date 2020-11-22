@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IPayPalConfig, ICreateOrderRequest, ITransactionItem } from 'ngx-paypal';
+import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { OrdersService, Person } from '../orders.service';
 
 @Component({

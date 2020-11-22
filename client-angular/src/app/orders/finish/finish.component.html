@@ -21,29 +21,29 @@
                     <mat-panel-title>בחירת מושב</mat-panel-title>
                     <mat-panel-description>20₪ לבחירה של מושב</mat-panel-description>
                 </mat-expansion-panel-header>
-                <div *ngFor="let person of service.persons; let i = index">
-                    <span>{{i+1}}. {{person.heName.split(' ')[0]}}</span>
+                <div *ngFor="let user of service.users; let i = index">
+                    <span>{{i+1}}. {{user.hebrew_name.split(' ')[0]}}</span>
                     <mat-form-field class="small-form-field">
                         <mat-label>שורה</mat-label>
-                        <mat-select [(ngModel)]="person.selectedRow" (selectionChange)="catchSeat(person)"
-                            (valueChange)="releaseSeat(person)">
+                        <mat-select [(ngModel)]="user" (selectionChange)="catchSeat(user)"
+                            (valueChange)="releaseSeat(user)">
                             <ng-container *ngFor="let x of service.flight.seats; let z = index;">
-                                <mat-option *ngIf="freeRows.includes(z) || person.selectedRow == z" [value]="z">{{z+1}}
+                                <mat-option *ngIf="freeRows.includes(z) || user.selectedRow == z" [value]="z">{{z+1}}
                                 </mat-option>
                             </ng-container>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="small-form-field">
                         <mat-label>מושב</mat-label>
-                        <mat-select [(ngModel)]="person.selectedSeat" (selectionChange)="catchSeat(person)"
-                            (valueChange)="releaseSeat(person)">
-                            <ng-container *ngFor="let y of service.flight.seats[person.selectedRow]; let z = index;">
-                                <mat-option *ngIf="!y || person.selectedSeat == z" [value]="z"> {{"ABCDEFGHIJK"[z]}}
+                        <mat-select [(ngModel)]="user.selectedSeat" (selectionChange)="catchSeat(user)"
+                            (valueChange)="releaseSeat(user)">
+                            <ng-container *ngFor="let y of service.flight.seats[user.selectedRow]; let z = index;">
+                                <mat-option *ngIf="!y || user.selectedSeat == z" [value]="z"> {{"ABCDEFGHIJK"[z]}}
                                 </mat-option>
                             </ng-container>
                         </mat-select>
                     </mat-form-field>
-                    <button mat-raised-button color="primary" (click)="clearChoises(person)">ניקוי</button>
+                    <button mat-raised-button color="primary" (click)="clearChoises(user)">ניקוי</button>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
