@@ -32,7 +32,7 @@ export class Flight {
   price: number;
 }
 
-let ELEMENT_DATA_BASE: PeriodicElement[];
+let ELEMENT_DATA_BASE: Flight[];
 
 @Component({
   selector: 'app-dashboard',

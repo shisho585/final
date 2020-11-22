@@ -50,8 +50,13 @@ export class AddFlightComponent implements OnInit {
       'http://localhost:3000/api/flight',
       this.flight
     ).subscribe(
-      data => console.log(data),
-      error => console.error(error.error.message)
+      (data: Flight) => {
+        alert("טיסה מס' " + data.number + " נשמרה בהצלחה")//TODO nice popup
+        this.router.navigate(['admin', 'dashboard'])
+      },
+      error => {//TODO nice popup and hebrew names
+        alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
+      }
     )
   }
 }

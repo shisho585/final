@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Plain } from './db/entities/plain.entity';
 import { User } from './db/entities/user.entity';
@@ -7,7 +7,7 @@ import { Ticket } from './db/entities/ticket.entity';
 
 @Controller('api')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
   getHello() {
@@ -22,6 +22,11 @@ export class AppController {
   @Get('flight')
   getAllFlights() {
     return Flight.find();
+  }
+
+  @Get('flight/:flightNumber')
+  getFlight(@Param('flightNumber') flightNumber: number) {
+    return Flight.findOne(flightNumber, { relations: ['plain', 'tickets'] });
   }
 
   @Post('plain')
