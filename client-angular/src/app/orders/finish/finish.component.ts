@@ -81,25 +81,29 @@ export class FinishComponent implements OnInit {
       //     }
       //   })
       // })
-      for (let rowIndex = 0; rowIndex < this.service.flight.seats.length; rowIndex++) {
-        console.log(rowIndex);
-        console.log(ticket.seat);
-        if (!ticket.seat) {
-          for (let seatIndex = 0; seatIndex < this.service.flight.seats[rowIndex].length; seatIndex++) {
-            if (!this.service.flight.seats[rowIndex][seatIndex]) {
-              this.service.flight.seats[rowIndex][seatIndex] = ticket.user.passport_id;
-              ticket.row = rowIndex;
-              ticket.seat = seatIndex;
-              break;
-            }
-          }
-        } else {
-          break;
-        }
-      }
+      // for (let rowIndex = 0; rowIndex < this.service.flight.seats.length; rowIndex++) {
+      //   console.log(rowIndex);
+      //   console.log(ticket.seat);
+      //   if (!ticket.seat) {
+      //     for (let seatIndex = 0; seatIndex < this.service.flight.seats[rowIndex].length; seatIndex++) {
+      //       if (!this.service.flight.seats[rowIndex][seatIndex]) {
+      //         this.service.flight.seats[rowIndex][seatIndex] = ticket.user.passport_id;
+      //         ticket.row = rowIndex;
+      //         ticket.seat = seatIndex;
+      //         break;
+      //       }
+      //     }
+      //   } else {
+      //     break;
+      //   }
+      // }
     });
     this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
-      data => this.router.navigate(['orders', 'done'])
+      data => {
+        console.log(data);
+        
+        this.router.navigate(['orders', 'done'])
+      }
     )
   }
 
