@@ -19,20 +19,20 @@
                 <mat-label>כמה נוסעים אתם?</mat-label>
                 <input matInput type="number" min="1" [(ngModel)]="passengers" (change)="changePassengersNumber()" />
             </mat-form-field>
-            <div id="passengerDetailes" *ngFor="let user of service.users; let x = index">
+            <div id="passengerDetailes" *ngFor="let ticket of service.tickets; let x = index">
                 <!-- TODO ngfor as number of input -->
                 <mat-label>{{x+1}}. </mat-label>
                 <mat-form-field>
                     <mat-label>שם מלא בעברית</mat-label>
-                    <input matInput type="text" [(ngModel)]=user.hebrew_name required />
+                    <input matInput type="text" [(ngModel)]="ticket.user.hebrew_name" required />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>שם מלא באנגלית</mat-label>
-                    <input matInput type="text" [(ngModel)]=user.english_name required />
+                    <input matInput type="text" [(ngModel)]="ticket.user.english_name" required />
                 </mat-form-field>
                 <mat-form-field id="id-number">
                     <mat-label>מספר דרכון</mat-label>
-                    <input matInput type="number" [(ngModel)]=user.id required />
+                    <input matInput type="number" [(ngModel)]="ticket.user.passport_id" required />
                 </mat-form-field>
             </div>
             <span>מחיר כולל: {{ELEMENT_DATA?.price * passengers}}</span><!-- TODO fill with real information -->

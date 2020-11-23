@@ -4,6 +4,7 @@ import { Plain } from './db/entities/plain.entity';
 import { User } from './db/entities/user.entity';
 import { Flight } from './db/entities/flight.entity';
 import { Ticket } from './db/entities/ticket.entity';
+import { validate } from 'class-validator';
 
 @Controller('api')
 export class AppController {
@@ -50,7 +51,12 @@ export class AppController {
   }
 
   @Post('ticket')
-  createNewTicket(@Body(ValidationPipe) newTicket: Ticket) {
+  createNewTicket(@Body() newTicket) {    
+    console.log(newTicket);
+    
+    if (newTicket instanceof Array)
+      newTicket.forEach(ticket => validate(ticket))
+    else validate(newTicket)
     return Ticket.save(newTicket);
   }
 }

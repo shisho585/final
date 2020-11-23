@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn, } from 'typeorm';
-import { IsString, IsNumber, IsOptional, IsNumberString, } from 'class-validator';
+import { IsString, IsOptional, IsNumberString, } from 'class-validator';
 import { User } from './user.entity';
 import { Flight } from './flight.entity';
 
@@ -26,7 +26,7 @@ export class Ticket extends BaseEntity {
     @IsOptional()
     seat: number;
 
-    @ManyToOne('User')
+    @ManyToOne('User', { cascade: true })
     @JoinColumn({ name: 'user_id' })
     user: User;
 

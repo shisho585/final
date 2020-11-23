@@ -15,7 +15,7 @@ export class DoneComponent implements OnInit {
     if (service.flight == undefined) {
       router.navigate(['orders', 'pick-a-flight'])
     }
-    this.seats = service.persons.filter(person => Number.isInteger(person.selectedRow) && Number.isInteger(person.selectedSeat)).length
+    this.seats = service.tickets.filter(ticket => Number.isInteger(ticket.row) && Number.isInteger(ticket.seat)).length
   }
 
   ngOnInit(): void {

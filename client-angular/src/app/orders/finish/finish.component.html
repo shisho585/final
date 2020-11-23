@@ -21,29 +21,29 @@
                     <mat-panel-title>בחירת מושב</mat-panel-title>
                     <mat-panel-description>20₪ לבחירה של מושב</mat-panel-description>
                 </mat-expansion-panel-header>
-                <div *ngFor="let user of service.users; let i = index">
-                    <span>{{i+1}}. {{user.hebrew_name.split(' ')[0]}}</span>
+                <div *ngFor="let ticket of service.tickets; let i = index">
+                    <span>{{i+1}}. {{ticket.user.hebrew_name.split(' ')[0]}}</span>
                     <mat-form-field class="small-form-field">
                         <mat-label>שורה</mat-label>
-                        <mat-select [(ngModel)]="user" (selectionChange)="catchSeat(user)"
-                            (valueChange)="releaseSeat(user)">
+                        <mat-select [(ngModel)]="ticket.row" (selectionChange)="catchSeat(ticket)"
+                            (valueChange)="releaseSeat(ticket)">
                             <ng-container *ngFor="let x of service.flight.seats; let z = index;">
-                                <mat-option *ngIf="freeRows.includes(z) || user.selectedRow == z" [value]="z">{{z+1}}
+                                <mat-option *ngIf="freeRows.includes(z) || ticket.row == z" [value]="z">{{z+1}}
                                 </mat-option>
                             </ng-container>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="small-form-field">
                         <mat-label>מושב</mat-label>
-                        <mat-select [(ngModel)]="user.selectedSeat" (selectionChange)="catchSeat(user)"
-                            (valueChange)="releaseSeat(user)">
-                            <ng-container *ngFor="let y of service.flight.seats[user.selectedRow]; let z = index;">
-                                <mat-option *ngIf="!y || user.selectedSeat == z" [value]="z"> {{"ABCDEFGHIJK"[z]}}
+                        <mat-select [(ngModel)]="ticket.seat" (selectionChange)="catchSeat(ticket)"
+                            (valueChange)="releaseSeat(ticket)">
+                            <ng-container *ngFor="let y of service.flight.seats[ticket.row]; let z = index;">
+                                <mat-option *ngIf="!y || ticket.seat == z" [value]="z"> {{"ABCDEFGHIJK"[z]}}
                                 </mat-option>
                             </ng-container>
                         </mat-select>
                     </mat-form-field>
-                    <button mat-raised-button color="primary" (click)="clearChoises(user)">ניקוי</button>
+                    <button mat-raised-button color="primary" (click)="clearChoises(ticket)">ניקוי</button>
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
@@ -54,11 +54,11 @@
                 <mat-expansion-panel>
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            כרטיסי טיסה : {{service.persons.length * service.flight.price}}
+                            כרטיסי טיסה : {{service.tickets.length * service.flight.price}}
                         </mat-panel-title>
                         <mat-panel-description>לפירוט</mat-panel-description>
                     </mat-expansion-panel-header>
-                    כמות : {{service.persons.length}}
+                    כמות : {{service.tickets.length}}
                     <br />
                     מחיר ליחידה : {{service.flight.price}}₪
                 </mat-expansion-panel>
@@ -81,3 +81,4 @@
         </div>
     </mat-grid-tile>
 </mat-grid-list>
+<button (click)="demoSave()">שמור דמו</button>

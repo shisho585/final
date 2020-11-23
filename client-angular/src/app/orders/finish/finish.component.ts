@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
-import { OrdersService, Person } from '../orders.service';
+import { OrdersService } from '../orders.service';
+import { Ticket } from 'src/app/models/ticket';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-finish',
@@ -15,43 +17,91 @@ export class FinishComponent implements OnInit {
   tel: string;
   email: string;
 
-  seatsNumber: number = 0;
+  seatsNumber = 0;
 
-  constructor(public service: OrdersService, private router: Router) {
+  constructor(public service: OrdersService, private router: Router, private http: HttpClient) {
+    console.log(service.tickets);
+
     if (service.flight == undefined) {
       router.navigate(['orders', 'pick-a-flight'])
     }
-    this.freeRows = service.flight.seats.map((row, index) => index).filter(rowIndex => service.flight.seats[rowIndex].some(seat => !seat));
+
+    for (let index = 0; index < service.flight.plain.number_of_rows; index++) {
+      for (let indexB = 0; indexB < service.flight.plain.seats_to_row; indexB++) {
+        service.flight.seats[index][indexB] = null;
+      }
+    }
+    service.flight.tickets.forEach(ticket => {
+      service.flight.seats[ticket.row][ticket.seat] = ticket.user_id;
+    })
+
+    this.freeRows = service.flight.seats
+      .map((row, index) => index)
+      .filter(rowIndex => service.flight.seats[rowIndex].some(seat => !seat));
   }
 
-  clearChoises(person: Person) {
-    this.releaseSeat(person);
-    person.selectedRow = null;
-    person.selectedSeat = null;
+  clearChoises(ticket: Ticket) {
+    this.releaseSeat(ticket);
+    ticket.row = null;
+    ticket.seat = null;
   }
 
-  releaseSeat(person: Person) {
-    if (Number.isInteger(person.selectedRow) && Number.isInteger(person.selectedSeat)) {
-      this.service.flight.seats[person.selectedRow][person.selectedSeat] = null;
+  releaseSeat(ticket: Ticket) {
+    if (Number.isInteger(ticket.row) && Number.isInteger(ticket.seat)) {
+      this.service.flight.seats[ticket.seat][ticket.seat] = null;
       this.seatsNumber--;
-      console.log(person.selectedRow + "," + person.selectedSeat + ". realese");
+      console.log(ticket.row + "," + ticket.seat + ". realese");
       this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
     }
   }
 
-  catchSeat(person: Person) {
-    if (Number.isInteger(person.selectedRow) && Number.isInteger(person.selectedSeat)) {
+  catchSeat(ticket: Ticket) {
+    if (Number.isInteger(ticket.row) && Number.isInteger(ticket.seat)) {
       this.seatsNumber++;
-      if (this.service.flight.seats[person.selectedRow][person.selectedSeat]) {
-        person.selectedSeat = this.service.flight.seats[person.selectedRow].findIndex(seat => !seat);
+      if (this.service.flight.seats[ticket.row][ticket.seat]) {
+        ticket.seat = this.service.flight.seats[ticket.row].findIndex(seat => !seat);
       }
-      this.service.flight.seats[person.selectedRow][person.selectedSeat] = person.passpord;
+      this.service.flight.seats[ticket.row][ticket.seat] = ticket.user.passport_id;
       this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
-      console.log(person.selectedRow + "," + person.selectedSeat + ". taken");
+      console.log(ticket.row + "," + ticket.seat + ". taken");
     }
   }
 
   public payPalConfig?: IPayPalConfig;
+
+  demoSave() {
+    this.service.tickets.forEach(ticket => {
+      ticket.flight_number = this.service.flight.number;
+      // this.service.flight.seats.forEach((row, rowIndex) => {
+      //   row.forEach((seat, seatIndex) => {
+      //     if (!seat) {
+      //       seat = ticket.user.passport_id;
+      //       ticket.row = rowIndex;
+      //       ticket.seat = seatIndex;
+      //     }
+      //   })
+      // })
+      for (let rowIndex = 0; rowIndex < this.service.flight.seats.length; rowIndex++) {
+        console.log(rowIndex);
+        console.log(ticket.seat);
+        if (!ticket.seat) {
+          for (let seatIndex = 0; seatIndex < this.service.flight.seats[rowIndex].length; seatIndex++) {
+            if (!this.service.flight.seats[rowIndex][seatIndex]) {
+              this.service.flight.seats[rowIndex][seatIndex] = ticket.user.passport_id;
+              ticket.row = rowIndex;
+              ticket.seat = seatIndex;
+              break;
+            }
+          }
+        } else {
+          break;
+        }
+      }
+    });
+    this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
+      data => this.router.navigate(['orders', 'done'])
+    )
+  }
 
   ngOnInit(): void {
     this.initConfig();
@@ -80,17 +130,17 @@ export class FinishComponent implements OnInit {
           purchase_units: [{
             amount: {
               currency_code: 'ILS',
-              value: (this.service.flight.price * this.service.persons.length + this.seatsNumber * 20).toString(),
+              value: (this.service.flight.price * this.service.tickets.length + this.seatsNumber * 20).toString(),
               breakdown: {
                 item_total: {
                   currency_code: 'ILS',
-                  value: (this.service.flight.price * this.service.persons.length + this.seatsNumber * 20).toString()
+                  value: (this.service.flight.price * this.service.tickets.length + this.seatsNumber * 20).toString()
                 }
               }
             },
             items: [{
               name: 'כרטיסי טיסה לטיסה ' + this.service.flight.number,
-              quantity: this.service.persons.length.toString(),
+              quantity: this.service.tickets.length.toString(),
               unit_amount: {
                 currency_code: 'ILS',
                 value: this.service.flight.price.toString()
@@ -127,7 +177,9 @@ export class FinishComponent implements OnInit {
 
       },
       onClientAuthorization: (data) => {
-        this.router.navigate(['orders', 'done']);
+        this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
+          data => this.router.navigate(['orders', 'done'])
+        )
       },
       onCancel: (data, actions) => {
         console.log('OnCancel', data, actions);

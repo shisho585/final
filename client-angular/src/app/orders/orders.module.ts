@@ -7,6 +7,7 @@ import { OrdersRoutingModule } from './orders-routing.module';
 import { PickaflightComponent } from './pick-a-flight/pick-a-flight.component';
 import { DetailedComponent } from './detailed/detailed.component';
 import { FinishComponent } from './finish/finish.component';
+import { DoneComponent } from './done/done.component';
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -21,7 +22,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxPayPalModule } from "ngx-paypal";
-import { DoneComponent } from './done/done.component';
 
 @NgModule({
   declarations: [PickaflightComponent, DetailedComponent, FinishComponent, DoneComponent],
