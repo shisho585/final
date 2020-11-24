@@ -9,6 +9,7 @@ export class OrdersService {
 
   flight: Flight;
   tickets = [new Ticket()];
+  chosenSeats = 0;
 
   constructor() { }
 }

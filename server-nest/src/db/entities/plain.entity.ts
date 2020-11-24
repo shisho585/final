@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, PrimaryColumn, Column } from 'typeorm';
-import { IsString, IsNumberString, IsOptional } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
 
 @Entity('plains')
 export class Plain extends BaseEntity {
@@ -8,20 +8,18 @@ export class Plain extends BaseEntity {
   type: string;
 
   @Column()
-  @IsNumberString()
+  @IsNumber()
   number_of_rows: number;
 
   @Column()
-  @IsNumberString()
+  @IsNumber()
   seats_to_row: number;
 
-  @Column({ nullable: true })
-  @IsNumberString()
-  @IsOptional()
+  @Column()
+  @IsNumber()
   range: number;
 
-  @Column({ nullable: true })
-  @IsNumberString()
-  @IsOptional()
+  @Column()
+  @IsNumber()
   speed: number;
 }

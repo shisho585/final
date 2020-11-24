@@ -1,16 +1,16 @@
 <mat-grid-list cols="3">
-    <mat-grid-tile *ngIf="ELEMENT_DATA" [colspan]="1" style="border: solid 1px;">
+    <mat-grid-tile *ngIf="flight" [colspan]="1" style="border: solid 1px;">
         <div>
             <h4>פרטי הטיסה שלך</h4>
-            <p>{{ELEMENT_DATA.departure | date:'HH:mm dd/MM/yy'}} - {{ELEMENT_DATA.landing | date:'HH:mm dd/MM/yy'}}
+            <p>{{flight.departure | date:'HH:mm dd/MM/yy'}} - {{flight.landing | date:'HH:mm dd/MM/yy'}}
                 <br />
-                (זמן משוער : {{ELEMENT_DATA.estimated_time_string}})
+                (זמן משוער : {{flight.estimated_time_string}})
             </p>
-            <p>{{ELEMENT_DATA.from_country}} ({{ELEMENT_DATA.from_terminal}}) -
-                {{ELEMENT_DATA.to_country}} ({{ELEMENT_DATA.to_terminal}})</p>
-            <p>{{ELEMENT_DATA.distance}}</p>
-            <p>{{ELEMENT_DATA.plain.type}}</p>
-            <p>{{ELEMENT_DATA.price}}</p>
+            <p>{{flight.from_country}} ({{flight.from_terminal}}) -
+                {{flight.to_country}} ({{flight.to_terminal}})</p>
+            <p>{{flight.distance}}</p>
+            <p>{{flight.plain.type}}</p>
+            <p>{{flight.price}}</p>
         </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="2" style="border: solid 1px;">
@@ -20,22 +20,23 @@
                 <input matInput type="number" min="1" [(ngModel)]="passengers" (change)="changePassengersNumber()" />
             </mat-form-field>
             <div id="passengerDetailes" *ngFor="let ticket of service.tickets; let x = index">
-                <!-- TODO ngfor as number of input -->
                 <mat-label>{{x+1}}. </mat-label>
                 <mat-form-field>
                     <mat-label>שם מלא בעברית</mat-label>
-                    <input matInput type="text" [(ngModel)]="ticket.user.hebrew_name" required />
+                    <input matInput type="text" [(ngModel)]="ticket.passenger.hebrew_name"
+                        [pattern]="'^[\u0590-\u05fe ]*$'" required />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>שם מלא באנגלית</mat-label>
-                    <input matInput type="text" [(ngModel)]="ticket.user.english_name" required />
+                    <input matInput type="text" [(ngModel)]="ticket.passenger.english_name" [pattern]="'^[a-zA-Z ]*$'"
+                        required />
                 </mat-form-field>
                 <mat-form-field id="id-number">
                     <mat-label>מספר דרכון</mat-label>
-                    <input matInput type="number" [(ngModel)]="ticket.user.passport_id" required />
+                    <input matInput type="number" [(ngModel)]="ticket.passenger.passport" required />
                 </mat-form-field>
             </div>
-            <span>מחיר כולל: {{ELEMENT_DATA?.price * passengers}}</span><!-- TODO fill with real information -->
+            <span>מחיר כולל: {{flight?.price * passengers}}</span>
             <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
                 routerLink="../../finish" routerLinkActive="active">אישור</button>
         </div>

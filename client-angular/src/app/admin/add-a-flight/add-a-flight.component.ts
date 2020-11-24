@@ -5,11 +5,11 @@ import { map } from 'rxjs/operators';
 import { Flight } from 'src/app/models/flight';
 
 @Component({
-  selector: 'app-add-flight',
-  templateUrl: './add-flight.component.html',
-  styleUrls: ['./add-flight.component.scss']
+  selector: 'app-add-a-flight',
+  templateUrl: './add-a-flight.component.html',
+  styleUrls: ['./add-a-flight.component.scss']
 })
-export class AddFlightComponent implements OnInit {
+export class AddaflightComponent implements OnInit {
 
   flight = new Flight();
   today = new Date();

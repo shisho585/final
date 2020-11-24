@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AdminRoutingModule } from './admin-routing.module';
+import { AddaflightComponent } from './add-a-flight/add-a-flight.component';
+import { AddaplainComponent } from './add-a-plain/add-a-plain.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AddFlightComponent } from './add-flight/add-flight.component';
-import { DetailedComponent } from './detailed/detailed.component';
+import { FlightComponent } from './flight/flight.component';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -17,7 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatGridListModule } from "@angular/material/grid-list";
 
 @NgModule({
-  declarations: [DashboardComponent, AddFlightComponent, DetailedComponent],
+  declarations: [DashboardComponent, AddaflightComponent, AddaplainComponent, FlightComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

@@ -1,5 +1,5 @@
 <h3>כל הטיסות במערכת</h3>
-<table mat-table [dataSource]="dataSource" matSort style="width:85%">
+<table mat-table [dataSource]="flightsDataSource" matSort style="width:85%">
     <ng-container matColumnDef="number">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר טיסה </th>
         <td mat-cell *matCellDef="let flight"> {{flight.number}} </td>
@@ -47,11 +47,45 @@
 
     <!-- <ng-container matColumnDef="freeSeats">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> מקומות פנויים </th>
-        <td mat-cell *matCellDef="let flight"> {{flight.freeSeats}} </td>
+        <td mat-cell *matCellDef="let flight"> {{flight.seats.length * flight.seats[0].length - flight.tickets}} </td>
     </ng-container> -->
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="../detailed/{{row.number}}"
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsOfFlights"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsOfFlights;" routerLink="../flight/{{row.number}}"
         routerLinkActive="active" class="row-flight"></tr>
 </table>
-<button mat-raised-button color="primary" routerLink="../add-flight" routerLinkActive="active">הוסף טיסה</button>
+<button mat-raised-button color="primary" routerLink="../add-a-flight" routerLinkActive="active">הוסף טיסה</button>
+
+<h3>כל המטוסים</h3>
+<table mat-table [dataSource]="plainsDataSource" matSort style="width:85%">
+    <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> סוג מטוס </th>
+        <td mat-cell *matCellDef="let plain"> {{plain.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="speed">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> מהירות טיסה </th>
+        <td mat-cell *matCellDef="let plain"> {{plain.speed}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="range">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> טווח טיסה </th>
+        <td mat-cell *matCellDef="let plain"> {{plain.range}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="number_of_rows">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר שורות במטוס </th>
+        <td mat-cell *matCellDef="let plain"> {{plain.number_of_rows}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="seats_to_row">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר כסאות בשורה </th>
+        <td mat-cell *matCellDef="let plain"> {{plain.seats_to_row}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsOfPlains"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsOfPlains;" routerLink="../plain/{{row.type}}"
+        routerLinkActive="active" class="row-flight"></tr>
+</table>
+<button mat-raised-button color="primary" routerLink="../add-a-plain" routerLinkActive="active">הוסף מטוס</button>

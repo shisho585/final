@@ -17,18 +17,22 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router, private http: HttpClient) {
     http.get<[]>('http://localhost:3000/api/flight').subscribe(
       data => {
-        ELEMENT_DATA_BASE = data
-        // ELEMENT_DATA_BASE.forEach(ELEMENT_DATA => {
-        //   ELEMENT_DATA.freeSeats = ELEMENT_DATA.seats.map<number>(row => row.filter(seat => !seat).length).reduce((a, b) => a + b);
-        // });
-        this.dataSource = new MatTableDataSource(ELEMENT_DATA_BASE);
-        this.dataSource.sort = this.sort;
+        this.flightsDataSource = new MatTableDataSource(data);
+        this.flightsDataSource.sort = this.sort;
+      }
+    )
+    http.get<[]>('http://localhost:3000/api/plain').subscribe(
+      data => {
+        this.plainsDataSource = new MatTableDataSource(data);
+        this.plainsDataSource.sort = this.sort;
       }
     )
   }
 
-  dataSource;
-  displayedColumns: string[] = ['number', 'plain_type', 'departure', 'from', 'to', 'distance', 'price'];
+  flightsDataSource;
+  plainsDataSource;
+  displayedColumnsOfFlights: string[] = ['number', 'plain_type', 'departure', 'from', 'to', 'distance', 'price'];
+  displayedColumnsOfPlains: string[] = ['type', 'speed', 'range', 'number_of_rows', 'seats_to_row'];
 
   @ViewChild(MatSort) sort: MatSort;
 

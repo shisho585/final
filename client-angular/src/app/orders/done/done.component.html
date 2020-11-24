@@ -7,21 +7,21 @@
         <th>ס"ה</th>
     </tr>
     <tr>
-        <td>כרטיסי טיסה לטיסה {{service.flight.number}}</td>
-        <td>{{service.flight.price}}</td>
-        <td>{{service.tickets.length}}</td>
-        <td>{{service.flight.price * service.tickets.length}}</td>
+        <td>כרטיסי טיסה לטיסה {{flight.number}}</td>
+        <td>{{flight.price}}</td>
+        <td>{{tickets.length}}</td>
+        <td>{{flight.price * tickets.length}}</td>
     </tr>
-    <tr *ngIf="seats > 0">
+    <tr *ngIf="this.chosenSeats > 0">
         <td>תוספת מושבים</td>
         <td>20</td>
-        <td>{{seats}}</td>
-        <td>{{seats * 20}}</td>
+        <td>{{chosenSeats}}</td>
+        <td>{{chosenSeats * 20}}</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td>ס"ה</td>
-        <td>{{service.flight.price * service.tickets.length + seats * 20}}</td>
+        <td>{{flight.price * tickets.length + chosenSeats * 20}}</td>
     </tr>
 </table>

@@ -4,6 +4,7 @@ import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { OrdersService } from '../orders.service';
 import { Ticket } from 'src/app/models/ticket';
 import { HttpClient } from '@angular/common/http';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-finish',
@@ -17,11 +18,7 @@ export class FinishComponent implements OnInit {
   tel: string;
   email: string;
 
-  seatsNumber = 0;
-
   constructor(public service: OrdersService, private router: Router, private http: HttpClient) {
-    console.log(service.tickets);
-
     if (service.flight == undefined) {
       router.navigate(['orders', 'pick-a-flight'])
     }
@@ -32,7 +29,7 @@ export class FinishComponent implements OnInit {
       }
     }
     service.flight.tickets.forEach(ticket => {
-      service.flight.seats[ticket.row][ticket.seat] = ticket.user_id;
+      service.flight.seats[ticket.row][ticket.seat] = ticket.passenger_passport;
     })
 
     this.freeRows = service.flight.seats
@@ -49,60 +46,43 @@ export class FinishComponent implements OnInit {
   releaseSeat(ticket: Ticket) {
     if (Number.isInteger(ticket.row) && Number.isInteger(ticket.seat)) {
       this.service.flight.seats[ticket.seat][ticket.seat] = null;
-      this.seatsNumber--;
-      console.log(ticket.row + "," + ticket.seat + ". realese");
+      this.service.chosenSeats--;
       this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
     }
   }
 
   catchSeat(ticket: Ticket) {
     if (Number.isInteger(ticket.row) && Number.isInteger(ticket.seat)) {
-      this.seatsNumber++;
+      this.service.chosenSeats++;
       if (this.service.flight.seats[ticket.row][ticket.seat]) {
         ticket.seat = this.service.flight.seats[ticket.row].findIndex(seat => !seat);
       }
-      this.service.flight.seats[ticket.row][ticket.seat] = ticket.user.passport_id;
+      this.service.flight.seats[ticket.row][ticket.seat] = ticket.passenger.passport;
       this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
-      console.log(ticket.row + "," + ticket.seat + ". taken");
     }
   }
 
   public payPalConfig?: IPayPalConfig;
 
   demoSave() {
-    this.service.tickets.forEach(ticket => {
-      ticket.flight_number = this.service.flight.number;
-      // this.service.flight.seats.forEach((row, rowIndex) => {
-      //   row.forEach((seat, seatIndex) => {
-      //     if (!seat) {
-      //       seat = ticket.user.passport_id;
-      //       ticket.row = rowIndex;
-      //       ticket.seat = seatIndex;
-      //     }
-      //   })
-      // })
-      // for (let rowIndex = 0; rowIndex < this.service.flight.seats.length; rowIndex++) {
-      //   console.log(rowIndex);
-      //   console.log(ticket.seat);
-      //   if (!ticket.seat) {
-      //     for (let seatIndex = 0; seatIndex < this.service.flight.seats[rowIndex].length; seatIndex++) {
-      //       if (!this.service.flight.seats[rowIndex][seatIndex]) {
-      //         this.service.flight.seats[rowIndex][seatIndex] = ticket.user.passport_id;
-      //         ticket.row = rowIndex;
-      //         ticket.seat = seatIndex;
-      //         break;
-      //       }
-      //     }
-      //   } else {
-      //     break;
-      //   }
-      // }
-    });
-    this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
+    const user = new User();
+    user.email = "shisho@gmail.com";
+    user.name = "none";
+    user.phone = 34;
+    user.password = "efsd"
+    this.http.post('http://localhost:3000/api/user', user).subscribe(
       data => {
         console.log(data);
-        
-        this.router.navigate(['orders', 'done'])
+        this.service.tickets.forEach(ticket => {
+          ticket.flight_number = this.service.flight.number;
+        });
+        this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
+          data => {
+            console.log(data);
+            this.router.navigate(['orders', 'done'])
+          },
+          error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
+        )
       }
     )
   }
@@ -134,11 +114,11 @@ export class FinishComponent implements OnInit {
           purchase_units: [{
             amount: {
               currency_code: 'ILS',
-              value: (this.service.flight.price * this.service.tickets.length + this.seatsNumber * 20).toString(),
+              value: (this.service.flight.price * this.service.tickets.length + this.service.chosenSeats * 20).toString(),
               breakdown: {
                 item_total: {
                   currency_code: 'ILS',
-                  value: (this.service.flight.price * this.service.tickets.length + this.seatsNumber * 20).toString()
+                  value: (this.service.flight.price * this.service.tickets.length + this.service.chosenSeats * 20).toString()
                 }
               }
             },
@@ -152,10 +132,10 @@ export class FinishComponent implements OnInit {
             }]
           }]
         }
-        if (this.seatsNumber > 0) {
+        if (this.service.chosenSeats > 0) {
           data.purchase_units[0].items.push({
             name: 'תוספת מושבים',
-            quantity: this.seatsNumber.toString(),
+            quantity: this.service.chosenSeats.toString(),
             unit_amount: {
               currency_code: 'ILS',
               value: '20'
@@ -181,8 +161,15 @@ export class FinishComponent implements OnInit {
 
       },
       onClientAuthorization: (data) => {
+        this.service.tickets.forEach(ticket => {
+          ticket.flight_number = this.service.flight.number;
+        });
         this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
-          data => this.router.navigate(['orders', 'done'])
+          data => {
+            console.log(data);
+            this.router.navigate(['orders', 'done'])
+          },
+          error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
         )
       },
       onCancel: (data, actions) => {

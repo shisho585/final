@@ -4,11 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { Flight } from 'src/app/models/flight';
 
 @Component({
-  selector: 'app-detailed',
-  templateUrl: './detailed.component.html',
-  styleUrls: ['./detailed.component.scss']
+  selector: 'app-flight',
+  templateUrl: './flight.component.html',
+  styleUrls: ['./flight.component.scss']
 })
-export class DetailedComponent implements OnInit {
+export class FlightComponent implements OnInit {
 
   ELEMENT_DATA: Flight;
 
@@ -26,7 +26,7 @@ export class DetailedComponent implements OnInit {
         this.ELEMENT_DATA.departure = new Date(this.ELEMENT_DATA.departure);
         this.ELEMENT_DATA.landing = new Date(this.ELEMENT_DATA.departure);
         this.ELEMENT_DATA.landing.setMinutes(data.departure.getMinutes() + this.ELEMENT_DATA.estimated_time);
-        this.ELEMENT_DATA.tickets.forEach(ticket => this.ELEMENT_DATA.seats[ticket.row][ticket.seat] = ticket.user_id)
+        this.ELEMENT_DATA.tickets.forEach(ticket => this.ELEMENT_DATA.seats[ticket.row][ticket.seat] = ticket.passenger_passport)
 
       }
     )

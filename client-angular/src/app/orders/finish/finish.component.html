@@ -22,7 +22,7 @@
                     <mat-panel-description>20₪ לבחירה של מושב</mat-panel-description>
                 </mat-expansion-panel-header>
                 <div *ngFor="let ticket of service.tickets; let i = index">
-                    <span>{{i+1}}. {{ticket.user.hebrew_name.split(' ')[0]}}</span>
+                    <span>{{i+1}}. {{ticket.passenger.hebrew_name.split(' ')[0]}}</span>
                     <mat-form-field class="small-form-field">
                         <mat-label>שורה</mat-label>
                         <mat-select [(ngModel)]="ticket.row" (selectionChange)="catchSeat(ticket)"
@@ -62,14 +62,14 @@
                     <br />
                     מחיר ליחידה : {{service.flight.price}}₪
                 </mat-expansion-panel>
-                <mat-expansion-panel *ngIf="seatsNumber>0">
+                <mat-expansion-panel *ngIf="this.service.chosenSeats>0">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            מושבים : {{seatsNumber * 20}}
+                            מושבים : {{this.service.chosenSeats * 20}}
                         </mat-panel-title>
                         <mat-panel-description>לפירוט</mat-panel-description>
                     </mat-expansion-panel-header>
-                    כמות : {{seatsNumber}}
+                    כמות : {{this.service.chosenSeats}}
                     <br />
                     מחיר ליחידה : 20₪
                 </mat-expansion-panel>

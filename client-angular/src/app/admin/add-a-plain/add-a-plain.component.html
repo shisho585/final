@@ -1,0 +1,26 @@
+<div>
+    <mat-form-field>
+        <mat-label>סוג מטוס</mat-label>
+        <input matInput type="text" [(ngModel)]="plain.type" />
+    </mat-form-field>
+</div>
+<div>
+    <mat-form-field>
+        <mat-label>טווח טיסה</mat-label>
+        <input matInput type="number" [(ngModel)]="plain.range" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>מהירות טיסה</mat-label>
+        <input matInput type="number" [(ngModel)]="plain.speed" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>מספר שורות במטוס</mat-label>
+        <input matInput type="number" [(ngModel)]="plain.number_of_rows" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>מספר כסאות בשורה</mat-label>
+        <input matInput type="number" [(ngModel)]="plain.seats_to_row" />
+    </mat-form-field>
+    <br />
+    <button mat-raised-button color="primary" (click)="save()">שמור</button>
+</div>

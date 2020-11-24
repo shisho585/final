@@ -1,56 +1,29 @@
-import { Controller, Get, Post, Body, ValidationPipe, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, Param, BadRequestException } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Plain } from './db/entities/plain.entity';
-import { User } from './db/entities/user.entity';
+import { Passenger } from './db/entities/passenger.entity';
 import { Flight } from './db/entities/flight.entity';
 import { Ticket } from './db/entities/ticket.entity';
+import { validate, validateOrReject, ValidationError } from 'class-validator';
+import { classToPlain, ClassTransformer } from 'class-transformer';
+import { User } from './db/entities/user.entity';
 
 @Controller('api')
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get()
-  getHello() {
-    return this.appService.getHello();
+  @Post('passenger')
+  createNewPassenger(@Body(ValidationPipe) newPassenger: Passenger) {
+    return Passenger.save(newPassenger);
   }
 
-  @Get('plain/type')
-  getAllPlainTypes() {
-    return Plain.find({ select: ['type'] });
-  }
-
-  @Get('flight')
-  getAllFlights() {
-    return Flight.find();
-  }
-
-  @Get('flight/light')
-  getAllFlightsLight() {
-    return Flight.find({ select: ['number', 'departure', 'from_country', 'to_country', 'price'] });
-  }
-
-  @Get('flight/:flightNumber')
-  getFlight(@Param('flightNumber') flightNumber: number) {
-    return Flight.findOne(flightNumber, { relations: ['plain', 'tickets'] });
-  }
-
-  @Post('plain')
-  createNewPlain(@Body(ValidationPipe) newPlain: Plain) {
-    return Plain.save(newPlain);
+  @Post('ticket')
+  createNewTicket(@Body() ticketsToAdd: Ticket[]) {
+    return Ticket.save(ticketsToAdd);
   }
 
   @Post('user')
   createNewUser(@Body(ValidationPipe) newUser: User) {
     return User.save(newUser);
-  }
-
-  @Post('flight')
-  createNewFlight(@Body(ValidationPipe) newFlight: Flight) {
-    return Flight.save(newFlight);
-  }
-
-  @Post('ticket')
-  createNewTicket(@Body(ValidationPipe) newTicket: Ticket) {
-    return Ticket.save(newTicket);
   }
 }

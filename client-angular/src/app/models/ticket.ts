@@ -1,9 +1,9 @@
-import { User } from './user';
+import { Passenger } from './passenger';
 
 export class Ticket {
     flight_number: number;
-    user_id: number;
+    passenger_passport: number;
     row: number;
     seat: number;
-    user = new User();
+    passenger = new Passenger();
 }

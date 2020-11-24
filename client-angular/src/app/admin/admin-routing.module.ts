@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AddFlightComponent } from './add-flight/add-flight.component';
-
-import { DetailedComponent } from './detailed/detailed.component';
+import { AddaflightComponent } from './add-a-flight/add-a-flight.component';
+import { AddaplainComponent } from './add-a-plain/add-a-plain.component';
+import { FlightComponent } from './flight/flight.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard' },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'add-flight', component: AddFlightComponent },
-  { path: 'detailed/:ID', component: DetailedComponent }
+  { path: 'add-a-flight', component: AddaflightComponent },
+  { path: 'add-a-plain', component: AddaplainComponent },
+  { path: 'flight/:ID', component: FlightComponent }
 ];
 
 @NgModule({

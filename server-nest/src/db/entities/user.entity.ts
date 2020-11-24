@@ -1,21 +1,28 @@
-import { Entity, BaseEntity, PrimaryColumn, Column, OneToMany } from 'typeorm';
-import { Matches, IsNumberString } from 'class-validator';
-import { Ticket } from './ticket.entity';
+import { IsEmail, IsNumber, IsString } from "class-validator";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Passenger } from "./passenger.entity";
 
 @Entity('users')
 export class User extends BaseEntity {
-  @PrimaryColumn()
-  @IsNumberString()
-  passport_id: number;
+    @PrimaryColumn()
+    @IsString()
+    name: string;
 
-  @Column()
-  @Matches(/^[\u0590-\u05fe\s]*$/)
-  hebrew_name: string;
+    @IsString()
+    password: string;
 
-  @Column()
-  @Matches(/^[a-zA-Z\s]*$/)
-  english_name: string;
+    @Column()
+    hashed_password: string;
 
-  @OneToMany('Ticket', 'user')
-  tickets: Ticket[];
+    @Column()
+    @IsEmail()
+    email: string;
+
+    @Column()
+    @IsNumber()
+    phone: number;
+
+    @OneToMany('Passenger', 'cantact_user')
+    passengers: Passenger[];
+
 }
