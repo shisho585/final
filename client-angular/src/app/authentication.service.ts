@@ -21,7 +21,7 @@ export class AuthenticationService implements CanActivate {
       ).pipe(
         map(
           res => {
-            if (res == 'pass') {
+            if (res == 'admin' || (!state.url.includes('admin') && res == 'user')) {
               return true;
             } else {
               this.router.navigate(['login'], { state: { url: state.url } })

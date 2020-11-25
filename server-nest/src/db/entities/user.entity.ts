@@ -22,6 +22,9 @@ export class User extends BaseEntity {
     @IsNumber()
     phone: number;
 
+    @Column({ default: 'user' })
+    role: string;
+
     @OneToMany('Ticket', 'cantact_user')
     tickets: Ticket[];
 

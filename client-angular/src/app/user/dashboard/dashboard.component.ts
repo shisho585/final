@@ -14,8 +14,6 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) {
     http.get('http://localhost:3000/api/user/').subscribe(
       data => {
-        console.log(data);
-
         this.user = data[0]
       }
     )

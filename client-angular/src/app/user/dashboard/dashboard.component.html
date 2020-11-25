@@ -1,3 +1,8 @@
 <div *ngFor="let ticket of user.tickets">
-    {{ticket.ticket_no}}
+    <p>{{ticket.number}}</p>
+    <p>{{ticket.passenger.passport}}</p>
+    <p>{{ticket.passenger.hebrew_name}}</p>
+    <p>{{ticket.flight_number}}</p>
+    <p>{{ticket.row}}</p>
+    <p>{{ticket.seat}}</p>    
 </div>

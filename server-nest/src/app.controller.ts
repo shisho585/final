@@ -14,7 +14,7 @@ export class AppController {
     let user: User;
     try {
       user = await User.findOneOrFail({ name: user_data.user_name, hashed_password: user_data.password });
-      return this.jwtService.sign({ 'name': user.name })
+      return this.jwtService.sign({ name: user.name, role: user.role })
     } catch (error) {
       throw new BadRequestException(error);
     }
@@ -23,8 +23,7 @@ export class AppController {
   @Get('authenticate')
   async authenticate(@Headers() user_data) {
     try {
-      this.jwtService.verify(user_data.authorization);
-      return 'pass';
+      return this.jwtService.verify(user_data.authorization).role;
     } catch (error) {
       return 'fail';
     }

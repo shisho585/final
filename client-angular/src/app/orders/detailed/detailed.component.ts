@@ -50,7 +50,7 @@ export class DetailedComponent implements OnInit {
         'http://localhost:3000/api/authenticate',
         { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
       ).subscribe(
-        res => this.loggedIn = res == 'pass'
+        res => this.loggedIn = res != 'fail'
       )
     }
   }
