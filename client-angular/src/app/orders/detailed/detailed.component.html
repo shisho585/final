@@ -14,7 +14,7 @@
         </div>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="2" style="border: solid 1px;">
-        <div class="up-div">
+        <div class="up-div" *ngIf="loggedIn else login">
             <mat-form-field>
                 <mat-label>כמה נוסעים אתם?</mat-label>
                 <input matInput type="number" min="1" [(ngModel)]="passengers" (change)="changePassengersNumber()" />
@@ -40,5 +40,8 @@
             <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
                 routerLink="../../finish" routerLinkActive="active">אישור</button>
         </div>
+        <ng-template #login>
+            <app-login (logined)="loginDone($event)"></app-login>
+        </ng-template>
     </mat-grid-tile>
 </mat-grid-list>

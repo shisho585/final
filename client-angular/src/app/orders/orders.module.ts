@@ -22,11 +22,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxPayPalModule } from "ngx-paypal";
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [PickaflightComponent, DetailedComponent, FinishComponent, DoneComponent],
   imports: [
     CommonModule,
+    SharedModule,
     OrdersRoutingModule,
     MatGridListModule,
     MatFormFieldModule,

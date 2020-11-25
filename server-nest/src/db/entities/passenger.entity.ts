@@ -1,7 +1,6 @@
-import { Entity, BaseEntity, PrimaryColumn, Column, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
-import { Matches, IsNumber, IsString } from 'class-validator';
+import { Entity, BaseEntity, PrimaryColumn, Column, OneToMany } from 'typeorm';
+import { Matches, IsNumber } from 'class-validator';
 import { Ticket } from './ticket.entity';
-import { User } from './user.entity';
 
 @Entity('passengers')
 export class Passenger extends BaseEntity {
@@ -16,14 +15,6 @@ export class Passenger extends BaseEntity {
   @Column()
   @Matches(/^[a-zA-Z\s]*$/, { message: "שם באנגלית חייב לכלול רק אותיות באנגלית ורווחים" })
   english_name: string;
-
-  @Column()
-  @IsString()
-  contact_user_name: string;
-
-  @ManyToOne('User')
-  @JoinColumn({ name: 'contact_user_name' })
-  cantact_user: User;
 
   @OneToMany('Ticket', 'passenger')
   tickets: Ticket[];

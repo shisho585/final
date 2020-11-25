@@ -12,20 +12,32 @@ export class AuthenticationService implements CanActivate {
   constructor(private router: Router, private http: HttpClient) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    if (localStorage.getItem('loggedInToken') != undefined) {
+    if (localStorage.getItem('loggedInToken') == undefined) {
+      this.router.navigate(['login'], { state: { url: state.url } });
+    } else {
       return this.http.get(
-        'http://localhost:3000/login',
-        { headers: { Authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' })
-        .pipe(
-          catchError(err => {
-            this.router.navigate(['login'], { state: { url: state.url } })
-            return EMPTY
-          }),
-          map((data) => {
-            return true;
-          })
+        'http://localhost:3000/api/authenticate',
+        { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
+      ).pipe(
+        map(
+          res => {
+            if (res == 'pass') {
+              return true;
+            } else {
+              this.router.navigate(['login'], { state: { url: state.url } })
+            }
+          }
         )
+      )
+      // .pipe(
+      //   catchError(err => {
+      //     this.router.navigate(['login'], { state: { url: state.url } })
+      //     return EMPTY
+      //   }),
+      //   map((data) => {
+      //     return true;
+      //   })
+      // )
     }
-    this.router.navigate(['login'], { state: { url: state.url } })
   }
 }

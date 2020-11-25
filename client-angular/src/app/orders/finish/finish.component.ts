@@ -67,7 +67,7 @@ export class FinishComponent implements OnInit {
   demoSave() {
     const user = new User();
     user.email = "shisho@gmail.com";
-    user.name = "none";
+    user.name = "shisho";
     user.phone = 34;
     user.password = "efsd"
     this.http.post('http://localhost:3000/api/user', user).subscribe(

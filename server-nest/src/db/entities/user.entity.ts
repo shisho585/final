@@ -1,28 +1,28 @@
 import { IsEmail, IsNumber, IsString } from "class-validator";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
-import { Passenger } from "./passenger.entity";
+import { Ticket } from "./ticket.entity";
 
 @Entity('users')
 export class User extends BaseEntity {
     @PrimaryColumn()
+    @IsEmail()
+    email: string;
+
+    @Column()
     @IsString()
     name: string;
 
     @IsString()
     password: string;
 
-    @Column()
+    @Column({ nullable: true })
     hashed_password: string;
-
-    @Column()
-    @IsEmail()
-    email: string;
 
     @Column()
     @IsNumber()
     phone: number;
 
-    @OneToMany('Passenger', 'cantact_user')
-    passengers: Passenger[];
+    @OneToMany('Ticket', 'cantact_user')
+    tickets: Ticket[];
 
 }

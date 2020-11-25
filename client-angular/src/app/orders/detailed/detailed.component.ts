@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { OrdersService } from '../orders.service';
 import { HttpClient } from '@angular/common/http';
 import { Flight } from 'src/app/models/flight';
-import { Passenger } from 'src/app/models/passenger';
 import { Ticket } from 'src/app/models/ticket';
 
 @Component({
@@ -16,6 +15,7 @@ export class DetailedComponent implements OnInit {
   passengers = 1;
 
   flight: Flight;
+  loggedIn = false;
 
   constructor(
     private router: Router,
@@ -45,10 +45,22 @@ export class DetailedComponent implements OnInit {
       }
     )
     this.passengers = service.tickets.length;
-
+    if (localStorage.getItem('loggedInToken') != undefined) {
+      this.http.get(
+        'http://localhost:3000/api/authenticate',
+        { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
+      ).subscribe(
+        res => this.loggedIn = res == 'pass'
+      )
+    }
   }
 
   ngOnInit(): void { }
+
+  loginDone(operation: string) {
+    this.loggedIn = true;
+    console.log(operation);
+  }
 
   changePassengersNumber() {
     if (this.passengers > this.service.tickets.length) {

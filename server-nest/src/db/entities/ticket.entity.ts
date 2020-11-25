@@ -1,8 +1,9 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from 'typeorm';
-import { IsString, ValidateNested, IsNumber, IsOptional, validateOrReject, } from 'class-validator';
+import { IsString, ValidateNested, IsNumber, IsOptional, validateOrReject } from 'class-validator';
 import { Passenger } from './passenger.entity';
 import { Flight } from './flight.entity';
 import { BadRequestException } from '@nestjs/common';
+import { User } from './user.entity';
 
 @Entity('tickets')
 export class Ticket extends BaseEntity {
@@ -16,6 +17,10 @@ export class Ticket extends BaseEntity {
     @Column()
     @IsString()
     flight_number: string;
+
+    @Column()
+    @IsString()
+    contact_user_name: string;
 
     @Column()
     @IsNumber()
@@ -36,19 +41,27 @@ export class Ticket extends BaseEntity {
     @JoinColumn({ name: 'flight_number' })
     flight: Flight;
 
+    @ManyToOne('User')
+    @JoinColumn({ name: 'contact_user_name' })
+    cantact_user: User;
+
     static async save(ticketsToAdd: Ticket[]) {
         try {
             await Promise.all(
                 ticketsToAdd.map(ticket => validateOrReject(Ticket.create(ticket)))
             )
         } catch (error) {
-            throw new BadRequestException(
-                error.map(err => {
-                    if (err.children.length > 0)
-                        return err.children.map(cErr => Object.values(cErr.constraints)[0])
-                    return Object.values(err.constraints)[0]
-                })
-            )
+            if (Array.isArray(error)) {
+                throw new BadRequestException(
+                    error.map(err => {
+                        if (err.children.length > 0)
+                            return err.children.map(cErr => Object.values(cErr.constraints)[0])
+                        return Object.values(err.constraints)[0]
+                    })
+                )
+            } else {
+                throw new Error(error);
+            }
         }
         const flight = await Flight.findOne(
             ticketsToAdd[0].flight_number,

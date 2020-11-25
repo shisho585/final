@@ -9,11 +9,11 @@ import { User } from './entities/user.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
+      port: 5432,
+      username: 'postgres',
+      password: 'root',
       database: 'test_flys',
       entities: [Plain, Flight, User, Passenger, Ticket],
       synchronize: true,
