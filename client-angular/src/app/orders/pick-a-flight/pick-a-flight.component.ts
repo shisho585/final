@@ -40,7 +40,7 @@ export class PickaflightComponent implements OnInit, AfterViewInit {
   ngx_slider_options = { floor: 0, ceil: 0 };
 
   constructor(private http: HttpClient) {
-    http.get<LightFlight[]>("http://localhost:3000/api/flight/light").subscribe(
+    http.get<LightFlight[]>("http://localhost:3000/api/flight/light/future").subscribe(
       data => {
         this.ELEMENT_DATA_BASE = data;
 

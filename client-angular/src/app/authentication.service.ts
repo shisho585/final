@@ -12,7 +12,7 @@ export class AuthenticationService implements CanActivate {
   constructor(private router: Router, private http: HttpClient) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    if (localStorage.getItem('loggedInToken') == undefined) {
+    if (localStorage.getItem('loggedInToken') == undefined) {      
       this.router.navigate(['login'], { state: { url: state.url } });
     } else {
       return this.http.get(
@@ -21,6 +21,8 @@ export class AuthenticationService implements CanActivate {
       ).pipe(
         map(
           res => {
+            console.log(res);
+
             if (res == 'admin' || (!state.url.includes('admin') && res == 'user')) {
               return true;
             } else {
@@ -29,15 +31,6 @@ export class AuthenticationService implements CanActivate {
           }
         )
       )
-      // .pipe(
-      //   catchError(err => {
-      //     this.router.navigate(['login'], { state: { url: state.url } })
-      //     return EMPTY
-      //   }),
-      //   map((data) => {
-      //     return true;
-      //   })
-      // )
     }
   }
 }

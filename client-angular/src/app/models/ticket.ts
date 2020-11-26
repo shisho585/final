@@ -1,13 +1,13 @@
 import { Passenger } from './passenger';
-import { User } from './user';
+import { Order } from './order';
 
 export class Ticket {
     number?: number;
     flight_number: number;
     passenger_passport: number;
-    contact_user_name = 'shisho';
+    passenger = new Passenger();
     row: number;
     seat: number;
-    passenger = new Passenger();
-    contact_user?: User;
+    order_number: number;
+    order?: Order;
 }

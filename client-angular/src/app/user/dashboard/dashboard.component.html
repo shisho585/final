@@ -1,8 +1,11 @@
-<div *ngFor="let ticket of user.tickets">
-    <p>{{ticket.number}}</p>
-    <p>{{ticket.passenger.passport}}</p>
-    <p>{{ticket.passenger.hebrew_name}}</p>
-    <p>{{ticket.flight_number}}</p>
-    <p>{{ticket.row}}</p>
-    <p>{{ticket.seat}}</p>    
+<div *ngFor="let order of user.orders">
+    <p>{{order.number}}</p>
+    <div *ngFor=" let ticket of order.tickets" style="background: red;">
+        <span>{{ticket.number}}</span>
+        <span>{{ticket.passenger.passport}}</span>
+        <span>{{ticket.passenger.hebrew_name}}</span>
+        <span>{{ticket.flight_number}}</span>
+        <span>{{ticket.row}}</span>
+        <span>{{ticket.seat}}</span>
+    </div>
 </div>

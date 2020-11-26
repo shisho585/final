@@ -5,6 +5,7 @@ import { OrdersService } from '../orders.service';
 import { Ticket } from 'src/app/models/ticket';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/models/user';
+import { Order } from 'src/app/models/order';
 
 @Component({
   selector: 'app-finish',
@@ -47,7 +48,9 @@ export class FinishComponent implements OnInit {
     if (Number.isInteger(ticket.row) && Number.isInteger(ticket.seat)) {
       this.service.flight.seats[ticket.seat][ticket.seat] = null;
       this.service.chosenSeats--;
-      this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
+      this.freeRows = this.service.flight.seats
+        .map((row, index) => index)
+        .filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
     }
   }
 
@@ -58,26 +61,41 @@ export class FinishComponent implements OnInit {
         ticket.seat = this.service.flight.seats[ticket.row].findIndex(seat => !seat);
       }
       this.service.flight.seats[ticket.row][ticket.seat] = ticket.passenger.passport;
-      this.freeRows = this.service.flight.seats.map((row, index) => index).filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
+      this.freeRows = this.service.flight.seats
+        .map((row, index) => index)
+        .filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
     }
   }
 
   public payPalConfig?: IPayPalConfig;
 
   demoSave() {
+    
+    const order = new Order();
+    order.user_email = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).email;
+
     this.service.tickets.forEach(ticket => {
       ticket.flight_number = this.service.flight.number;
-      ticket.contact_user_name = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).name;
-      console.log(ticket.contact_user_name);
-      
+      order.tickets.push(ticket);
     });
-    this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
+
+    this.http.post('http://localhost:3000/api/order', order).subscribe(
       data => {
         console.log(data);
         this.router.navigate(['orders', 'done'])
       },
       error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
     )
+      console.log(order);
+      
+
+    // this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
+    //   data => {
+    //     console.log(data);
+    //     this.router.navigate(['orders', 'done'])
+    //   },
+    //   error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
+    // )
   }
 
   ngOnInit(): void {

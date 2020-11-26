@@ -1,7 +1,7 @@
 <ng-container *ngIf="login else register;">
     <mat-form-field>
-        <mat-label>שם משתמש</mat-label>
-        <input matInput type="text" [(ngModel)]="user.name" />
+        <mat-label>כתובת אימייל</mat-label>
+        <input matInput type="email" [(ngModel)]="user.email" />
     </mat-form-field>
     <mat-form-field>
         <mat-label>סיסמה</mat-label>
@@ -9,12 +9,12 @@
     </mat-form-field>
     <br />
     <button mat-raised-button color="primary" (click)="enter()">כניסה</button>
-    <button mat-button (click)="login = !login">עדיין לא רשום? הירשם עכשיו</button>
+    <button mat-button *ngIf="canRegister" (click)="login = !login">עדיין לא רשום? הירשם עכשיו</button>
 </ng-container>
 <ng-template #register>
     <mat-form-field>
-        <mat-label>שם משתמש</mat-label>
-        <input matInput type="text" [(ngModel)]="user.name" />
+        <mat-label>כתובת אימייל</mat-label>
+        <input matInput type="email" [(ngModel)]="user.email" />
     </mat-form-field>
     <mat-form-field>
         <mat-label>סיסמה</mat-label>
@@ -22,8 +22,8 @@
     </mat-form-field>
     <br />
     <mat-form-field>
-        <mat-label>כתובת אימייל</mat-label>
-        <input matInput type="email" [(ngModel)]="user.email" />
+        <mat-label>שם משתמש</mat-label>
+        <input matInput type="text" [(ngModel)]="user.name" />
     </mat-form-field>
     <mat-form-field>
         <mat-label>מספר טלפון</mat-label>

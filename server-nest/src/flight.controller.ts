@@ -10,7 +10,20 @@ export class FlightController {
 
     @Get('light')
     getAllFlightsLight() {
-        return Flight.find({ select: ['number', 'departure', 'from_country', 'to_country', 'price'] });
+        return Flight.find({
+            select: ['number', 'departure', 'from_country', 'to_country', 'price'],
+            relations: ['tickets', 'plain']
+        });
+    }
+
+    @Get('light/future')
+    async getFuturedFlights() {
+        const flights = await this.getAllFlightsLight();
+        return flights.filter(flight => {
+            console.log(flight.tickets.length);
+            const seats = flight.plain.number_of_rows * flight.plain.seats_to_row;
+            return flight.departure > new Date() && flight.tickets.length < seats
+        });
     }
 
     @Get(':flightNumber')

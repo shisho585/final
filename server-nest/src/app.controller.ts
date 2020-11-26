@@ -1,8 +1,10 @@
-import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException, Param } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import { Passenger } from './db/entities/passenger.entity';
 import { Ticket } from './db/entities/ticket.entity';
 import { User } from './db/entities/user.entity';
+import { Order } from './db/entities/order.entity';
+import bcrypt = require('bcrypt');
 
 @Controller('api')
 export class AppController {
@@ -13,10 +15,11 @@ export class AppController {
   async login(@Headers() user_data) {
     let user: User;
     try {
-      user = await User.findOneOrFail({ name: user_data.user_name, hashed_password: user_data.password });
-      return this.jwtService.sign({ name: user.name, role: user.role })
+      user = await User.findOneOrFail(user_data.email, { select: ['email', 'role', 'hashed_password'] });
+      await bcrypt.compare(user_data.password, user.hashed_password);
+      return this.jwtService.sign({ email: user.email, role: user.role })
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new BadRequestException(error.error);
     }
   }
 
@@ -31,7 +34,12 @@ export class AppController {
 
   @Get('user')
   getAllUsers() {
-    return User.find({ relations: ['tickets', 'tickets.flight', 'tickets.passenger'] })
+    return User.find({ relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
+  }
+
+  @Get('user/:email')
+  getUser(@Param('email') user_email: string) {
+    return User.findOne(user_email, { relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
   }
 
   @Post('passenger')
@@ -44,11 +52,16 @@ export class AppController {
     return Ticket.save(ticketsToAdd);
   }
 
+  @Post('order')
+  createNewOrder(@Body(ValidationPipe) newOrder: Order) {
+    return Order.saveOrder(newOrder);
+  }
+
   @Post('user')
   async createNewUser(@Body(ValidationPipe) newUser: User) {
     try {
-      await User.insert(newUser);
-      return this.jwtService.sign({ 'name': newUser.name })
+      await User.insertUser(newUser);
+      return this.jwtService.sign({ email: newUser.email, role: newUser.role })
     } catch (error) {
       throw new BadRequestException(error);
     }

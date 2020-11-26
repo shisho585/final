@@ -1,4 +1,5 @@
 import { Ticket } from "./ticket";
+import { Order } from './order';
 
 export class User {
     name: string;
@@ -6,5 +7,5 @@ export class User {
     email: string;
     phone: number;
     role: string;
-    tickets?: Ticket;
+    orders?: Order[];
 }

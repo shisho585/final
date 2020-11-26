@@ -53,6 +53,8 @@ export class DetailedComponent implements OnInit {
         res => this.loggedIn = res != 'fail'
       )
     }
+    console.log(service.tickets);
+
   }
 
   ngOnInit(): void { }
@@ -78,7 +80,10 @@ export class DetailedComponent implements OnInit {
   }
 
   saveData() {
-    this.service.tickets = this.service.tickets.filter(ticket => ticket.passenger.hebrew_name != '' && ticket.passenger.english_name != '' && ticket.passenger.passport != null);
+    this.service.tickets = this.service.tickets
+      .filter(ticket => ticket.passenger.hebrew_name != '' && ticket.passenger.english_name != '' && ticket.passenger.passport != null);
     this.service.flight = this.flight;
+    console.log(this.service.tickets);
+    
   }
 }
