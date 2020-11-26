@@ -5,6 +5,7 @@ import { Flight } from './entities/flight.entity';
 import { Passenger } from './entities/passenger.entity';
 import { Ticket } from './entities/ticket.entity';
 import { User } from './entities/user.entity';
+import { Order } from './entities/order.entity';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { User } from './entities/user.entity';
       username: 'postgres',
       password: 'root',
       database: 'test_flys',
-      entities: [Plain, Flight, User, Passenger, Ticket],
+      entities: [Plain, Flight, User, Order, Ticket, Passenger],
       synchronize: true,
       logging: true,
     }),

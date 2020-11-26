@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   user = new User();
 
   login = true;
+  canRegister = true;
   @Output() logined = new EventEmitter();
 
   urlToRoute: string;
@@ -20,7 +21,10 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private http: HttpClient) {
     if (router.getCurrentNavigation()) {
       let state = router.getCurrentNavigation().extras.state;
-      this.urlToRoute = state != undefined ? state.url : 'admin/dashboard';
+      this.urlToRoute = state != undefined ? state.url : 'user/dashboard';
+      if (this.urlToRoute.includes('admin')) {
+        this.canRegister = false;
+      }
     }
   }
 
@@ -33,7 +37,7 @@ export class LoginComponent implements OnInit {
       { responseType: 'text' }
     ).subscribe(
       res => {
-        console.log(res);
+        console.log('res' + res);
 
         localStorage.setItem('loggedInToken', res.toString());
         if (this.urlToRoute) {
@@ -42,14 +46,14 @@ export class LoginComponent implements OnInit {
           this.logined.emit('register');
         }
       },
-      err => console.error(err)
+      err => console.error('err' + err)
     )
   }
 
   enter() {
     this.http.get(
       'http://localhost:3000/api/login',
-      { headers: { user_name: this.user.name, password: this.user.password }, responseType: 'text' }
+      { headers: { email: this.user.email, password: this.user.password }, responseType: 'text' }
     ).subscribe(
       res => {
         console.log(res);
