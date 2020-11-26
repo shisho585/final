@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException, Param } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import { Passenger } from './db/entities/passenger.entity';
 import { Ticket } from './db/entities/ticket.entity';
@@ -35,6 +35,11 @@ export class AppController {
   @Get('user')
   getAllUsers() {
     return User.find({ relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
+  }
+
+  @Get('user/:email')
+  getUser(@Param('email') user_email: string) {
+    return User.findOne(user_email, { relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
   }
 
   @Post('passenger')
