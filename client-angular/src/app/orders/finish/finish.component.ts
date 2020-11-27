@@ -4,7 +4,6 @@ import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { OrdersService } from '../orders.service';
 import { Ticket } from 'src/app/models/ticket';
 import { HttpClient } from '@angular/common/http';
-import { User } from 'src/app/models/user';
 import { Order } from 'src/app/models/order';
 
 @Component({
@@ -18,6 +17,8 @@ export class FinishComponent implements OnInit {
 
   tel: string;
   email: string;
+
+  paypalScriptLoaded = false;
 
   constructor(public service: OrdersService, private router: Router, private http: HttpClient) {
     if (service.flight == undefined) {
@@ -67,12 +68,11 @@ export class FinishComponent implements OnInit {
     }
   }
 
-  public payPalConfig?: IPayPalConfig;
-
   demoSave() {
-    
+
     const order = new Order();
     order.user_email = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).email;
+    order.seats_chosen = this.service.chosenSeats;
 
     this.service.tickets.forEach(ticket => {
       ticket.flight_number = this.service.flight.number;
@@ -86,8 +86,6 @@ export class FinishComponent implements OnInit {
       },
       error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
     )
-      console.log(order);
-      
 
     // this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
     //   data => {
@@ -102,10 +100,7 @@ export class FinishComponent implements OnInit {
     this.initConfig();
   }
 
-  paypalScriptLoaded = false;
-  done() {
-    this.paypalScriptLoaded = true;
-  }
+  public payPalConfig?: IPayPalConfig;
 
   private initConfig(): void {
     this.payPalConfig = {

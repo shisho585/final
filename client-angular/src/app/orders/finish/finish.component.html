@@ -75,7 +75,7 @@
                 </mat-expansion-panel>
             </mat-accordion>
             <div style="margin-top: 20px;">
-                <ngx-paypal [config]="payPalConfig" (scriptLoaded)="done()"></ngx-paypal>
+                <ngx-paypal [config]="payPalConfig" (scriptLoaded)="paypalScriptLoaded = true"></ngx-paypal>
                 <mat-spinner *ngIf="!paypalScriptLoaded" style="margin:auto"></mat-spinner>
             </div>
         </div>

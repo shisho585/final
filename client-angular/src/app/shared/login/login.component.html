@@ -1,4 +1,4 @@
-<ng-container *ngIf="login else register;">
+<div class="head" *ngIf="login else register;">
     <mat-form-field>
         <mat-label>כתובת אימייל</mat-label>
         <input matInput type="email" [(ngModel)]="user.email" />
@@ -8,28 +8,37 @@
         <input matInput type="password" [(ngModel)]="user.password" />
     </mat-form-field>
     <br />
-    <button mat-raised-button color="primary" (click)="enter()">כניסה</button>
-    <button mat-button *ngIf="canRegister" (click)="login = !login">עדיין לא רשום? הירשם עכשיו</button>
-</ng-container>
+    <div class="nested">
+        <button mat-raised-button color="primary" (click)="enter()">כניסה</button>
+        <button mat-button *ngIf="canRegister" style="width: 70%" (click)="login = !login">עדיין לא רשום?
+            הירשם
+            עכשיו</button>
+    </div>
+</div>
 <ng-template #register>
-    <mat-form-field>
-        <mat-label>כתובת אימייל</mat-label>
-        <input matInput type="email" [(ngModel)]="user.email" />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>סיסמה</mat-label>
-        <input matInput type="password" [(ngModel)]="user.password" />
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-        <mat-label>שם משתמש</mat-label>
-        <input matInput type="text" [(ngModel)]="user.name" />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>מספר טלפון</mat-label>
-        <input matInput type="number" [(ngModel)]="user.phone" />
-    </mat-form-field>
-    <br />
-    <button mat-raised-button color="primary" (click)="registerUser()">הרשמה</button>
-    <button mat-button (click)="login = !login">כבר רשום?</button>
+    <div class="head">
+        <mat-form-field>
+            <mat-label>כתובת אימייל</mat-label>
+            <input matInput type="email" [(ngModel)]="user.email" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>סיסמה</mat-label>
+            <input matInput type="password" [(ngModel)]="user.password" />
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <mat-label>שם משתמש</mat-label>
+            <input matInput type="text" [(ngModel)]="user.name" />
+        </mat-form-field>
+        <mat-form-field id="id-number">
+            <mat-label>מספר טלפון</mat-label>
+            <input matInput type="number" [(ngModel)]="user.phone" />
+        </mat-form-field>
+        <br />
+        <div class="nested">
+            <button mat-raised-button color="primary" (click)="registerUser()">הרשמה</button>
+            <button mat-button (click)="login = !login" style="width: 70%">כבר רשום?
+                היכנס</button>
+        </div>
+    </div>
 </ng-template>

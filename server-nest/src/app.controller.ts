@@ -16,10 +16,16 @@ export class AppController {
     let user: User;
     try {
       user = await User.findOneOrFail(user_data.email, { select: ['email', 'role', 'hashed_password'] });
-      await bcrypt.compare(user_data.password, user.hashed_password);
-      return this.jwtService.sign({ email: user.email, role: user.role })
+      let pass = bcrypt.compareSync(user_data.password, user.hashed_password);
+      if (pass)
+        return this.jwtService.sign({ email: user.email, role: user.role })
+      else {
+        throw new Error("pass incorrect");
+      }
     } catch (error) {
-      throw new BadRequestException(error.error);
+      if (error.message.includes("entity of type \"User\""))
+        error.message = "user not found";
+      throw new BadRequestException(error.message);
     }
   }
 

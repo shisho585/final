@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
-import { IsEmail, ValidateNested } from "class-validator";
+import { IsEmail, IsNumber, IsOptional, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { User } from './user.entity';
 import { Ticket } from "./ticket.entity";
@@ -13,6 +13,11 @@ export class Order extends BaseEntity {
     @Column()
     @IsEmail()
     user_email: string;
+
+    @Column({ nullable: true })
+    @IsNumber()
+    @IsOptional()
+    seats_chosen: number;
 
     @ManyToOne('User')
     @JoinColumn({ name: 'user_email' })
