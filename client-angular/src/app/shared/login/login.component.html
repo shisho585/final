@@ -1,4 +1,4 @@
-<div class="head" *ngIf="login else register;">
+<div class="head center" *ngIf="login else register;">
     <mat-form-field>
         <mat-label>כתובת אימייל</mat-label>
         <input matInput type="email" [(ngModel)]="user.email" />
@@ -16,7 +16,7 @@
     </div>
 </div>
 <ng-template #register>
-    <div class="head">
+    <div class="head center">
         <mat-form-field>
             <mat-label>כתובת אימייל</mat-label>
             <input matInput type="email" [(ngModel)]="user.email" />

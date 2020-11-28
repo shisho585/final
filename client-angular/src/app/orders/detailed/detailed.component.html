@@ -1,5 +1,5 @@
 <div class="flexed-div" style="height: 100%;">
-    <div *ngIf="flight" class="nested-flex head" style="flex:1">
+    <div *ngIf="flight" class="nested-flex head" style="flex:1;">
         <h4>פרטי הטיסה שלך</h4>
         <p>{{flight.departure | date:'HH:mm dd/MM/yy'}} - {{flight.landing | date:'HH:mm dd/MM/yy'}}
             <br />
@@ -11,8 +11,8 @@
         <p>{{flight.plain.type}}</p>
         <p>{{flight.price}}</p>
     </div>
-    <div class="nested-flex head" style="flex:2;max-height: 80%; overflow: auto;">
-        <div class="up-div" *ngIf="loggedIn else login" style="width: fit-content;margin: auto;position: relative;">
+    <div class="nested-flex head" style="flex:2;max-height: 80%; overflow: auto; padding-bottom: 0px;">
+        <div class="nested" *ngIf="loggedIn else login">
             <mat-form-field>
                 <mat-label>כמה נוסעים אתם?</mat-label>
                 <input matInput type="number" min="1" [(ngModel)]="passengers" (change)="changePassengersNumber()" />
@@ -34,10 +34,13 @@
                     <input matInput type="number" [(ngModel)]="ticket.passenger.passport" required />
                 </mat-form-field>
             </div>
-            <span>מחיר כולל: {{flight?.price * passengers}}</span>
-            <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
-                routerLink="../../finish" routerLinkActive="active"
-                style="position: absolute; left: 20px; bottom: -8px;">אישור</button>
+            <div style="position: sticky; bottom: 20px; background-color: grey; height: fit-content; padding: 20px;">
+                <span>מחיר כולל: {{flight?.price * passengers}}</span>
+                <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
+                    routerLink="../../finish" routerLinkActive="active"
+                    style="position: absolute; left: 20px; bottom: 14px;">אישור</button>
+            </div>
+            <div style="position: sticky; bottom: 0px; height: 20px;background: rgb(200, 230, 250);"> </div>
         </div>
         <ng-template #login>
             <app-login (logined)="loginDone($event)"></app-login>

@@ -1,46 +1,44 @@
 <h2>לאן אתה רוצה לטוס איתנו?</h2>
-<mat-grid-list cols="2">
-    <mat-grid-tile style="border: solid 1px;">
-        <div>
-            <h5>חיפוש לפי</h5>
-            <mat-label>שעת המראה</mat-label>
-            <br />
-            <mat-form-field>
-                <input matInput type="datetime-local" [(ngModel)]="minTime"
-                    min="{{firstTime | date:'yyyy-MM-ddThh:mm'}}" max="{{lastTime | date:'yyyy-MM-ddThh:mm'}}">
-            </mat-form-field>
-            ---
-            <mat-form-field>
-                <input matInput type="datetime-local" [(ngModel)]="maxTime"
-                    min="{{firstTime | date:'yyyy-MM-ddThh:mm'}}" max="{{lastTime | date:'yyyy-MM-ddThh:mm'}}">
-            </mat-form-field>
-            <br />
-            <mat-form-field>
-                <mat-label>מוצא</mat-label>
-                <mat-select [(value)]="source">
-                    <mat-option value="*">הכל</mat-option>
-                    <mat-option *ngFor="let country of sourcesCountries" value="{{country}}">{{country}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <br />
-            <mat-form-field>
-                <mat-label>יעד</mat-label>
-                <mat-select [(value)]="destination">
-                    <mat-option value="*">הכל</mat-option>
-                    <mat-option *ngFor="let country of destinationsCountries" value="{{country}}">{{country}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <br />
-            <p>מחיר</p>
-            <ngx-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="ngx_slider_options">
-            </ngx-slider>
-            <br />
-            <button mat-raised-button color="primary" (click)="search()">חיפוש</button>
-        </div>
-    </mat-grid-tile>
-    <mat-grid-tile style="border: solid 1px;">
-        <table mat-table [dataSource]="dataSource" matSort style="width: 80%;" class="up-div">
+<div class="flexed-div">
+    <div class="head" style="flex: 1;">
+        <h5>חיפוש לפי</h5>
+        <mat-label>שעת המראה</mat-label>
+        <br />
+        <mat-form-field>
+            <input matInput type="datetime-local" [(ngModel)]="minTime" min="{{firstTime | date:'yyyy-MM-ddThh:mm'}}"
+                max="{{lastTime | date:'yyyy-MM-ddThh:mm'}}">
+        </mat-form-field>
+        ---
+        <mat-form-field>
+            <input matInput type="datetime-local" [(ngModel)]="maxTime" min="{{firstTime | date:'yyyy-MM-ddThh:mm'}}"
+                max="{{lastTime | date:'yyyy-MM-ddThh:mm'}}">
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <mat-label>מוצא</mat-label>
+            <mat-select [(value)]="source">
+                <mat-option value="*">הכל</mat-option>
+                <mat-option *ngFor="let country of sourcesCountries" value="{{country}}">{{country}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <mat-label>יעד</mat-label>
+            <mat-select [(value)]="destination">
+                <mat-option value="*">הכל</mat-option>
+                <mat-option *ngFor="let country of destinationsCountries" value="{{country}}">{{country}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br />
+        <p>מחיר</p>
+        <ngx-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="ngx_slider_options">
+        </ngx-slider>
+        <br />
+        <button mat-raised-button color="primary" (click)="search()">חיפוש</button>
+    </div>
+    <div class="head" style="flex: 2;">
+        <table mat-table [dataSource]="dataSource" matSort style="width: 80%;" class="nested">
 
             <ng-container matColumnDef="departure">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> שעת המראה </th>
@@ -66,5 +64,5 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="../detailed/{{row.number}}"
                 routerLinkActive="active" class="row-flight"></tr>
         </table>
-    </mat-grid-tile>
-</mat-grid-list>
+    </div>
+</div>
