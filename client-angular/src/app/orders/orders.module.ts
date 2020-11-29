@@ -20,6 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
 
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxPayPalModule } from "ngx-paypal";
@@ -41,6 +42,7 @@ import { DialogComponent } from './dialog/dialog.component';
     MatRadioModule,
     MatTableModule,
     MatSortModule,
+    MatIconModule,
     NgxSliderModule,
     MatDialogModule,
     NgxPayPalModule,

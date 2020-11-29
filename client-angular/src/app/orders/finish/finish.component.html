@@ -1,5 +1,5 @@
 <div class="flexed-div">
-    <div class="head">
+    <div class="head" style="flex:2">
         <mat-accordion>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
@@ -33,7 +33,7 @@
             </mat-expansion-panel>
         </mat-accordion>
     </div>
-    <div class="head">
+    <div class="head" style="flex:2">
         <mat-accordion>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
@@ -59,8 +59,7 @@
             </mat-expansion-panel>
         </mat-accordion>
     </div>
-
-    <div class="head">
+    <div class="head" style="flex:1">
         <ngx-paypal [config]="payPalConfig" (scriptLoaded)="paypalScriptLoaded = true"></ngx-paypal>
         <mat-spinner *ngIf="!paypalScriptLoaded" style="margin:auto"></mat-spinner>
     </div>

@@ -12,34 +12,37 @@
         <p>{{flight.price}}</p>
     </div>
     <div class="nested-flex head" style="flex:2;max-height: 80%; overflow: auto; padding-bottom: 0px;">
-        <mat-form-field>
-            <mat-label>כמה נוסעים אתם?</mat-label>
-            <input matInput type="number" min="1" max="{{flight?.freeSeats}}" [(ngModel)]="passengers"
-                (change)="changePassengersNumber()" />
-        </mat-form-field>
-        <div id="passengerDetailes" *ngFor="let ticket of service.tickets; let x = index">
-            <mat-label>{{x+1}}. </mat-label>
+        <div class="nested">
             <mat-form-field>
-                <mat-label>שם מלא בעברית</mat-label>
-                <input matInput type="text" [(ngModel)]="ticket.passenger.hebrew_name" [pattern]="'^[\u0590-\u05fe ]*$'"
-                    required />
+                <mat-label>כמה נוסעים אתם?</mat-label>
+                <input matInput type="number" min="1" max="{{flight?.freeSeats}}" [(ngModel)]="passengers"
+                    (change)="changePassengersNumber()" />
             </mat-form-field>
-            <mat-form-field>
-                <mat-label>שם מלא באנגלית</mat-label>
-                <input matInput type="text" [(ngModel)]="ticket.passenger.english_name" [pattern]="'^[a-zA-Z ]*$'"
-                    required />
-            </mat-form-field>
-            <mat-form-field id="id-number">
-                <mat-label>מספר דרכון</mat-label>
-                <input matInput type="number" [(ngModel)]="ticket.passenger.passport" required />
-            </mat-form-field>
+            <div id="passengerDetailes" *ngFor="let ticket of service.tickets; let x = index">
+                <mat-label>{{x+1}}. </mat-label>
+                <mat-form-field>
+                    <mat-label>שם מלא בעברית</mat-label>
+                    <input matInput type="text" [(ngModel)]="ticket.passenger.hebrew_name"
+                        [pattern]="'^[\u0590-\u05fe ]*$'" required />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>שם מלא באנגלית</mat-label>
+                    <input matInput type="text" [(ngModel)]="ticket.passenger.english_name" [pattern]="'^[a-zA-Z ]*$'"
+                        required />
+                </mat-form-field>
+                <mat-form-field id="id-number">
+                    <mat-label>מספר דרכון</mat-label>
+                    <input matInput type="number" [(ngModel)]="ticket.passenger.passport" required />
+                </mat-form-field>
+            </div>
+            <div
+                style="position: sticky; bottom: 20px; background-color: seagreen; height: fit-content; padding: 20px;">
+                <span>מחיר כולל: {{flight?.price * passengers}}</span>
+                <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
+                    routerLink="../../finish" routerLinkActive="active"
+                    style="position: absolute; left: 20px; bottom: 14px;">אישור</button>
+            </div>
+            <div style="position: sticky; bottom: 0px; height: 20px;background: rgb(200, 230, 250);"> </div>
         </div>
-        <div style="position: sticky; bottom: 20px; background-color: grey; height: fit-content; padding: 20px;">
-            <span>מחיר כולל: {{flight?.price * passengers}}</span>
-            <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
-                routerLink="../../finish" routerLinkActive="active"
-                style="position: absolute; left: 20px; bottom: 14px;">אישור</button>
-        </div>
-        <div style="position: sticky; bottom: 0px; height: 20px;background: rgb(200, 230, 250);"> </div>
     </div>
 </div>

@@ -6,7 +6,6 @@ import { Ticket } from 'src/app/models/ticket';
 import { HttpClient } from '@angular/common/http';
 import { Order } from 'src/app/models/order';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginComponent } from 'src/app/shared/login/login.component';
 import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs/operators';
 
@@ -70,15 +69,16 @@ export class FinishComponent implements OnInit {
   }
 
   demoSave() {
-
     let user_name;
-    // if (localStorage.getItem('loggedInToken') != undefined) {
     this.http.get(
       'http://localhost:3000/api/authenticate',
       { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
     ).pipe(
       finalize(() => {
-        this.dialog.open(DialogComponent, { data: user_name, disableClose: true }).afterClosed().subscribe(
+        this.dialog.open(
+          DialogComponent,
+          { data: user_name, disableClose: true, autoFocus: false }
+        ).afterClosed().subscribe(
           data => {
             if (data != 'cancel') {
               const order = new Order();
@@ -100,28 +100,17 @@ export class FinishComponent implements OnInit {
             }
           },
           err => {
-            console.log('אין משתמש מחובר');
+            console.error('אין משתמש מחובר');
           }
         )
       })
     ).subscribe(
       res => {
-        // this.loggedIn = res != 'fail';
         if (res != 'fail') {
           user_name = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).name;
         }
       }
     )
-
-    // }
-
-    // this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
-    //   data => {
-    //     console.log(data);
-    //     this.router.navigate(['orders', 'done'])
-    //   },
-    //   error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
-    // )
   }
 
   ngOnInit(): void {
@@ -132,14 +121,7 @@ export class FinishComponent implements OnInit {
 
   private initConfig(): void {
     this.payPalConfig = {
-      onInit: (data, actions) => {
-        // actions.disable();
-        // document.querySelectorAll("input").forEach((item) => item.addEventListener('change', () => {
-        //   if (/^\d+$/.test(this.tel) && this.email.length > 0) {
-        //     actions.enable();
-        //   }
-        // }));
-      },
+      onInit: (data, actions) => { },
       currency: 'ILS',
       clientId: 'ASfYbynM-7Hv5IWS4aJ3Xqp_airF8ef6ujn0jkB97J_gUaRyIW1rAVWsmIyJDtNRWCNCT6r3HfscyYKX',
       createOrderOnClient: () => {
@@ -213,14 +195,7 @@ export class FinishComponent implements OnInit {
         console.log('OnError', err);
       },
       onClick: (data, actions) => {
-        if (localStorage.getItem('loggedInToken') != undefined) {
-          this.http.get(
-            'http://localhost:3000/api/authenticate',
-            { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
-          ).subscribe(
-            res => this.loggedIn = res != 'fail'
-          )
-        }
+        this.demoSave();
       },
     };
   }

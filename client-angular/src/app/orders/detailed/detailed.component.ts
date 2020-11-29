@@ -54,8 +54,10 @@ export class DetailedComponent implements OnInit {
   changePassengersNumber() {
     if (this.passengers > this.service.tickets.length) {
       this.service.tickets.push(new Ticket());
+      this.changePassengersNumber();
     } else if (this.passengers < this.service.tickets.length) {
       this.service.tickets.pop();
+      this.changePassengersNumber();
     }
   }
 
