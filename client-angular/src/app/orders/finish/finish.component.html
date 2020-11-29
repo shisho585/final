@@ -1,21 +1,6 @@
-<mat-grid-list cols="3">
-    <mat-grid-tile [colspan]="2">
-        <mat-accordion class="up-div">
-            <mat-expansion-panel id="contactDetails" [expanded]="true">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        פרטים ליצירת קשר
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <mat-form-field>
-                    <mat-label>טלפון</mat-label>
-                    <input matInput type="tel" [(ngModel)]="tel" required>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>אימייל</mat-label>
-                    <input matInput type="email" [(ngModel)]="email" required>
-                </mat-form-field>
-            </mat-expansion-panel>
+<div class="flexed-div">
+    <div class="head">
+        <mat-accordion>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>בחירת מושב</mat-panel-title>
@@ -47,38 +32,38 @@
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="1">
-        <div class="up-div">
-            <mat-accordion>
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            כרטיסי טיסה : {{service.tickets.length * service.flight.price}}
-                        </mat-panel-title>
-                        <mat-panel-description>לפירוט</mat-panel-description>
-                    </mat-expansion-panel-header>
-                    כמות : {{service.tickets.length}}
-                    <br />
-                    מחיר ליחידה : {{service.flight.price}}₪
-                </mat-expansion-panel>
-                <mat-expansion-panel *ngIf="this.service.chosenSeats>0">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            מושבים : {{this.service.chosenSeats * 20}}
-                        </mat-panel-title>
-                        <mat-panel-description>לפירוט</mat-panel-description>
-                    </mat-expansion-panel-header>
-                    כמות : {{this.service.chosenSeats}}
-                    <br />
-                    מחיר ליחידה : 20₪
-                </mat-expansion-panel>
-            </mat-accordion>
-            <div style="margin-top: 20px;">
-                <ngx-paypal [config]="payPalConfig" (scriptLoaded)="paypalScriptLoaded = true"></ngx-paypal>
-                <mat-spinner *ngIf="!paypalScriptLoaded" style="margin:auto"></mat-spinner>
-            </div>
-        </div>
-    </mat-grid-tile>
-</mat-grid-list>
+    </div>
+    <div class="head">
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        כרטיסי טיסה : {{service.tickets.length * service.flight.price}}
+                    </mat-panel-title>
+                    <mat-panel-description>לפירוט</mat-panel-description>
+                </mat-expansion-panel-header>
+                כמות : {{service.tickets.length}}
+                <br />
+                מחיר ליחידה : {{service.flight.price}}₪
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="this.service.chosenSeats>0">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        מושבים : {{this.service.chosenSeats * 20}}
+                    </mat-panel-title>
+                    <mat-panel-description>לפירוט</mat-panel-description>
+                </mat-expansion-panel-header>
+                כמות : {{this.service.chosenSeats}}
+                <br />
+                מחיר ליחידה : 20₪
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+
+    <div class="head">
+        <ngx-paypal [config]="payPalConfig" (scriptLoaded)="paypalScriptLoaded = true"></ngx-paypal>
+        <mat-spinner *ngIf="!paypalScriptLoaded" style="margin:auto"></mat-spinner>
+    </div>
+
+</div>
 <button (click)="demoSave()">שמור דמו</button>

@@ -1,0 +1,17 @@
+<div class="head">
+    <ng-container *ngIf="loggedIn else login;">
+        <p mat-dialog-title>אתה מחובר כרגע כ <b>{{name}}</b></p>
+        <mat-dialog-content>
+            <p>ברצונך להמשיך כ<b>{{name}}</b> או להיכנס / להירשם בשם אחר?</p>
+            <button mat-raised-button color="primary" (click)="dialogRef.close()">להמשיך</button>
+            <button mat-raised-button color="primary" (click)="loginPlease()"> כניסה / הרשמה</button>
+        </mat-dialog-content>
+    </ng-container>
+    <ng-template #login>
+        <p mat-dialog-title>לצורך השלמת ההזמנה אתה צריך להיכנס / להירשם</p>
+        <mat-dialog-content>
+            <app-login (logined)="dialogRef.close()"></app-login>
+        </mat-dialog-content>
+    </ng-template>
+    <button mat-raised-button color="primary" (click)="dialogRef.close('cancel')"> ביטול</button>
+</div>

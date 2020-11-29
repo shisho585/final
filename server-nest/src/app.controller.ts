@@ -15,13 +15,10 @@ export class AppController {
   async login(@Headers() user_data) {
     let user: User;
     try {
-      user = await User.findOneOrFail(user_data.email, { select: ['email', 'role', 'hashed_password'] });
-      let pass = bcrypt.compareSync(user_data.password, user.hashed_password);
-      if (pass)
-        return this.jwtService.sign({ email: user.email, role: user.role })
-      else {
-        throw new Error("pass incorrect");
-      }
+      user = await User.findOneOrFail(user_data.email, { select: ['name', 'email', 'role', 'hashed_password'] });
+      if (bcrypt.compareSync(user_data.password, user.hashed_password))
+        return this.jwtService.sign({ name: user.name, email: user.email, role: user.role })
+      throw new Error("pass incorrect");
     } catch (error) {
       if (error.message.includes("entity of type \"User\""))
         error.message = "user not found";
@@ -67,7 +64,7 @@ export class AppController {
   async createNewUser(@Body(ValidationPipe) newUser: User) {
     try {
       await User.insertUser(newUser);
-      return this.jwtService.sign({ email: newUser.email, role: newUser.role })
+      return this.jwtService.sign({ name: newUser.name, email: newUser.email, role: newUser.role })
     } catch (error) {
       throw new BadRequestException(error);
     }

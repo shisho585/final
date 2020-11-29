@@ -19,13 +19,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxPayPalModule } from "ngx-paypal";
 import { SharedModule } from '../shared/shared.module';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
-  declarations: [PickaflightComponent, DetailedComponent, FinishComponent, DoneComponent],
+  declarations: [PickaflightComponent, DetailedComponent, FinishComponent, DoneComponent, DialogComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -40,6 +42,7 @@ import { SharedModule } from '../shared/shared.module';
     MatTableModule,
     MatSortModule,
     NgxSliderModule,
+    MatDialogModule,
     NgxPayPalModule,
     FormsModule,
     MatProgressSpinnerModule,

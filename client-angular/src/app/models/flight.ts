@@ -16,5 +16,6 @@ export class Flight {
     plain?: Plain;
     price: number;
     tickets: Ticket[];
+    freeSeats: number;
     seats?: number[][];
 }

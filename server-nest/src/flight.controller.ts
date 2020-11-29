@@ -20,15 +20,18 @@ export class FlightController {
     async getFuturedFlights() {
         const flights = await this.getAllFlightsLight();
         return flights.filter(flight => {
-            console.log(flight.tickets.length);
             const seats = flight.plain.number_of_rows * flight.plain.seats_to_row;
-            return flight.departure > new Date() && flight.tickets.length < seats
+            const freeSeats = seats - flight.tickets.length;
+            return flight.departure > new Date() && freeSeats > 0;
         });
     }
 
     @Get(':flightNumber')
-    getFlight(@Param('flightNumber') flightNumber: number) {
-        return Flight.findOne(flightNumber, { relations: ['plain', 'tickets'] });
+    async getFlight(@Param('flightNumber') flightNumber: string) {
+        const flight = await Flight.findOne(flightNumber, { relations: ['plain', 'tickets'] });
+        const seats = flight.plain.number_of_rows * flight.plain.seats_to_row;
+        const freeSeats = seats - flight.tickets.length;
+        return { flight, freeSeats };
     }
 
     @Post()

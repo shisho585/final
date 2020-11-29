@@ -5,6 +5,10 @@ import { OrdersService } from '../orders.service';
 import { Ticket } from 'src/app/models/ticket';
 import { HttpClient } from '@angular/common/http';
 import { Order } from 'src/app/models/order';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginComponent } from 'src/app/shared/login/login.component';
+import { DialogComponent } from '../dialog/dialog.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-finish',
@@ -14,13 +18,10 @@ import { Order } from 'src/app/models/order';
 export class FinishComponent implements OnInit {
 
   freeRows: number[];
-
-  tel: string;
-  email: string;
-
   paypalScriptLoaded = false;
+  loggedIn = false;
 
-  constructor(public service: OrdersService, private router: Router, private http: HttpClient) {
+  constructor(public service: OrdersService, private router: Router, private http: HttpClient, private dialog: MatDialog) {
     if (service.flight == undefined) {
       router.navigate(['orders', 'pick-a-flight'])
     }
@@ -70,22 +71,49 @@ export class FinishComponent implements OnInit {
 
   demoSave() {
 
-    const order = new Order();
-    order.user_email = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).email;
-    order.seats_chosen = this.service.chosenSeats;
+    let user_name;
+    // if (localStorage.getItem('loggedInToken') != undefined) {
+    this.http.get(
+      'http://localhost:3000/api/authenticate',
+      { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
+    ).pipe(
+      finalize(() => {
+        this.dialog.open(DialogComponent, { data: user_name, disableClose: true }).afterClosed().subscribe(
+          data => {
+            if (data != 'cancel') {
+              const order = new Order();
+              order.user_email = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).email;
+              order.seats_chosen = this.service.chosenSeats;
 
-    this.service.tickets.forEach(ticket => {
-      ticket.flight_number = this.service.flight.number;
-      order.tickets.push(ticket);
-    });
+              this.service.tickets.forEach(ticket => {
+                ticket.flight_number = this.service.flight.number;
+                order.tickets.push(ticket);
+              });
 
-    this.http.post('http://localhost:3000/api/order', order).subscribe(
-      data => {
-        console.log(data);
-        this.router.navigate(['orders', 'done'])
-      },
-      error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
+              this.http.post('http://localhost:3000/api/order', order).subscribe(
+                data => {
+                  console.log(data);
+                  this.router.navigate(['orders', 'done'])
+                },
+                error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
+              )
+            }
+          },
+          err => {
+            console.log('אין משתמש מחובר');
+          }
+        )
+      })
+    ).subscribe(
+      res => {
+        // this.loggedIn = res != 'fail';
+        if (res != 'fail') {
+          user_name = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).name;
+        }
+      }
     )
+
+    // }
 
     // this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
     //   data => {
@@ -105,12 +133,12 @@ export class FinishComponent implements OnInit {
   private initConfig(): void {
     this.payPalConfig = {
       onInit: (data, actions) => {
-        actions.disable();
-        document.querySelectorAll("input").forEach((item) => item.addEventListener('change', () => {
-          if (/^\d+$/.test(this.tel) && this.email.length > 0) {
-            actions.enable();
-          }
-        }));
+        // actions.disable();
+        // document.querySelectorAll("input").forEach((item) => item.addEventListener('change', () => {
+        //   if (/^\d+$/.test(this.tel) && this.email.length > 0) {
+        //     actions.enable();
+        //   }
+        // }));
       },
       currency: 'ILS',
       clientId: 'ASfYbynM-7Hv5IWS4aJ3Xqp_airF8ef6ujn0jkB97J_gUaRyIW1rAVWsmIyJDtNRWCNCT6r3HfscyYKX',
@@ -185,8 +213,13 @@ export class FinishComponent implements OnInit {
         console.log('OnError', err);
       },
       onClick: (data, actions) => {
-        if (!(/^\d+$/.test(this.tel) && this.email.length > 0)) {
-          alert('שים לב אין לך פרטים ליצירת קשר, בלי זה לא תוכל להזמין את הטיסה');
+        if (localStorage.getItem('loggedInToken') != undefined) {
+          this.http.get(
+            'http://localhost:3000/api/authenticate',
+            { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
+          ).subscribe(
+            res => this.loggedIn = res != 'fail'
+          )
         }
       },
     };

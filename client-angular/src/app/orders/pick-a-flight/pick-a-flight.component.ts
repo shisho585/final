@@ -3,14 +3,7 @@ import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Options } from '@angular-slider/ngx-slider';
-
-export interface LightFlight {
-  number: number;
-  departure: Date;
-  from_country: string;
-  to_country: string;
-  price: number;
-}
+import { Flight } from 'src/app/models/flight';
 
 @Component({
   selector: 'app-pick-a-flight',
@@ -19,7 +12,7 @@ export interface LightFlight {
 })
 export class PickaflightComponent implements OnInit, AfterViewInit {
 
-  ELEMENT_DATA_BASE: LightFlight[];
+  ELEMENT_DATA_BASE: Flight[];
 
   firstTime: Date;
   lastTime: Date;
@@ -40,7 +33,7 @@ export class PickaflightComponent implements OnInit, AfterViewInit {
   ngx_slider_options = { floor: 0, ceil: 0 };
 
   constructor(private http: HttpClient) {
-    http.get<LightFlight[]>("http://localhost:3000/api/flight/light/future").subscribe(
+    http.get<Flight[]>("http://localhost:3000/api/flight/light/future").subscribe(
       data => {
         this.ELEMENT_DATA_BASE = data;
 

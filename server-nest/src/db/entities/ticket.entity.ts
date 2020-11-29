@@ -1,8 +1,7 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn, Unique } from 'typeorm';
-import { IsString, ValidateNested, IsNumber, IsOptional, validateOrReject } from 'class-validator';
+import { IsString, ValidateNested, IsNumber, IsOptional } from 'class-validator';
 import { Passenger } from './passenger.entity';
 import { Flight } from './flight.entity';
-import { BadRequestException } from '@nestjs/common';
 import { Order } from './order.entity';
 import { Type } from 'class-transformer';
 
