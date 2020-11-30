@@ -17,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatGridListModule } from "@angular/material/grid-list";
+import { MatDialogModule } from "@angular/material/dialog";
+
 import { PlainComponent } from './plain/plain.component';
 import { OrderComponent } from './order/order.component';
 
@@ -33,6 +35,7 @@ import { OrderComponent } from './order/order.component';
     FormsModule,
     MatSortModule,
     MatTableModule,
+    MatDialogModule,
     HttpClientModule,
     MatGridListModule
   ]

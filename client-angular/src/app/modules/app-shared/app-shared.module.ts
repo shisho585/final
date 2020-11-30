@@ -7,10 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { FlightDetailesComponent } from './flight-detailes/flight-detailes.component';
+import { DialogErrorsComponent } from './dialog-errors/dialog-errors.component';
 
 @NgModule({
-  declarations: [LoginComponent, FlightDetailesComponent],
-  exports: [LoginComponent, FlightDetailesComponent],
+  declarations: [LoginComponent, FlightDetailesComponent, DialogErrorsComponent],
+  exports: [LoginComponent, FlightDetailesComponent, DialogErrorsComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
