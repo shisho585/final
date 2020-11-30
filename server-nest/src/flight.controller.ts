@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, ValidationPipe } from '@nestjs/common';
 import { Flight } from './db/entities/flight.entity';
 
 @Controller('api/flight')
@@ -28,14 +28,16 @@ export class FlightController {
 
     @Get(':flightNumber')
     async getFlight(@Param('flightNumber') flightNumber: string) {
-        const flight = await Flight.findOne(flightNumber, { relations: ['plain', 'tickets'] });
-        const seats = flight.plain.number_of_rows * flight.plain.seats_to_row;
-        const freeSeats = seats - flight.tickets.length;
-        return { flight, freeSeats };
+        return Flight.findOneWithRelations(flightNumber);
     }
 
     @Post()
     createNewFlight(@Body(ValidationPipe) newFlight: Flight) {
         return Flight.save(newFlight);
+    }
+
+    @Delete(':flightNumber')
+    deleteFlight(@Param('flightNumber') flightNumber: string) {
+        return Flight.delete(flightNumber);
     }
 }

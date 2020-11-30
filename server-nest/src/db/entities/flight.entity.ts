@@ -50,6 +50,15 @@ export class Flight extends BaseEntity {
     @JoinColumn({ name: 'plain_type' })
     plain: Plain;
 
-    @OneToMany('Ticket', 'flight')
+    @OneToMany('Ticket', 'flight', { onDelete: 'CASCADE' })
     tickets: Ticket[];
+
+    freeSeats: number;
+
+    static async findOneWithRelations(flightNumber: string) {
+        const flight = await this.getRepository().findOne(flightNumber, { relations: ['plain', 'tickets'] });
+        const seats = flight.plain.number_of_rows * flight.plain.seats_to_row;
+        flight.freeSeats = seats - flight.tickets.length;
+        return flight;
+    }
 }

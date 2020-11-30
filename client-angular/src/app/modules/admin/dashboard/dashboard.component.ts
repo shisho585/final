@@ -2,10 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Flight } from 'src/app/models/flight';
 import { AdminService } from '../admin.service';
-
-let ELEMENT_DATA_BASE: Flight[];
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +11,7 @@ let ELEMENT_DATA_BASE: Flight[];
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private router: Router, private service: AdminService) { }
+  constructor(private service: AdminService) { }
 
   flightsDataSource;
   plainsDataSource;
@@ -24,11 +21,14 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit(): void {
-    this.service.flightsS.subscribe(flights => {
+    this.service.getAllFlights().subscribe(flights => {
+      this.service.flights = flights;
       this.flightsDataSource = new MatTableDataSource(flights);
       this.flightsDataSource.sort = this.sort;
-    });
-    this.service.plainsS.subscribe(plains => {
+    })
+
+    this.service.getAllPlains().subscribe(plains => {
+      this.service.plains = plains;
       this.plainsDataSource = new MatTableDataSource(plains);
       this.plainsDataSource.sort = this.sort;
     });

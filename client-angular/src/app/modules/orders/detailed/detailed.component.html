@@ -1,5 +1,5 @@
 <div class="flexed-div" style="height: 100%;">
-    <app-flight-detailes *ngIf="flight" class="nested-flex head" style="flex:1;" [flight]="flight">
+    <app-flight-detailes *ngIf="service.flight" class="nested-flex head" style="flex:1;" [flight]="service.flight">
     </app-flight-detailes>
     <div class="nested-flex head" style="flex:2;max-height: 80%; overflow: auto; padding-bottom: 0px;">
         <div class="nested">
@@ -8,7 +8,7 @@
                 <input matInput type="number" min="1" max="{{flight?.freeSeats}}" [(ngModel)]="passengers"
                     (change)="changePassengersNumber()" />
             </mat-form-field>
-            <div id="passengerDetailes" *ngFor="let ticket of service.tickets; let x = index">
+            <div id="passengerDetailes" *ngFor="let ticket of service.newTickets; let x = index">
                 <mat-label>{{x+1}}. </mat-label>
                 <mat-form-field>
                     <mat-label>שם מלא בעברית</mat-label>

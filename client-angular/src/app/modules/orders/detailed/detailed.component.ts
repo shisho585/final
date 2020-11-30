@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { OrdersService } from '../orders.service';
-import { HttpClient } from '@angular/common/http';
 import { Flight } from 'src/app/models/flight';
 import { Ticket } from 'src/app/models/ticket';
 
@@ -17,62 +16,58 @@ export class DetailedComponent implements OnInit {
   flight: Flight;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
-    private http: HttpClient,
-    public service: OrdersService,
-  ) {
-    http.get<{ flight: Flight, freeSeats: number }>(
-      "http://localhost:3000/api/flight/" + this.route.snapshot.paramMap.get('flightID'))
-      .subscribe(
-        data => {
-          if (data == null) router.navigate(['orders', 'pick-a-flight']);
-          this.flight = data.flight;
-          this.flight.freeSeats = data.freeSeats;
+    public service: OrdersService
+  ) { }
 
-          this.flight.seats = new Array(this.flight.plain.number_of_rows);
-          for (let index = 0; index < this.flight.plain.number_of_rows; index++) {
-            this.flight.seats[index] = Array(this.flight.plain.seats_to_row);
-          }
-          this.flight.estimated_time = Math.round(this.flight.distance / this.flight.plain.speed * 60);
-          this.flight.estimated_time_string = Math.floor(this.flight.estimated_time / 60).toLocaleString('il', { minimumIntegerDigits: 2 }) + ":" + (this.flight.estimated_time % 60).toLocaleString('il', { minimumIntegerDigits: 2 });
-          this.flight.departure = new Date(this.flight.departure);
-          this.flight.landing = new Date(this.flight.departure);
-          this.flight.landing.setMinutes(this.flight.departure.getMinutes() + this.flight.estimated_time);
+  ngOnInit(): void {
+    this.service.getFlight(this.route.snapshot.paramMap.get('flightID')).subscribe(
+      data => {
+        if (data == null) this.service.navigateToHome();
 
-        },
-        error => {
-          console.error(error.error.message);
-          router.navigate(['orders', 'pick-a-flight']);
+        this.service.flight = data;
+        this.service.flight.freeSeats = data.freeSeats;
+        this.service.flight.seats = new Array(this.service.flight.plain.number_of_rows);
+        for (let index = 0; index < this.service.flight.plain.number_of_rows; index++) {
+          this.service.flight.seats[index] = Array(this.service.flight.plain.seats_to_row);
         }
-      )
-    this.passengers = service.tickets.length;
+        this.service.flight.estimated_time = Math.round(this.service.flight.distance / this.service.flight.plain.speed * 60);
+        this.service.flight.estimated_time_string = Math.floor(this.service.flight.estimated_time / 60).toLocaleString('il', { minimumIntegerDigits: 2 }) + ":" + (this.service.flight.estimated_time % 60).toLocaleString('il', { minimumIntegerDigits: 2 });
+        this.service.flight.departure = new Date(this.service.flight.departure);
+        this.service.flight.landing = new Date(this.service.flight.departure);
+        this.service.flight.landing.setMinutes(this.service.flight.departure.getMinutes() + this.service.flight.estimated_time);
+      },
+      error => {
+        console.error(error.error.message);
+        this.service.navigateToHome();
+      }
+    )
+    this.passengers = this.service.newTickets.length;
+
   }
 
-  ngOnInit(): void { }
-
   changePassengersNumber() {
-    if (this.passengers > this.service.tickets.length) {
-      this.service.tickets.push(new Ticket());
+    if (this.passengers > this.service.newTickets.length) {
+      this.service.newTickets.push(new Ticket());
       this.changePassengersNumber();
-    } else if (this.passengers < this.service.tickets.length) {
-      this.service.tickets.pop();
+    } else if (this.passengers < this.service.newTickets.length) {
+      this.service.newTickets.pop();
       this.changePassengersNumber();
     }
   }
 
   isThereUsers(): boolean {
-    return this.service.tickets.some(ticket =>
+    return this.service.newTickets.some(ticket =>
       ticket.passenger.hebrew_name != '' &&
       ticket.passenger.english_name != '' &&
       ticket.passenger.passport != null);
   }
 
   saveData() {
-    this.service.tickets = this.service.tickets
-      .filter(ticket => ticket.passenger.hebrew_name != '' && ticket.passenger.english_name != '' && ticket.passenger.passport != null);
-    this.service.flight = this.flight;
-    console.log(this.service.tickets);
-
+    this.service.newTickets = this.service.newTickets
+      .filter(ticket =>
+        ticket.passenger.hebrew_name != '' &&
+        ticket.passenger.english_name != '' &&
+        ticket.passenger.passport != null);
   }
 }

@@ -35,7 +35,7 @@ export class Ticket extends BaseEntity {
     @IsOptional()
     seat: number;
 
-    @ManyToOne('Passenger', { cascade: true })
+    @ManyToOne('Passenger', { cascade: ['insert', 'update'] })
     @JoinColumn({ name: 'passenger_passport' })
     @ValidateNested()
     @Type(() => Passenger)

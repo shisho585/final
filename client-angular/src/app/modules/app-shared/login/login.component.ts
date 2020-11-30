@@ -2,8 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/models/user';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogErrorsComponent } from '../dialog-errors/dialog-errors.component';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   urlToRoute: string;
 
-  constructor(private router: Router, private http: HttpClient, private dialog: MatDialog) {
+  constructor(private router: Router, private http: HttpClient, private appService: AppService) {
     if (router.getCurrentNavigation()) {
       let state = router.getCurrentNavigation().extras.state;
       this.urlToRoute = state != undefined ? state.url : 'user/dashboard';
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit {
         if (message.includes('duplicate')) {
           message = "משתמש בשם זה כבר רשום אצלנו\nנסה להיכנס במקום"
         }
-        this.dialog.open(DialogErrorsComponent, { data: message.replaceAll(',', '\n') })
+        this.appService.openMessageDialog(message.replaceAll(',', '\n'));
       }
     )
   }
@@ -69,7 +68,8 @@ export class LoginComponent implements OnInit {
           this.loggedIn.emit('enter');
         }
       },
-      err => { this.dialog.open(DialogErrorsComponent, { data: "שם המשתמש או הסיסמא אינם נכונים" }) }
+      err =>
+        this.appService.openMessageDialog("שם המשתמש או הסיסמא אינם נכונים")
     )
   }
 }

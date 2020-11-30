@@ -6,7 +6,7 @@
                     <mat-panel-title>בחירת מושב</mat-panel-title>
                     <mat-panel-description>20₪ לבחירה של מושב</mat-panel-description>
                 </mat-expansion-panel-header>
-                <div *ngFor="let ticket of service.tickets; let i = index">
+                <div *ngFor="let ticket of service.newTickets; let i = index">
                     <span>{{i+1}}. {{ticket.passenger.hebrew_name.split(' ')[0]}}</span>
                     <mat-form-field class="small-form-field">
                         <mat-label>שורה</mat-label>
@@ -38,11 +38,11 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        כרטיסי טיסה : {{service.tickets.length * service.flight.price}}
+                        כרטיסי טיסה : {{service.newTickets.length * service.flight.price}}
                     </mat-panel-title>
                     <mat-panel-description>לפירוט</mat-panel-description>
                 </mat-expansion-panel-header>
-                כמות : {{service.tickets.length}}
+                כמות : {{service.newTickets.length}}
                 <br />
                 מחיר ליחידה : {{service.flight.price}}₪
             </mat-expansion-panel>

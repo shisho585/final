@@ -8,6 +8,7 @@ import { Order } from 'src/app/models/order';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs/operators';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-finish',
@@ -20,24 +21,33 @@ export class FinishComponent implements OnInit {
   paypalScriptLoaded = false;
   loggedIn = false;
 
-  constructor(public service: OrdersService, private router: Router, private http: HttpClient, private dialog: MatDialog) {
-    if (service.flight == undefined) {
-      router.navigate(['orders', 'pick-a-flight'])
+  constructor(
+    private dialog: MatDialog,
+    public service: OrdersService,
+    private appService: AppService
+  ) { }
+
+  ngOnInit(): void {
+    this.initConfig();
+
+    if (this.service.flight == undefined) {
+      this.service.navigateToHome();
     }
 
-    for (let index = 0; index < service.flight.plain.number_of_rows; index++) {
-      for (let indexB = 0; indexB < service.flight.plain.seats_to_row; indexB++) {
-        service.flight.seats[index][indexB] = null;
+    for (let index = 0; index < this.service.flight.plain.number_of_rows; index++) {
+      for (let indexB = 0; indexB < this.service.flight.plain.seats_to_row; indexB++) {
+        this.service.flight.seats[index][indexB] = null;
       }
     }
-    service.flight.tickets.forEach(ticket => {
-      service.flight.seats[ticket.row][ticket.seat] = ticket.passenger_passport;
+    this.service.flight.tickets.forEach(ticket => {
+      this.service.flight.seats[ticket.row][ticket.seat] = ticket.passenger_passport;
     })
 
-    this.freeRows = service.flight.seats
+    this.freeRows = this.service.flight.seats
       .map((row, index) => index)
-      .filter(rowIndex => service.flight.seats[rowIndex].some(seat => !seat));
+      .filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
   }
+
 
   clearChoises(ticket: Ticket) {
     this.releaseSeat(ticket);
@@ -70,34 +80,32 @@ export class FinishComponent implements OnInit {
 
   demoSave() {
     let user_name;
-    this.http.get(
-      'http://localhost:3000/api/authenticate',
-      { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
-    ).pipe(
+    this.appService.authenticate().pipe(
       finalize(() => {
         this.dialog.open(
           DialogComponent,
           { data: user_name, disableClose: true, autoFocus: false }
         ).afterClosed().subscribe(
           data => {
-            console.log(data);
-            
             if (data != 'cancel') {
               const order = new Order();
               order.user_email = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).email;
               order.seats_chosen = this.service.chosenSeats;
 
-              this.service.tickets.forEach(ticket => {
+              this.service.newTickets.forEach(ticket => {
                 ticket.flight_number = this.service.flight.number;
                 order.tickets.push(ticket);
               });
 
-              this.http.post('http://localhost:3000/api/order', order).subscribe(
-                data => {
-                  console.log(data);
-                  this.router.navigate(['orders', 'done'])
+              this.service.createOrder(order).subscribe(
+                () => {
+                  this.service.navigate('done');
                 },
-                error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
+                error => {
+                  const headerError = "השגיאות הבאות התרחשו במהלך השמירה";
+                  const messageError = error.error.message.toString().replaceAll(',', '\n');
+                  this.appService.openMessageDialog(messageError, headerError);
+                }
               )
             }
           },
@@ -111,12 +119,9 @@ export class FinishComponent implements OnInit {
         if (res != 'fail') {
           user_name = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).name;
         }
-      }
+      },
+      err => console.log(err.error)
     )
-  }
-
-  ngOnInit(): void {
-    this.initConfig();
   }
 
   public payPalConfig?: IPayPalConfig;
@@ -132,17 +137,17 @@ export class FinishComponent implements OnInit {
           purchase_units: [{
             amount: {
               currency_code: 'ILS',
-              value: (this.service.flight.price * this.service.tickets.length + this.service.chosenSeats * 20).toString(),
+              value: (this.service.flight.price * this.service.newTickets.length + this.service.chosenSeats * 20).toString(),
               breakdown: {
                 item_total: {
                   currency_code: 'ILS',
-                  value: (this.service.flight.price * this.service.tickets.length + this.service.chosenSeats * 20).toString()
+                  value: (this.service.flight.price * this.service.newTickets.length + this.service.chosenSeats * 20).toString()
                 }
               }
             },
             items: [{
               name: 'כרטיסי טיסה לטיסה ' + this.service.flight.number,
-              quantity: this.service.tickets.length.toString(),
+              quantity: this.service.newTickets.length.toString(),
               unit_amount: {
                 currency_code: 'ILS',
                 value: this.service.flight.price.toString()
@@ -172,29 +177,17 @@ export class FinishComponent implements OnInit {
         label: 'pay',
       },
       onApprove: (data, actions) => {
-        alert('הזמנך נקלטה והיא מאושרת ברגעים אלה. אל תסגור את החלון');
-        actions.order.get().then(details => {
-          console.log('onApprove - you can get full order details inside onApprove: ', details);
-        });
-
+        this.appService.openMessageDialog('הזמנך נקלטה והיא מאושרת ברגעים אלה\nאל תסגור את החלון');
+        // actions.order.get().then(details => {
+        //   console.log('onApprove - you can get full order details inside onApprove: ', details);
+        // });
       },
-      onClientAuthorization: (data) => {
-        this.service.tickets.forEach(ticket => {
-          ticket.flight_number = this.service.flight.number;
-        });
-        this.http.post('http://localhost:3000/api/ticket', this.service.tickets).subscribe(
-          data => {
-            console.log(data);
-            this.router.navigate(['orders', 'done'])
-          },
-          error => alert("השגיאות הבאות התרחשו במהלך השמירה:\n" + error.error.message.toString().replaceAll(',', '\n'))
-        )
-      },
+      onClientAuthorization: (data) => { },
       onCancel: (data, actions) => {
-        console.log('OnCancel', data, actions);
+        // console.log('OnCancel', data, actions);
       },
       onError: err => {
-        console.log('OnError', err);
+        // console.log('OnError', err);
       },
       onClick: (data, actions) => {
         this.demoSave();

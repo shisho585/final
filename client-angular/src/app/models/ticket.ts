@@ -3,7 +3,7 @@ import { Order } from './order';
 
 export class Ticket {
     ticket_no?: number;
-    flight_number: number;
+    flight_number: string;
     passenger_passport: number;
     passenger = new Passenger();
     row: number;

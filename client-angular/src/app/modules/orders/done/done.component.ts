@@ -11,15 +11,15 @@ import { OrdersService } from '../orders.service';
 export class DoneComponent implements OnInit {
 
   flight = this.service.flight;
-  tickets = this.service.tickets;
+  newTickets = this.service.newTickets;
   chosenSeats = this.service.chosenSeats;
 
-  constructor(public service: OrdersService, private router: Router) {
+  constructor(public service: OrdersService) {
     if (service.flight == undefined) {
-      router.navigate(['orders', 'pick-a-flight'])
+      service.navigateToHome();
     }
     this.service.flight = null;
-    this.service.tickets = [new Ticket()];
+    this.service.newTickets = [new Ticket()];
     this.service.chosenSeats = 0;
   }
 

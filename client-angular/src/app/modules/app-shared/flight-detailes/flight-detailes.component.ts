@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-flight-detailes',
@@ -9,10 +9,14 @@ export class FlightDetailesComponent implements OnInit {
 
   @Input() flight;
   @Input() admin = false
+  @Output() whenDelete = new EventEmitter();
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  delete() {
+    this.whenDelete.emit();
   }
 
 }

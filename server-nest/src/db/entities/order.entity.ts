@@ -29,10 +29,7 @@ export class Order extends BaseEntity {
     tickets: Ticket[];
 
     static async saveOrder(order: Order) {
-        const flight = await Flight.findOne(
-            order.tickets[0].flight_number,
-            { relations: ['plain', 'tickets'] }
-        );
+        const flight = await Flight.findOneWithRelations(order.tickets[0].flight_number);
         order.tickets.filter(ticket => ticket.seat != undefined && ticket.seat != null)
             .forEach(ticket => flight.tickets.push(ticket));
 

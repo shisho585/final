@@ -9,8 +9,8 @@
     <tr>
         <td>כרטיסי טיסה לטיסה {{flight.number}}</td>
         <td>{{flight.price}}</td>
-        <td>{{tickets.length}}</td>
-        <td>{{flight.price * tickets.length}}</td>
+        <td>{{newTickets.length}}</td>
+        <td>{{flight.price * newTickets.length}}</td>
     </tr>
     <tr *ngIf="this.chosenSeats > 0">
         <td>תוספת מושבים</td>
@@ -22,6 +22,6 @@
         <td></td>
         <td></td>
         <td>ס"ה</td>
-        <td>{{flight.price * tickets.length + chosenSeats * 20}}</td>
+        <td>{{flight.price * newTickets.length + chosenSeats * 20}}</td>
     </tr>
 </table>

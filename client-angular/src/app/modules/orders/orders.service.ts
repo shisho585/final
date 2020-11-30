@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Order } from 'src/app/models/order';
 import { Flight } from '../../models/flight';
 import { Ticket } from '../../models/ticket';
 
@@ -8,8 +11,28 @@ import { Ticket } from '../../models/ticket';
 export class OrdersService {
 
   flight: Flight;
-  tickets = [new Ticket()];
+  newTickets = [new Ticket()];
   chosenSeats = 0;
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) { }
+
+  getFlight(id: string) {
+    return this.http.get<Flight>("http://localhost:3000/api/flight/" + id);
+  }
+
+  createOrder(order: Order) {
+    return this.http.post('http://localhost:3000/api/order', order);
+  }
+
+  navigateToHome() {
+    this.router.navigate(['orders']);
+  }
+
+  navigate(segment: string) {
+    this.router.navigate(['orders', segment]);
+  }
+
 }

@@ -9,7 +9,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'dashboard' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'add-a-flight', component: AddaflightComponent },
+  { path: 'edit-a-flight/:ID', component: AddaflightComponent },
   { path: 'add-a-plain', component: AddaplainComponent },
+  { path: 'edit-a-plain/:ID', component: AddaplainComponent },
   { path: 'flight/:ID', component: FlightComponent }
 ];
 

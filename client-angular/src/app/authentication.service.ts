@@ -1,32 +1,29 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
-import { MatDialog } from '@angular/material/dialog';
-import { DialogErrorsComponent } from './modules/app-shared/dialog-errors/dialog-errors.component';
+import { AppService } from './app.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService implements CanActivate {
 
-  constructor(private router: Router, private http: HttpClient, private dialog: MatDialog) { }
+  constructor(
+    private appService: AppService
+  ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     if (localStorage.getItem('loggedInToken') == undefined) {
-      this.router.navigate(['login'], { state: { url: state.url } });
+      this.appService.navigateToLogin(state.url);
     } else {
-      return this.http.get(
-        'http://localhost:3000/api/authenticate',
-        { headers: { authorization: localStorage.getItem('loggedInToken') }, responseType: 'text' }
-      ).pipe(
+      return this.appService.authenticate().pipe(
         map(
           res => {
             if (res == 'admin' || (!state.url.includes('admin') && res == 'user')) {
               return true;
             } else {
-              this.router.navigate(['login'], { state: { url: state.url } })
+              this.appService.navigateToLogin(state.url);
             }
           }
         )

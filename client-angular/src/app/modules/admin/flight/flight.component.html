@@ -1,6 +1,6 @@
 <div class="flexed-div" *ngIf="flight != null" style="height: 100%;">
-    <app-flight-detailes class="nested-flex head" style="flex:1;" [flight]="flight" [admin]="true">
-    </app-flight-detailes>
+    <app-flight-detailes class="nested-flex head" style="flex:1;" [flight]="flight" [admin]="true"
+        (whenDelete)="delete()"> </app-flight-detailes>
     <div class="nested-flex head" style="flex:2; direction: ltr;max-height: 80%; overflow: auto;">
         <div class="center" style="width:fit-content;height: 100%;">
             <div class="flexed-div">

@@ -9,6 +9,8 @@
 <p>{{flight.plain.type}}</p>
 <p>{{flight.price}}</p>
 <div *ngIf="admin">
-    <button mat-raised-button style="background-color: rgb(230, 0, 0); color: white;">מחק טיסה</button>
-    <button mat-raised-button style="background-color: seagreen; color: white;">ערוך פרטי טיסה</button>
+    <button mat-raised-button style="background-color: rgb(230, 0, 0); color: white;" (click)="delete()">מחק
+        טיסה</button>
+    <button mat-raised-button style="background-color: seagreen; color: white;"
+        routerLink="/admin/edit-a-flight/{{flight.number}}" routerLinkActive="active">ערוך פרטי טיסה</button>
 </div>

@@ -2,7 +2,7 @@ import { Ticket } from './ticket';
 import { Plain } from './plain';
 
 export class Flight {
-    number: number;
+    number: string;
     departure: Date;
     from_country: string;
     from_terminal: string;
@@ -15,7 +15,7 @@ export class Flight {
     plain_type: string;
     plain?: Plain;
     price: number;
-    tickets: Ticket[];
+    tickets = [new Ticket()];
     freeSeats: number;
     seats?: number[][];
 }
