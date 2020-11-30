@@ -2,6 +2,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/models/user';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogErrorsComponent } from '../dialog-errors/dialog-errors.component';
 
 @Component({
   selector: 'app-login',
@@ -14,11 +16,11 @@ export class LoginComponent implements OnInit {
 
   login = true;
   canRegister = true;
-  @Output() logined = new EventEmitter();
+  @Output() loggedIn = new EventEmitter();
 
   urlToRoute: string;
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router, private http: HttpClient, private dialog: MatDialog) {
     if (router.getCurrentNavigation()) {
       let state = router.getCurrentNavigation().extras.state;
       this.urlToRoute = state != undefined ? state.url : 'user/dashboard';
@@ -37,16 +39,20 @@ export class LoginComponent implements OnInit {
       { responseType: 'text' }
     ).subscribe(
       res => {
-        console.log('res' + res);
-
         localStorage.setItem('loggedInToken', res.toString());
         if (this.urlToRoute) {
           this.router.navigate([this.urlToRoute]);
         } else {
-          this.logined.emit('register');
+          this.loggedIn.emit('register');
         }
       },
-      err => console.error('err' + err)
+      err => {
+        let message = JSON.parse(err.error).message.toString();
+        if (message.includes('duplicate')) {
+          message = "משתמש בשם זה כבר רשום אצלנו\nנסה להיכנס במקום"
+        }
+        this.dialog.open(DialogErrorsComponent, { data: message.replaceAll(',', '\n') })
+      }
     )
   }
 
@@ -56,22 +62,14 @@ export class LoginComponent implements OnInit {
       { headers: { email: this.user.email, password: this.user.password }, responseType: 'text' }
     ).subscribe(
       res => {
-        console.log(res);
-
         localStorage.setItem('loggedInToken', res.toString());
         if (this.urlToRoute) {
           this.router.navigate([this.urlToRoute]);
         } else {
-          this.logined.emit('enter');
+          this.loggedIn.emit('enter');
         }
       },
-      err => {
-        console.log(err);
-
-        console.log("incorrect");
-        console.log(this.user.name);
-        console.log(this.user.password);
-      }
+      err => { this.dialog.open(DialogErrorsComponent, { data: "שם המשתמש או הסיסמא אינם נכונים" }) }
     )
   }
 }

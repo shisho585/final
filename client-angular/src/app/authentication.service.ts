@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Observable, EMPTY } from 'rxjs';
-import { map, catchError } from "rxjs/operators";
+import { Observable } from 'rxjs';
+import { map } from "rxjs/operators";
+import { MatDialog } from '@angular/material/dialog';
+import { DialogErrorsComponent } from './modules/app-shared/dialog-errors/dialog-errors.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService implements CanActivate {
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(private router: Router, private http: HttpClient, private dialog: MatDialog) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-    if (localStorage.getItem('loggedInToken') == undefined) {      
+    if (localStorage.getItem('loggedInToken') == undefined) {
       this.router.navigate(['login'], { state: { url: state.url } });
     } else {
       return this.http.get(
@@ -21,8 +23,6 @@ export class AuthenticationService implements CanActivate {
       ).pipe(
         map(
           res => {
-            console.log(res);
-
             if (res == 'admin' || (!state.url.includes('admin') && res == 'user')) {
               return true;
             } else {

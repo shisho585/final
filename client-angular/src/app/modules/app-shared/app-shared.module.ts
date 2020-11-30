@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from "@angular/material/dialog";
 import { FlightDetailesComponent } from './flight-detailes/flight-detailes.component';
 import { DialogErrorsComponent } from './dialog-errors/dialog-errors.component';
 
@@ -15,6 +16,7 @@ import { DialogErrorsComponent } from './dialog-errors/dialog-errors.component';
   imports: [
     CommonModule,
     MatFormFieldModule,
+    MatDialogModule,
     MatInputModule,
     FormsModule,
     MatButtonModule
