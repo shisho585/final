@@ -80,6 +80,8 @@ export class FinishComponent implements OnInit {
           { data: user_name, disableClose: true, autoFocus: false }
         ).afterClosed().subscribe(
           data => {
+            console.log(data);
+            
             if (data != 'cancel') {
               const order = new Order();
               order.user_email = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).email;

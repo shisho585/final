@@ -24,14 +24,14 @@ import {MatIconModule} from '@angular/material/icon';
 
 import { NgxSliderModule } from "@angular-slider/ngx-slider";
 import { NgxPayPalModule } from "ngx-paypal";
-import { SharedModule } from '../shared/shared.module';
+import { AppSharedModule } from '../app-shared/app-shared.module';
 import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [PickaflightComponent, DetailedComponent, FinishComponent, DoneComponent, DialogComponent],
   imports: [
     CommonModule,
-    SharedModule,
+    AppSharedModule,
     OrdersRoutingModule,
     MatGridListModule,
     MatFormFieldModule,

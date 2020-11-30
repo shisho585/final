@@ -6,12 +6,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-
-
+import { FlightDetailesComponent } from './flight-detailes/flight-detailes.component';
 
 @NgModule({
-  declarations: [LoginComponent],
-  exports: [LoginComponent],
+  declarations: [LoginComponent, FlightDetailesComponent],
+  exports: [LoginComponent, FlightDetailesComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -20,4 +19,4 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ]
 })
-export class SharedModule { }
+export class AppSharedModule { }

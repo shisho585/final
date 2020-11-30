@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Flight } from '../models/flight';
-import { Ticket } from '../models/ticket';
+import { Flight } from '../../models/flight';
+import { Ticket } from '../../models/ticket';
 
 @Injectable({
   providedIn: 'root'

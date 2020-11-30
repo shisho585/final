@@ -8,7 +8,7 @@ import { MainComponent } from './main/main.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatButtonModule } from '@angular/material/button';
-import { SharedModule } from './shared/shared.module';
+import { AppSharedModule } from './modules/app-shared/app-shared.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import { SharedModule } from './shared/shared.module';
   ],
   imports: [
     BrowserModule,
-    SharedModule,
+    AppSharedModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,

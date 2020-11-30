@@ -1,6 +1,6 @@
 <div class="head">
     <div style="height: 35px;">
-        <button mat-icon-button (click)="dialogRef.close('cancel')" style="position: absolute;left: 20px;">
+        <button mat-icon-button (click)="cancel()" style="position: absolute;left: 20px;">
             <mat-icon>close</mat-icon>
         </button>
     </div>
@@ -8,7 +8,7 @@
         <p mat-dialog-title>אתה מחובר כרגע כ <b>{{name}}</b></p>
         <mat-dialog-content>
             <p>ברצונך להמשיך כ<b>{{name}}</b> או להיכנס / להירשם בשם אחר?</p>
-            <button mat-raised-button color="primary" id="focus" (click)="cancel()">להמשיך</button>
+            <button mat-raised-button color="primary" id="focus" (click)="dialogRef.close()">להמשיך</button>
             <button mat-raised-button color="primary" (click)="loginPlease()"> כניסה / הרשמה</button>
         </mat-dialog-content>
     </ng-container>
