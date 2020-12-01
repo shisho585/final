@@ -41,8 +41,8 @@ export class Ticket extends BaseEntity {
     @Type(() => Passenger)
     passenger: Passenger;
 
-    @ManyToOne('Flight')
-    @JoinColumn({ name: 'flight_number' })
+    @ManyToOne('Flight', { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'flight_number', referencedColumnName: 'flight_no' })
     flight: Flight;
 
     @ManyToOne('Order')

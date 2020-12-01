@@ -2,7 +2,8 @@ import { Ticket } from './ticket';
 import { Plain } from './plain';
 
 export class Flight {
-    number: string;
+    readonly id: number;
+    flight_no: string;
     departure: Date;
     from_country: string;
     from_terminal: string;

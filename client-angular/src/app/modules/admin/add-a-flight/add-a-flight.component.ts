@@ -48,7 +48,7 @@ export class AddaflightComponent implements OnInit {
   save() {
     this.service.createFlight(this.flight).subscribe(
       (flight: Flight) => {
-        this.appService.openMessageDialog("טיסה מס' " + flight.number + " נשמרה בהצלחה")
+        this.appService.openMessageDialog("טיסה מס' " + flight.flight_no + " נשמרה בהצלחה")
         this.service.navigateToHome();
       },
       error => {

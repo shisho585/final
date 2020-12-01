@@ -22,8 +22,8 @@ export class PlainController {
         return Plain.save(newPlain);
     }
 
-    @Delete(':id')
-    deletePlain(@Param('id') id: string) {
-        return Plain.delete(id);
+    @Delete(':type')
+    deletePlain(@Param('type') type: string) {
+        return Plain.delete({ type: type });
     }
 }

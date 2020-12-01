@@ -37,7 +37,7 @@ export class FlightComponent implements OnInit {
   ngOnInit(): void { }
 
   delete() {
-    this.service.deleteFlight(this.flight.number).subscribe(
+    this.service.deleteFlight(this.flight.flight_no).subscribe(
       data => console.log(data)
 
     )

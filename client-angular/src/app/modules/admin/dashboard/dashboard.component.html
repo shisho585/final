@@ -5,7 +5,7 @@
             <table mat-table [dataSource]="flightsDataSource" matSort>
                 <ng-container matColumnDef="number">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר טיסה </th>
-                    <td mat-cell *matCellDef="let flight"> {{flight.number}} </td>
+                    <td mat-cell *matCellDef="let flight"> {{flight.flight_no}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="plain_type">
@@ -56,7 +56,7 @@
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsOfFlights"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsOfFlights;"
-                    routerLink="../flight/{{row.number}}" routerLinkActive="active" class="row-flight"></tr>
+                    routerLink="../flight/{{row.flight_no}}" routerLinkActive="active" class="row-flight"></tr>
             </table>
             <button mat-raised-button color="primary" routerLink="../add-a-flight" routerLinkActive="active">הוסף
                 טיסה</button>

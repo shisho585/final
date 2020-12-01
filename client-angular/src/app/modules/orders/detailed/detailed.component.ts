@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { OrdersService } from '../orders.service';
 import { Flight } from 'src/app/models/flight';
 import { Ticket } from 'src/app/models/ticket';
+import { DialogComponent } from '../dialog/dialog.component';
+import { finalize } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-detailed',
@@ -11,13 +15,17 @@ import { Ticket } from 'src/app/models/ticket';
 })
 export class DetailedComponent implements OnInit {
 
-  passengers = 1;
-
   flight: Flight;
+  freeRows: number[];
+  passengers = 1;
+  inSeats = false;
+
 
   constructor(
     private route: ActivatedRoute,
-    public service: OrdersService
+    public service: OrdersService,
+    private dialog: MatDialog,
+    private appService: AppService
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +44,19 @@ export class DetailedComponent implements OnInit {
         this.service.flight.departure = new Date(this.service.flight.departure);
         this.service.flight.landing = new Date(this.service.flight.departure);
         this.service.flight.landing.setMinutes(this.service.flight.departure.getMinutes() + this.service.flight.estimated_time);
+
+        for (let index = 0; index < this.service.flight.plain.number_of_rows; index++) {
+          for (let indexB = 0; indexB < this.service.flight.plain.seats_to_row; indexB++) {
+            this.service.flight.seats[index][indexB] = null;
+          }
+        }
+        this.service.flight.tickets.forEach(ticket => {
+          this.service.flight.seats[ticket.row][ticket.seat] = ticket.passenger_passport;
+        })
+
+        this.freeRows = this.service.flight.seats
+          .map((row, index) => index)
+          .filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
       },
       error => {
         console.error(error.error.message);
@@ -43,7 +64,36 @@ export class DetailedComponent implements OnInit {
       }
     )
     this.passengers = this.service.newTickets.length;
+  }
 
+
+  clearChoises(ticket: Ticket) {
+    this.releaseSeat(ticket);
+    ticket.row = null;
+    ticket.seat = null;
+  }
+
+  releaseSeat(ticket: Ticket) {
+    if (Number.isInteger(ticket.row) && Number.isInteger(ticket.seat)) {
+      this.service.flight.seats[ticket.seat][ticket.seat] = null;
+      this.service.chosenSeats--;
+      this.freeRows = this.service.flight.seats
+        .map((row, index) => index)
+        .filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
+    }
+  }
+
+  catchSeat(ticket: Ticket) {
+    if (Number.isInteger(ticket.row) && Number.isInteger(ticket.seat)) {
+      this.service.chosenSeats++;
+      if (this.service.flight.seats[ticket.row][ticket.seat]) {
+        ticket.seat = this.service.flight.seats[ticket.row].findIndex(seat => !seat);
+      }
+      this.service.flight.seats[ticket.row][ticket.seat] = ticket.passenger.passport;
+      this.freeRows = this.service.flight.seats
+        .map((row, index) => index)
+        .filter(rowIndex => this.service.flight.seats[rowIndex].some(seat => !seat));
+    }
   }
 
   changePassengersNumber() {
@@ -69,5 +119,35 @@ export class DetailedComponent implements OnInit {
         ticket.passenger.hebrew_name != '' &&
         ticket.passenger.english_name != '' &&
         ticket.passenger.passport != null);
+        this.demoSave();
   }
+
+  demoSave() {
+    let user_name;
+    this.appService.authenticate().pipe(
+      finalize(() => {
+        this.dialog.open(
+          DialogComponent,
+          { data: user_name, disableClose: true, autoFocus: false }
+        ).afterClosed().subscribe(
+          data => {
+            if (data != 'cancel') {
+              this.service.navigate('finish')
+            }
+          },
+          err => {
+            console.error('אין משתמש מחובר');
+          }
+        )
+      })
+    ).subscribe(
+      res => {
+        if (res != 'fail') {
+          user_name = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).name;
+        }
+      },
+      err => console.log(err.error)
+    )
+  }
+
 }

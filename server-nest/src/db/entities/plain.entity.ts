@@ -1,9 +1,12 @@
-import { Entity, BaseEntity, PrimaryColumn, Column } from 'typeorm';
+import { Entity, BaseEntity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { IsString, IsNumber } from 'class-validator';
 
 @Entity('plains')
 export class Plain extends BaseEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  readonly id: number;
+
+  @Column({ unique: true })
   @IsString()
   type: string;
 

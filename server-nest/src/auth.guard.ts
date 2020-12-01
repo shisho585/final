@@ -9,16 +9,22 @@ export class AuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const roles = this.reflector.getAll<string[]>('role', [context.getHandler(), context.getClass()]);
+
     if (!roles) {
       return true;
     }
-    const token = context.switchToHttp().getRequest().headers.authorization;
-    let role;
+    const request = context.switchToHttp().getRequest();
+    const headers = request.headers;
+    const token = headers.authorization;
+    let decryptedToken;
     try {
-      role = this.jwtService.verify(token).role;
+      decryptedToken = this.jwtService.verify(token);
     } catch (error) {
       throw new ForbiddenException();
     }
-    return role == 'admin' || !roles.includes('admin');
+
+    return decryptedToken.role == 'admin' ||
+      (!roles.includes('admin') &&
+        decryptedToken.email == request.url.split(request.route.path.split(':email')[0])[1]);
   }
 }

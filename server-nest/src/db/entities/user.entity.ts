@@ -1,11 +1,14 @@
 import { IsEmail, IsNumber, IsString } from "class-validator";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn, InsertResult } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, InsertResult, PrimaryGeneratedColumn } from "typeorm";
 import { Order } from "./order.entity";
 import bcrypt = require('bcrypt');
 
 @Entity('users')
 export class User extends BaseEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
+    readonly id: number;
+
+    @Column({ unique: true })
     @IsEmail()
     email: string;
 
@@ -16,7 +19,7 @@ export class User extends BaseEntity {
     @IsString()
     password: string;
 
-    @Column({ nullable: true, select: false })
+    @Column({ select: false })
     hashed_password: string;
 
     @Column()

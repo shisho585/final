@@ -8,7 +8,7 @@ import { Flight } from "./flight.entity";
 @Entity('orders')
 export class Order extends BaseEntity {
     @PrimaryGeneratedColumn()
-    readonly number: number;
+    readonly order_no: number;
 
     @Column()
     @IsEmail()
@@ -19,8 +19,12 @@ export class Order extends BaseEntity {
     @IsOptional()
     seats_chosen: number;
 
+    @Column()
+    @IsNumber()
+    price: number;
+
     @ManyToOne('User')
-    @JoinColumn({ name: 'user_email' })
+    @JoinColumn({ name: 'user_email', referencedColumnName: 'email' })
     user: User;
 
     @OneToMany('Ticket', 'order', { cascade: true })

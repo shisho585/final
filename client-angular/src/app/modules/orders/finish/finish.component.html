@@ -3,40 +3,6 @@
         <mat-accordion>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    <mat-panel-title>בחירת מושב</mat-panel-title>
-                    <mat-panel-description>20₪ לבחירה של מושב</mat-panel-description>
-                </mat-expansion-panel-header>
-                <div *ngFor="let ticket of service.newTickets; let i = index">
-                    <span>{{i+1}}. {{ticket.passenger.hebrew_name.split(' ')[0]}}</span>
-                    <mat-form-field class="small-form-field">
-                        <mat-label>שורה</mat-label>
-                        <mat-select [(ngModel)]="ticket.row" (selectionChange)="catchSeat(ticket)"
-                            (valueChange)="releaseSeat(ticket)">
-                            <ng-container *ngFor="let x of service.flight.seats; let z = index;">
-                                <mat-option *ngIf="freeRows.includes(z) || ticket.row == z" [value]="z">{{z+1}}
-                                </mat-option>
-                            </ng-container>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="small-form-field">
-                        <mat-label>מושב</mat-label>
-                        <mat-select [(ngModel)]="ticket.seat" (selectionChange)="catchSeat(ticket)"
-                            (valueChange)="releaseSeat(ticket)">
-                            <ng-container *ngFor="let y of service.flight.seats[ticket.row]; let z = index;">
-                                <mat-option *ngIf="!y || ticket.seat == z" [value]="z"> {{"ABCDEFGHIJK"[z]}}
-                                </mat-option>
-                            </ng-container>
-                        </mat-select>
-                    </mat-form-field>
-                    <button mat-raised-button color="primary" (click)="clearChoises(ticket)">ניקוי</button>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </div>
-    <div class="head" style="flex:2">
-        <mat-accordion>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
                     <mat-panel-title>
                         כרטיסי טיסה : {{service.newTickets.length * service.flight.price}}
                     </mat-panel-title>
@@ -65,4 +31,4 @@
     </div>
 
 </div>
-<button (click)="demoSave()">שמור דמו</button>
+<button (click)="saveOrder()">שמור דמו</button>

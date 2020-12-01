@@ -12,7 +12,7 @@ export class FlightController {
     @Get('light')
     getAllFlightsLight() {
         return Flight.find({
-            select: ['number', 'departure', 'from_country', 'to_country', 'price'],
+            select: ['flight_no', 'departure', 'from_country', 'to_country', 'price'],
             relations: ['tickets', 'plain']
         });
     }
@@ -43,6 +43,6 @@ export class FlightController {
     @SetMetadata('role', 'admin')
     @Delete(':flightNumber')
     deleteFlight(@Param('flightNumber') flightNumber: string) {
-        return Flight.delete(flightNumber);
+        return Flight.delete({ flight_no: flightNumber });
     }
 }

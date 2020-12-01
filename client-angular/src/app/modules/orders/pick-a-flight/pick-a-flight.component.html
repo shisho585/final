@@ -61,7 +61,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="../detailed/{{row.number}}"
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="../detailed/{{row.flight_no}}"
                 routerLinkActive="active" class="row-flight"></tr>
         </table>
     </div>

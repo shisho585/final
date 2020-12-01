@@ -15,11 +15,16 @@ export class AppService {
     private router: Router
   ) { }
 
-  openMessageDialog(message: string, header?: string) {
+  openMessageDialog(message: string, header?: string, modal?: boolean) {
+    this.closeAll();
     this.dialog.open(
       MessageDialog,
-      { data: { header, message } }
+      { disableClose: modal, data: { header, message } }
     )
+  }
+
+  closeAll() {
+    this.dialog.closeAll();
   }
 
   authenticate() {

@@ -1,38 +1,73 @@
-<div class="flexed-div" style="height: 100%;">
+<div class="flexed-div" style="height: 80%;">
     <app-flight-detailes *ngIf="service.flight" class="nested-flex head" style="flex:1;" [flight]="service.flight">
     </app-flight-detailes>
-    <div class="nested-flex head" style="flex:2;max-height: 80%; overflow: auto; padding-bottom: 0px;">
+    <div class="nested-flex head" style="flex:2;max-height: 95%; overflow: auto; padding-bottom: 0px;">
         <div class="nested">
-            <mat-form-field>
-                <mat-label>כמה נוסעים אתם?</mat-label>
-                <input matInput type="number" min="1" max="{{flight?.freeSeats}}" [(ngModel)]="passengers"
-                    (change)="changePassengersNumber()" />
-            </mat-form-field>
-            <div id="passengerDetailes" *ngFor="let ticket of service.newTickets; let x = index">
-                <mat-label>{{x+1}}. </mat-label>
+            <ng-container *ngIf="!inSeats else additionals">
                 <mat-form-field>
-                    <mat-label>שם מלא בעברית</mat-label>
-                    <input matInput type="text" [(ngModel)]="ticket.passenger.hebrew_name"
-                        [pattern]="'^[\u0590-\u05fe ]*$'" required />
+                    <mat-label>כמה נוסעים אתם?</mat-label>
+                    <input matInput type="number" min="1" max="{{flight?.freeSeats}}" [(ngModel)]="passengers"
+                        (change)="changePassengersNumber()" />
                 </mat-form-field>
-                <mat-form-field>
-                    <mat-label>שם מלא באנגלית</mat-label>
-                    <input matInput type="text" [(ngModel)]="ticket.passenger.english_name" [pattern]="'^[a-zA-Z ]*$'"
-                        required />
-                </mat-form-field>
-                <mat-form-field id="id-number">
-                    <mat-label>מספר דרכון</mat-label>
-                    <input matInput type="number" [(ngModel)]="ticket.passenger.passport" required />
-                </mat-form-field>
-            </div>
-            <div
-                style="position: sticky; bottom: 20px; background-color: seagreen; height: fit-content; padding: 20px;">
-                <span>מחיר כולל: {{flight?.price * passengers}}</span>
-                <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
-                    routerLink="../../finish" routerLinkActive="active"
-                    style="position: absolute; left: 20px; bottom: 14px;">אישור</button>
+                <div id="passengerDetailes" *ngFor="let ticket of service.newTickets; let x = index">
+                    <mat-label>{{x+1}}. </mat-label>
+                    <mat-form-field>
+                        <mat-label>שם מלא בעברית</mat-label>
+                        <input matInput type="text" [(ngModel)]="ticket.passenger.hebrew_name"
+                            [pattern]="'^[\u0590-\u05fe ]*$'" required />
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>שם מלא באנגלית</mat-label>
+                        <input matInput type="text" [(ngModel)]="ticket.passenger.english_name"
+                            [pattern]="'^[a-zA-Z ]*$'" required />
+                    </mat-form-field>
+                    <mat-form-field id="id-number">
+                        <mat-label>מספר דרכון</mat-label>
+                        <input matInput type="number" [(ngModel)]="ticket.passenger.passport" required />
+                    </mat-form-field>
+                </div>
+            </ng-container>
+            <ng-template #additionals>
+                <div *ngFor="let ticket of service.newTickets; let i = index">
+                    <span>{{i+1}}. {{ticket.passenger.hebrew_name.split(' ')[0]}}</span>
+                    <mat-form-field class="small-form-field">
+                        <mat-label>שורה</mat-label>
+                        <mat-select [(ngModel)]="ticket.row" (selectionChange)="catchSeat(ticket)"
+                            (valueChange)="releaseSeat(ticket)">
+                            <ng-container *ngFor="let x of service.flight.seats; let z = index;">
+                                <mat-option *ngIf="freeRows.includes(z) || ticket.row == z" [value]="z">{{z+1}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="small-form-field">
+                        <mat-label>מושב</mat-label>
+                        <mat-select [(ngModel)]="ticket.seat" (selectionChange)="catchSeat(ticket)"
+                            (valueChange)="releaseSeat(ticket)">
+                            <ng-container *ngFor="let y of service.flight.seats[ticket.row]; let z = index;">
+                                <mat-option *ngIf="!y || ticket.seat == z" [value]="z"> {{"ABCDEFGHIJK"[z]}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="clearChoises(ticket)">ניקוי</button>
+                </div>
+            </ng-template>
+            <div style="position: sticky; bottom: 20px; background-color: seagreen; height: 36px; padding: 20px;">
+                <button mat-raised-button color="primary" *ngIf="!inSeats" (click)="inSeats = true"
+                    style="position: absolute; left: 20px;" [disabled]="!isThereUsers()">לבחירת מקומות</button>
+                <button mat-raised-button color="primary" *ngIf="inSeats" (click)="inSeats = false">חזרה לפרטי
+                    הנוסעים</button>
             </div>
             <div style="position: sticky; bottom: 0px; height: 20px;background: rgb(200, 230, 250);"> </div>
         </div>
+    </div>
+</div>
+<div class="flexed-div">
+    <div style="flex:1"></div>
+    <div class="nested-flex head" style="flex:2;background-color: seagreen;">
+        <span>מחיר כולל: {{flight?.price * passengers}}</span>
+        <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
+            style="position: absolute; left: 20px; bottom: 14px;">אישור</button>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException, Param, SetMetadata, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException, Param, UseGuards, SetMetadata } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import { Passenger } from './db/entities/passenger.entity';
 import { Ticket } from './db/entities/ticket.entity';
@@ -16,7 +16,7 @@ export class AppController {
   async login(@Headers() user_data) {
     let user: User;
     try {
-      user = await User.findOneOrFail(user_data.email, { select: ['name', 'email', 'role', 'hashed_password'] });
+      user = await User.findOneOrFail({ email: user_data.email }, { select: ['name', 'email', 'role', 'hashed_password'] });
       if (bcrypt.compareSync(user_data.password, user.hashed_password))
         return this.jwtService.sign({ name: user.name, email: user.email, role: user.role })
       throw new Error("pass incorrect");
@@ -47,7 +47,7 @@ export class AppController {
   @SetMetadata('role', 'user')
   @Get('user/:email')
   getUser(@Param('email') user_email: string) {
-    return User.findOne(user_email, { relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
+    return User.findOne({ email: user_email }, { relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
   }
 
   @Post('passenger')

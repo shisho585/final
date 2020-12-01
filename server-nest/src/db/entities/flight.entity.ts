@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, BaseEntity, Column, ManyToOne, OneToMany, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { MaxLength, IsAlpha, IsString, IsDate, IsNumber, Matches, } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Plain } from './plain.entity';
@@ -8,9 +8,12 @@ import { BadRequestException } from '@nestjs/common';
 
 @Entity('flights')
 export class Flight extends BaseEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
+    readonly id: number;
+
+    @Column({ unique: true })
     @Matches(/^[0-9a-zA-Z\s]*$/)
-    number: string;
+    flight_no: string;
 
     @Column()
     @IsDate()
@@ -48,7 +51,7 @@ export class Flight extends BaseEntity {
     price: number;
 
     @ManyToOne('Plain')
-    @JoinColumn({ name: 'plain_type' })
+    @JoinColumn({ name: 'plain_type', referencedColumnName: 'type' })
     plain: Plain;
 
     @OneToMany('Ticket', 'flight', { onDelete: 'CASCADE' })
@@ -59,7 +62,7 @@ export class Flight extends BaseEntity {
     static async findOneWithRelations(flightNumber: string) {
         let flight;
         try {
-            flight = await this.getRepository().findOneOrFail(flightNumber, { relations: ['plain', 'tickets'] });
+            flight = await this.getRepository().findOneOrFail({ flight_no: flightNumber }, { relations: ['plain', 'tickets'] });
         } catch (error) {
             throw new BadRequestException('No such flight');
         }
