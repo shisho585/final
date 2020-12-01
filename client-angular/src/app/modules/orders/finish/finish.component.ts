@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { OrdersService } from '../orders.service';
 import { Ticket } from 'src/app/models/ticket';
-import { HttpClient } from '@angular/common/http';
 import { Order } from 'src/app/models/order';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';

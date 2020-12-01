@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { Plain } from 'src/app/models/plain';
 import { AdminService } from '../admin.service';
 import { AppService } from 'src/app/app.service';

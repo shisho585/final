@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, SetMetadata, UseGuards, ValidationPipe } from '@nestjs/common';
+import { AuthGuard } from './auth.guard';
 import { Flight } from './db/entities/flight.entity';
 
 @Controller('api/flight')
@@ -31,11 +32,15 @@ export class FlightController {
         return Flight.findOneWithRelations(flightNumber);
     }
 
+    @UseGuards(AuthGuard)
+    @SetMetadata('role', 'admin')
     @Post()
     createNewFlight(@Body(ValidationPipe) newFlight: Flight) {
         return Flight.save(newFlight);
     }
 
+    @UseGuards(AuthGuard)
+    @SetMetadata('role', 'admin')
     @Delete(':flightNumber')
     deleteFlight(@Param('flightNumber') flightNumber: string) {
         return Flight.delete(flightNumber);

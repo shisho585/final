@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { UrlResolver } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -34,6 +33,6 @@ export class AppService {
   }
 
   navigateToLogin(urlTOResolve: string) {
-    this.router.navigate(['login'], { state: { url: UrlResolver } });
+    this.router.navigate(['login'], { state: { url: urlTOResolve } });
   }
 }

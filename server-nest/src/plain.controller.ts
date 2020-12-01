@@ -1,7 +1,10 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, SetMetadata, UseGuards, ValidationPipe } from '@nestjs/common';
+import { AuthGuard } from './auth.guard';
 import { Plain } from './db/entities/plain.entity';
 
 @Controller('api/plain')
+@UseGuards(AuthGuard)
+@SetMetadata('role', 'admin')
 export class PlainController {
 
     @Get()
@@ -19,4 +22,8 @@ export class PlainController {
         return Plain.save(newPlain);
     }
 
+    @Delete(':id')
+    deletePlain(@Param('id') id: string) {
+        return Plain.delete(id);
+    }
 }

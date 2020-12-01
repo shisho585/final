@@ -1,18 +1,17 @@
-import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Options } from '@angular-slider/ngx-slider';
 import { Flight } from 'src/app/models/flight';
+import { OrdersService } from '../orders.service';
 
 @Component({
   selector: 'app-pick-a-flight',
   templateUrl: './pick-a-flight.component.html',
   styleUrls: ['./pick-a-flight.component.scss']
 })
-export class PickaflightComponent implements OnInit, AfterViewInit {
+export class PickaflightComponent implements OnInit {
 
-  ELEMENT_DATA_BASE: Flight[];
+  flights: Flight[];
 
   firstTime: Date;
   lastTime: Date;
@@ -32,12 +31,20 @@ export class PickaflightComponent implements OnInit, AfterViewInit {
 
   ngx_slider_options = { floor: 0, ceil: 0 };
 
-  constructor(private http: HttpClient) {
-    http.get<Flight[]>("http://localhost:3000/api/flight/light/future").subscribe(
-      data => {
-        this.ELEMENT_DATA_BASE = data;
 
-        this.ELEMENT_DATA_BASE.forEach((flight) => {
+  displayedColumns: string[] = ['departure', 'from_country', 'to_country', 'price'];
+  dataSource;
+
+  @ViewChild(MatSort) sort: MatSort;
+
+  constructor(private service: OrdersService) { }
+
+  ngOnInit(): void {
+    this.service.getAllFuturedLightFlights().subscribe(
+      data => {
+        this.flights = data;
+
+        this.flights.forEach((flight) => {
           flight.departure = new Date(flight.departure);
           if (this.firstTime == null || flight.departure < this.firstTime) {
             this.firstTime = flight.departure;
@@ -67,17 +74,14 @@ export class PickaflightComponent implements OnInit, AfterViewInit {
 
         this.ngx_slider_options = { floor: this.lowestPrice, ceil: this.highestPrice }
 
-        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA_BASE);
+        this.dataSource = new MatTableDataSource(this.flights);
         this.dataSource.sort = this.sort;
       }
     )
   }
 
-  ngOnInit(): void {
-  }
-
   search() {
-    this.dataSource.data = this.ELEMENT_DATA_BASE.filter((flight) => {
+    this.dataSource.data = this.flights.filter((flight) => {
       return flight.departure >= new Date(this.minTime) &&
         flight.departure <= new Date(this.maxTime) &&
         (this.source == '*' || flight.from_country == this.source) &&
@@ -86,13 +90,4 @@ export class PickaflightComponent implements OnInit, AfterViewInit {
         flight.price <= this.maxPrice;
     })
   }
-
-  displayedColumns: string[] = ['departure', 'from_country', 'to_country', 'price'];
-  dataSource;
-
-  @ViewChild(MatSort) sort: MatSort;
-
-  ngAfterViewInit() {
-  }
-
 }

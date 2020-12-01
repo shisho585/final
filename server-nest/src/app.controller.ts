@@ -1,10 +1,11 @@
-import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException, Param } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException, Param, SetMetadata, UseGuards } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import { Passenger } from './db/entities/passenger.entity';
 import { Ticket } from './db/entities/ticket.entity';
 import { User } from './db/entities/user.entity';
 import { Order } from './db/entities/order.entity';
 import bcrypt = require('bcrypt');
+import { AuthGuard } from './auth.guard';
 
 @Controller('api')
 export class AppController {
@@ -35,11 +36,15 @@ export class AppController {
     }
   }
 
+  @UseGuards(AuthGuard)
+  @SetMetadata('role', 'admin')
   @Get('user')
   getAllUsers() {
     return User.find({ relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
   }
 
+  @UseGuards(AuthGuard)
+  @SetMetadata('role', 'user')
   @Get('user/:email')
   getUser(@Param('email') user_email: string) {
     return User.findOne(user_email, { relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })

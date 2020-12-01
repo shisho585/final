@@ -1,4 +1,5 @@
-<div class="flexed-div" style="flex-wrap: wrap; justify-content: space-around; overflow: auto; max-height: 100%;">
+<div *ngIf="user" class="flexed-div"
+    style="flex-wrap: wrap; justify-content: space-around; overflow: auto; max-height: 100%;">
     <ng-container *ngFor="let order of user.orders">
         <ng-container *ngIf="order.tickets.length>0">
             <div class="head center" style="height: fit-content;">

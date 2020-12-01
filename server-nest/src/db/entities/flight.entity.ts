@@ -3,6 +3,7 @@ import { MaxLength, IsAlpha, IsString, IsDate, IsNumber, Matches, } from 'class-
 import { Type } from 'class-transformer';
 import { Plain } from './plain.entity';
 import { Ticket } from './ticket.entity';
+import { BadRequestException } from '@nestjs/common';
 
 
 @Entity('flights')
@@ -56,7 +57,12 @@ export class Flight extends BaseEntity {
     freeSeats: number;
 
     static async findOneWithRelations(flightNumber: string) {
-        const flight = await this.getRepository().findOne(flightNumber, { relations: ['plain', 'tickets'] });
+        let flight;
+        try {
+            flight = await this.getRepository().findOneOrFail(flightNumber, { relations: ['plain', 'tickets'] });
+        } catch (error) {
+            throw new BadRequestException('No such flight');
+        }
         const seats = flight.plain.number_of_rows * flight.plain.seats_to_row;
         flight.freeSeats = seats - flight.tickets.length;
         return flight;

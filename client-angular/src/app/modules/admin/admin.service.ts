@@ -25,25 +25,29 @@ export class AdminService {
   }
 
   getFlight(id: string) {
-    let flight: Observable<Flight>;
-    if (this.flights) {
-      flight = from([this.flights.find(flight => flight.number == id)])
-    } else {
-      flight = this.http.get<Flight>('http://localhost:3000/api/flight/' + id)
-    }
-    return flight;
+    return this.http.get<Flight>('http://localhost:3000/api/flight/' + id)
   }
 
   createFlight(flgiht: Flight) {
-    return this.http.post('http://localhost:3000/api/flight', flgiht);
+    return this.http.post(
+      'http://localhost:3000/api/flight',
+      flgiht,
+      { headers: { authorization: localStorage.getItem('loggedInToken') } }
+    );
   }
 
   deleteFlight(id: string) {
-    return this.http.delete<Flight>('http://localhost:3000/api/flight/' + id);
+    return this.http.delete(
+      'http://localhost:3000/api/flight/' + id,
+      { headers: { authorization: localStorage.getItem('loggedInToken') } }
+    );
   }
 
   getAllPlains() {
-    return this.http.get<[]>('http://localhost:3000/api/plain');
+    return this.http.get<[]>(
+      'http://localhost:3000/api/plain',
+      { headers: { authorization: localStorage.getItem('loggedInToken') } }
+    );
   }
 
   getPlainTypes() {
@@ -55,7 +59,10 @@ export class AdminService {
           .filter((value, index, self) => self.indexOf(value) === index)]
       )
     } else {
-      plainTypes = this.http.get<{ type: string }[]>('http://localhost:3000/api/plain/type').pipe(
+      plainTypes = this.http.get<{ type: string }[]>(
+        'http://localhost:3000/api/plain/type',
+        { headers: { authorization: localStorage.getItem('loggedInToken') } }
+      ).pipe(
         map(data => data.map(item => item.type))
       )
     }
@@ -63,11 +70,14 @@ export class AdminService {
   }
 
   createPlain(plain: Plain) {
-    return this.http.post('http://localhost:3000/api/plain', plain);
+    return this.http.post(
+      'http://localhost:3000/api/plain',
+      plain,
+      { headers: { authorization: localStorage.getItem('loggedInToken') } }
+    );
   }
 
   navigateToHome() {
     this.router.navigate(['admin']);
   }
-
 }

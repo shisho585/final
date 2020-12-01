@@ -19,6 +19,10 @@ export class OrdersService {
     private router: Router,
   ) { }
 
+  getAllFuturedLightFlights() {
+    return this.http.get<Flight[]>("http://localhost:3000/api/flight/light/future");
+  }
+
   getFlight(id: string) {
     return this.http.get<Flight>("http://localhost:3000/api/flight/" + id);
   }
