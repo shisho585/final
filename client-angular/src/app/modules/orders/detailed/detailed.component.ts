@@ -7,6 +7,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { finalize } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { AppService } from 'src/app/app.service';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-detailed',
@@ -19,13 +20,15 @@ export class DetailedComponent implements OnInit {
   freeRows: number[];
   passengers = 1;
   inSeats = false;
+  passengersForms: FormArray;
 
 
   constructor(
     private route: ActivatedRoute,
     public service: OrdersService,
     private dialog: MatDialog,
-    private appService: AppService
+    private appService: AppService,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -63,7 +66,22 @@ export class DetailedComponent implements OnInit {
         this.service.navigateToHome();
       }
     )
-    this.passengers = this.service.newTickets.length;
+    this.passengersForms = this.fb.array([]);
+    this.service.newTickets = [new Ticket()]
+    this.AddNewPassengerForm();
+  }
+
+  AddNewPassengerForm() {
+    const passengerForm = this.fb.group({
+      hebrew_name: ['', [Validators.required, Validators.pattern('^[\u0590-\u05fe ]*$')]],
+      english_name: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
+      passport: ['', [Validators.required, Validators.pattern('^[0-9]*$')]]
+    });
+    this.passengersForms.push(passengerForm);
+  }
+
+  removePassengerForm() {
+    this.passengersForms.removeAt(this.passengersForms.length - 1);
   }
 
 
@@ -99,30 +117,53 @@ export class DetailedComponent implements OnInit {
   changePassengersNumber() {
     if (this.passengers > this.service.newTickets.length) {
       this.service.newTickets.push(new Ticket());
+      this.AddNewPassengerForm();
       this.changePassengersNumber();
     } else if (this.passengers < this.service.newTickets.length) {
       this.service.newTickets.pop();
+      this.removePassengerForm();
       this.changePassengersNumber();
     }
   }
 
   isThereUsers(): boolean {
-    return this.service.newTickets.some(ticket =>
-      ticket.passenger.hebrew_name != '' &&
-      ticket.passenger.english_name != '' &&
-      ticket.passenger.passport != null);
+    return this.passengersForms.getRawValue().some(passenger =>
+      passenger.hebrew_name != '' &&
+      passenger.english_name != '' &&
+      passenger.passport != '');
   }
+
+  asFormGroup(val): FormGroup { return val; }
 
   saveData() {
+    if (this.passengersForms.invalid) return;
+
+    this.service.newTickets.forEach(
+      (ticket, index) => {
+        const rawPassenger = this.passengersForms.getRawValue()[index];
+        ticket.passenger = rawPassenger;
+        ticket.passenger.passport = parseInt(rawPassenger.passport);
+        this.service.getPassenger(ticket.passenger.passport).subscribe(
+          results => {
+            if (results != null) {
+              ticket.passenger_passport = ticket.passenger.passport;
+              ticket.passenger = null;
+            }
+          },
+          err => {
+            console.error(err);
+          }
+        )
+      }
+    )
+
     this.service.newTickets = this.service.newTickets
       .filter(ticket =>
-        ticket.passenger.hebrew_name != '' &&
-        ticket.passenger.english_name != '' &&
-        ticket.passenger.passport != null);
-        this.demoSave();
-  }
+        ticket.passenger_passport != null ||
+        (ticket.passenger.hebrew_name != '' &&
+          ticket.passenger.english_name != '' &&
+          ticket.passenger.passport != null));
 
-  demoSave() {
     let user_name;
     this.appService.authenticate().pipe(
       finalize(() => {

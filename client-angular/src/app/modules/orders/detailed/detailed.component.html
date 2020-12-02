@@ -1,35 +1,55 @@
-<div class="flexed-div" style="height: 80%;">
+<div class="flexed-div" style="height: 100%;">
     <app-flight-detailes *ngIf="service.flight" class="nested-flex head" style="flex:1;" [flight]="service.flight">
     </app-flight-detailes>
-    <div class="nested-flex head" style="flex:2;max-height: 95%; overflow: auto; padding-bottom: 0px;">
-        <div class="nested">
+    <div class="head" style="flex:2;background: transparent; padding:0px;height: 70%;">
+        <div class="head" style="max-height: 80%; overflow: auto; padding-bottom: 0px; margin:auto; width:80%">
             <ng-container *ngIf="!inSeats else additionals">
                 <mat-form-field>
                     <mat-label>כמה נוסעים אתם?</mat-label>
                     <input matInput type="number" min="1" max="{{flight?.freeSeats}}" [(ngModel)]="passengers"
                         (change)="changePassengersNumber()" />
                 </mat-form-field>
-                <div id="passengerDetailes" *ngFor="let ticket of service.newTickets; let x = index">
+                <div id="passengerDetailes" *ngFor="let form of passengersForms.controls; let x = index"
+                    [formGroup]="form">
                     <mat-label>{{x+1}}. </mat-label>
                     <mat-form-field>
                         <mat-label>שם מלא בעברית</mat-label>
-                        <input matInput type="text" [(ngModel)]="ticket.passenger.hebrew_name"
-                            [pattern]="'^[\u0590-\u05fe ]*$'" required />
+                        <input matInput type="text" formControlName="hebrew_name" required
+                            onkeypress="return /[\u0590-\u05fe ]/i.test(event.key)" />
+                        <mat-error *ngIf="asFormGroup(form).getError('required','hebrew_name')">
+                            <mat-label>שדה חובה</mat-label>
+                        </mat-error>
+                        <mat-error *ngIf="asFormGroup(form).getError('pattern','hebrew_name')">
+                            <mat-label>תווים בעברית בלבד</mat-label>
+                        </mat-error>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>שם מלא באנגלית</mat-label>
-                        <input matInput type="text" [(ngModel)]="ticket.passenger.english_name"
-                            [pattern]="'^[a-zA-Z ]*$'" required />
+                        <input matInput type="text" formControlName="english_name" required
+                            onkeypress="return /[a-zA-Z ]/i.test(event.key)" />
+                        <mat-error *ngIf="asFormGroup(form).getError('required','english_name')">
+                            <mat-label>שדה חובה</mat-label>
+                        </mat-error>
+                        <mat-error *ngIf="asFormGroup(form).getError('pattern','english_name')">
+                            <mat-label>תווים באנגלית בלבד</mat-label>
+                        </mat-error>
                     </mat-form-field>
-                    <mat-form-field id="id-number">
+                    <mat-form-field>
                         <mat-label>מספר דרכון</mat-label>
-                        <input matInput type="number" [(ngModel)]="ticket.passenger.passport" required />
+                        <input matInput type="text" formControlName="passport" required
+                            onkeypress="return /[0-9]/i.test(event.key)" />
+                        <mat-error *ngIf="asFormGroup(form).getError('required','passport')">
+                            <mat-label>שדה חובה</mat-label>
+                        </mat-error>
+                        <mat-error *ngIf="asFormGroup(form).getError('pattern','passport')">
+                            <mat-label>ספרות בלבד</mat-label>
+                        </mat-error>
                     </mat-form-field>
                 </div>
             </ng-container>
             <ng-template #additionals>
                 <div *ngFor="let ticket of service.newTickets; let i = index">
-                    <span>{{i+1}}. {{ticket.passenger.hebrew_name.split(' ')[0]}}</span>
+                    <span>{{i+1}}. {{asFormGroup(passengersForms.controls[i]).get('hebrew_name').value.split(' ')[0]}}</span>
                     <mat-form-field class="small-form-field">
                         <mat-label>שורה</mat-label>
                         <mat-select [(ngModel)]="ticket.row" (selectionChange)="catchSeat(ticket)"
@@ -61,13 +81,10 @@
             </div>
             <div style="position: sticky; bottom: 0px; height: 20px;background: rgb(200, 230, 250);"> </div>
         </div>
-    </div>
-</div>
-<div class="flexed-div">
-    <div style="flex:1"></div>
-    <div class="nested-flex head" style="flex:2;background-color: seagreen;">
-        <span>מחיר כולל: {{flight?.price * passengers}}</span>
-        <button mat-raised-button color="primary" [disabled]="!isThereUsers()" (click)="saveData()"
-            style="position: absolute; left: 20px; bottom: 14px;">אישור</button>
+        <div class="head" style="background-color: seagreen; width: 75%;margin-right:auto;margin-left:auto;">
+            <span>מחיר כולל: {{flight?.price * passengers}}</span>
+            <button mat-raised-button color="primary" (click)="saveData()"
+                style="position: absolute; left: 20px; bottom: 14px;">אישור</button>
+        </div>
     </div>
 </div>

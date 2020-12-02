@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Plain } from 'src/app/models/plain';
-import { AdminService } from '../admin.service';
+import { AdminService } from '../../app-shared/admin.service';
 import { AppService } from 'src/app/app.service';
 
 @Component({
-  selector: 'app-add-a-plain',
-  templateUrl: './add-a-plain.component.html',
-  styleUrls: ['./add-a-plain.component.scss']
+  selector: 'app-edit-a-plain',
+  templateUrl: './edit-a-plain.component.html',
+  styleUrls: ['./edit-a-plain.component.scss']
 })
-export class AddaplainComponent implements OnInit {
+export class EditaplainComponent implements OnInit {
 
   plain = new Plain();
 

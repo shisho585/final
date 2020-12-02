@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Flight } from 'src/app/models/flight';
 import { AppService } from 'src/app/app.service';
-import { AdminService } from '../admin.service';
+import { AdminService } from '../../../app-shared/admin.service';
 
 @Component({
-  selector: 'app-add-a-flight',
-  templateUrl: './add-a-flight.component.html',
-  styleUrls: ['./add-a-flight.component.scss']
+  selector: 'app-edit-a-flight',
+  templateUrl: './edit-a-flight.component.html',
+  styleUrls: ['./edit-a-flight.component.scss']
 })
-export class AddaflightComponent implements OnInit {
+export class EditaflightComponent implements OnInit {
 
   flight = new Flight();
   today = new Date();

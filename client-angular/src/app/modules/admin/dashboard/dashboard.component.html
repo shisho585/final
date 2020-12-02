@@ -58,7 +58,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsOfFlights;"
                     routerLink="../flight/{{row.flight_no}}" routerLinkActive="active" class="row-flight"></tr>
             </table>
-            <button mat-raised-button color="primary" routerLink="../add-a-flight" routerLinkActive="active">הוסף
+            <button mat-raised-button color="primary" routerLink="../flight/add" routerLinkActive="active">הוסף
                 טיסה</button>
         </div>
     </div>
@@ -93,10 +93,9 @@
 
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsOfPlains"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumnsOfPlains;" routerLink="../plain/{{row.type}}"
-                    routerLinkActive="active" class="row-flight"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsOfPlains;"></tr>
             </table>
-            <button mat-raised-button color="primary" routerLink="../add-a-plain" routerLinkActive="active">הוסף
+            <button mat-raised-button color="primary" routerLink="../plain/add" routerLinkActive="active">הוסף
                 מטוס</button>
         </div>
     </div>

@@ -30,19 +30,12 @@ export class FinishComponent implements OnInit {
   public payPalConfig?: IPayPalConfig;
 
   saveOrder() {
-    const order = new Order();
-    order.user_email = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).email;
-    order.seats_chosen = this.service.chosenSeats;
-    order.price = this.service.flight.price * this.service.newTickets.length + this.service.chosenSeats * 20;
-
-    this.service.newTickets.forEach(ticket => {
-      ticket.flight_number = this.service.flight.flight_no;
-      order.tickets.push(ticket);
-    });
-
-    this.service.createOrder(order).subscribe(
-      () => {
+    this.service.createOrder(this.service.prepareOrder()).subscribe(
+      (order: Order) => {
+        console.log(order);
+        
         this.appService.closeAll();
+        this.service.order = order;
         this.service.navigate('done');
       },
       error => {

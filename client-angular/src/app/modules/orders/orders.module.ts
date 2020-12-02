@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from "@angular/common/http";
 
 import { OrdersRoutingModule } from './orders-routing.module';
@@ -48,7 +48,8 @@ import { DialogComponent } from './dialog/dialog.component';
     NgxPayPalModule,
     FormsModule,
     MatProgressSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ]
 })
 export class OrdersModule { }

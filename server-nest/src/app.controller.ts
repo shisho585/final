@@ -50,6 +50,11 @@ export class AppController {
     return User.findOne({ email: user_email }, { relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
   }
 
+  @Get('passenger/:passport')
+  getPassenger(@Param('passport') passport: number) {
+    return Passenger.findOne({ passport });
+  }
+
   @Post('passenger')
   createNewPassenger(@Body(ValidationPipe) newPassenger: Passenger) {
     return Passenger.save(newPassenger);

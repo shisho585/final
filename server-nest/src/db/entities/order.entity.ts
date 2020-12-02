@@ -52,6 +52,7 @@ export class Order extends BaseEntity {
                     }
                 }
             })
-        return this.getRepository().save(order);
+        order = await this.getRepository().save(order);
+        return Order.findOne(order.order_no, { relations: ['tickets', 'tickets.passenger'] })
     }
 }

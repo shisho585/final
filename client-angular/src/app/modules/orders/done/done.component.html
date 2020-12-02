@@ -1,27 +1,8 @@
-<h4>הזמנתך הושלמה בהצלחה</h4>
-<table>
-    <tr>
-        <th>מוצר</th>
-        <th>מחיר</th>
-        <th>כמות</th>
-        <th>ס"ה</th>
-    </tr>
-    <tr>
-        <td>כרטיסי טיסה לטיסה {{flight.flight_no}}</td>
-        <td>{{flight.price}}</td>
-        <td>{{newTickets.length}}</td>
-        <td>{{flight.price * newTickets.length}}</td>
-    </tr>
-    <tr *ngIf="this.chosenSeats > 0">
-        <td>תוספת מושבים</td>
-        <td>20</td>
-        <td>{{chosenSeats}}</td>
-        <td>{{chosenSeats * 20}}</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td>ס"ה</td>
-        <td>{{flight.price * newTickets.length + chosenSeats * 20}}</td>
-    </tr>
-</table>
+<div class="head center" style="height: auto;">
+    <h3 style="text-align: center;">
+        ההזמנה הושלמה בהצלחה
+        <br />
+        מחכים לכם בטיסה.
+    </h3>
+    <app-order [order]="order"></app-order>
+</div>
