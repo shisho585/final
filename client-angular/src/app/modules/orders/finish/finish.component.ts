@@ -11,8 +11,12 @@ import { AppService } from 'src/app/app.service';
 })
 export class FinishComponent implements OnInit {
 
+  public payPalConfig?: IPayPalConfig;
   paypalScriptLoaded = false;
   loggedIn = false;
+  dataSource: { item: string, price: number, amount: number, total: number }[];
+  displayedColumns = ['item', 'price', 'amount', 'total'];
+  total: number;
 
   constructor(
     public service: OrdersService,
@@ -20,20 +24,32 @@ export class FinishComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initConfig();
-
     if (this.service.flight == undefined) {
       this.service.navigateToHome();
+      return;
     }
-  }
 
-  public payPalConfig?: IPayPalConfig;
+    this.dataSource = [{
+      item: 'כרטיסי טיסה',
+      price: this.service.flight.price,
+      amount: this.service.newTickets.length,
+      total: this.service.flight.price * this.service.newTickets.length
+    },
+    {
+      item: 'מושבים נבחרים',
+      price: 20,
+      amount: this.service.chosenSeats,
+      total: this.service.chosenSeats * 20
+    }]
+
+    this.total = this.service.chosenSeats * 20 + this.service.flight.price * this.service.order.tickets.length;
+
+    this.initConfig();
+  }
 
   saveOrder() {
     this.service.createOrder(this.service.prepareOrder()).subscribe(
       (order: Order) => {
-        console.log(order);
-        
         this.appService.closeAll();
         this.service.order = order;
         this.service.navigate('done');

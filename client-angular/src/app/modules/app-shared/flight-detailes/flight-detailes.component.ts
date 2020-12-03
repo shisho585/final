@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class FlightDetailesComponent implements OnInit {
 
   @Input() flight;
-  @Input() admin = false
+  @Input() admin = false;
   @Output() whenDelete = new EventEmitter();
 
   constructor() { }

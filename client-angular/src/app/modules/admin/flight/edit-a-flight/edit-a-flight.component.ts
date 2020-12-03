@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Flight } from 'src/app/models/flight';
 import { AppService } from 'src/app/app.service';
-import { AdminService } from '../../../app-shared/admin.service';
+import { AdminService } from '../../admin.service';
 
 @Component({
   selector: 'app-edit-a-flight',

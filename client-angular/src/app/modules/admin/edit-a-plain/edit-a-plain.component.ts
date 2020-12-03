@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Plain } from 'src/app/models/plain';
-import { AdminService } from '../../app-shared/admin.service';
+import { AdminService } from '../admin.service';
 import { AppService } from 'src/app/app.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-a-plain',
@@ -13,11 +14,21 @@ export class EditaplainComponent implements OnInit {
   plain = new Plain();
 
   constructor(
+    private route: ActivatedRoute,
     private service: AdminService,
     private appService: AppService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    let id;
+    if (id = this.route.snapshot.paramMap.get('ID')) {
+      this.service.getPlain(id).subscribe(
+        plain => {
+          this.plain = plain;
+        }
+      )
+    }
+  }
 
   save() {
     this.service.createPlain(this.plain).subscribe(

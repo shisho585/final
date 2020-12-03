@@ -1,6 +1,21 @@
 <div class="head">
-    <h3 mat-dialog-title *ngIf="header">{{header}}</h3>
+    <div style="height: 35px;">
+        <button *ngIf="!dialogRef.disableClose" mat-icon-button (click)="dialogRef.close()"
+            style="position: absolute;left: 20px;">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <h3 mat-dialog-title *ngIf="header" style="text-align: center;">{{header}}</h3>
     <mat-dialog-content>
-        <p *ngFor="let mess of messages">{{mess}}</p>
+        <p *ngFor="let mess of messages" style="text-align: center;">{{mess}}</p>
     </mat-dialog-content>
+    <mat-dialog-actions *ngIf="confirm">
+        <button mat-raised-button style="background-color: rgb(230, 0, 0); color: white;"
+            (click)="dialogRef.close('pass')">
+            אישור
+        </button>
+        <button mat-raised-button color="primary" (click)="dialogRef.close()">
+            ביטול
+        </button>
+    </mat-dialog-actions>
 </div>

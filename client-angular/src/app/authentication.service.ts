@@ -13,20 +13,18 @@ export class AuthenticationService implements CanActivate {
     private appService: AppService
   ) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean {
     if (localStorage.getItem('loggedInToken') == undefined) {
       this.appService.navigateToLogin(state.url);
     } else {
-      return this.appService.authenticate().pipe(
-        map(
-          res => {
-            if (res == 'admin' || (!state.url.includes('admin') && res == 'user')) {
-              return true;
-            } else {
-              this.appService.navigateToLogin(state.url);
-            }
+      return this.appService.authenticate().then(
+        res => {
+          if (res == 'admin' || (!state.url.includes('admin') && res == 'user')) {
+            return true;
+          } else {
+            this.appService.navigateToLogin(state.url);
           }
-        )
+        }
       )
     }
   }

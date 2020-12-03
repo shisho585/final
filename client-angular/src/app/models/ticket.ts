@@ -10,4 +10,5 @@ export class Ticket {
     seat: number;
     order_number: number;
     order?: Order;
+    paydSeat: boolean;
 }

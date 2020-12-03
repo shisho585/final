@@ -50,11 +50,11 @@ export class Flight extends BaseEntity {
     @IsNumber()
     price: number;
 
-    @ManyToOne('Plain')
+    @ManyToOne('Plain', { onDelete: "CASCADE", onUpdate: 'CASCADE' })
     @JoinColumn({ name: 'plain_type', referencedColumnName: 'type' })
     plain: Plain;
 
-    @OneToMany('Ticket', 'flight', { onDelete: 'CASCADE' })
+    @OneToMany('Ticket', 'flight')
     tickets: Ticket[];
 
     freeSeats: number;

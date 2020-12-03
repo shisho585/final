@@ -11,6 +11,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { AppSharedModule } from '../../app-shared/app-shared.module';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { AppSharedModule } from '../../app-shared/app-shared.module';
     MatSelectModule,
     MatSortModule,
     MatTableModule,
+    MatButtonModule,
     FormsModule,
   ]
 })

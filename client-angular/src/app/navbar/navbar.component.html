@@ -1,14 +1,28 @@
-<div style="width: 100%;">
+<div style="width: 100%; border-bottom: solid 1px;">
     <button mat-fab color="primary" routerLink="" routerLinkActive="active">
         <mat-icon>home</mat-icon>
     </button>
     <button mat-raised-button color="primary" routerLink="orders" routerLinkActive="active">
         הזמנת כרטיסים
     </button>
-    <button mat-raised-button color="primary" routerLink="user" routerLinkActive="active">
-        לאיזור האישי
-    </button>
-    <button mat-raised-button color="primary" routerLink="admin" routerLinkActive="active">
-        לניהול
-    </button>
+    <div style="position: absolute; left:10px;top:10px">
+        <ng-container *ngIf="appService.LoggedIn else login;">
+            {{appService.LoggedIn}} מחובר
+            <button mat-raised-button color="primary" routerLink="user" routerLinkActive="active">
+                לאיזור האישי
+            </button>
+            <button *ngIf="appService.admin" mat-raised-button color="primary" routerLink="admin"
+                routerLinkActive="active">
+                לניהול
+            </button>
+            <button mat-raised-button color="primary" (click)="logout()">
+                יציאה
+            </button>
+        </ng-container>
+        <ng-template #login>
+            <button mat-raised-button color="primary" routerLink="login" routerLinkActive="active">
+                כניסה / הרשמה
+            </button>
+        </ng-template>
+    </div>
 </div>

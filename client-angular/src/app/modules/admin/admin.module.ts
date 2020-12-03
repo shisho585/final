@@ -15,6 +15,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatDialogModule } from "@angular/material/dialog";
 import { EditaplainComponent } from './edit-a-plain/edit-a-plain.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [DashboardComponent, EditaplainComponent],
@@ -25,6 +26,7 @@ import { EditaplainComponent } from './edit-a-plain/edit-a-plain.component';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatIconModule,
     FormsModule,
     MatSortModule,
     MatTableModule,

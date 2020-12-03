@@ -1,7 +1,7 @@
 <h2>לאן אתה רוצה לטוס איתנו?</h2>
 <div class="flexed-div">
-    <div class="head" style="flex: 1;">
-        <h5>חיפוש לפי</h5>
+    <div class="head" style="flex: 1;" *ngIf="flights?.length>1">
+        <h4 style="text-align: center;">חיפוש לפי</h4>
         <mat-label>שעת המראה</mat-label>
         <br />
         <mat-form-field>
@@ -38,6 +38,7 @@
         <button mat-raised-button color="primary" (click)="search()">חיפוש</button>
     </div>
     <div class="head" style="flex: 2;">
+        <h3 style="text-align: center;">הטיסות שלנו</h3>
         <table mat-table [dataSource]="dataSource" matSort style="width: 80%;" class="nested">
 
             <ng-container matColumnDef="departure">

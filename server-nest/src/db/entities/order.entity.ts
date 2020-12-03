@@ -23,7 +23,7 @@ export class Order extends BaseEntity {
     @IsNumber()
     price: number;
 
-    @ManyToOne('User')
+    @ManyToOne('User', { onDelete: "CASCADE", onUpdate: 'CASCADE' })
     @JoinColumn({ name: 'user_email', referencedColumnName: 'email' })
     user: User;
 
@@ -35,7 +35,10 @@ export class Order extends BaseEntity {
     static async saveOrder(order: Order) {
         const flight = await Flight.findOneWithRelations(order.tickets[0].flight_number);
         order.tickets.filter(ticket => ticket.seat != undefined && ticket.seat != null)
-            .forEach(ticket => flight.tickets.push(ticket));
+            .forEach(ticket => {
+                ticket.paydSeat = true;
+                flight.tickets.push(ticket)
+            });
 
         order.tickets.filter(ticket => ticket.seat == undefined || ticket.seat == null)
             .forEach(ticket => {

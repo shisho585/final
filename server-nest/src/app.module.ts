@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { FlightController } from './flight.controller';
 import { PlainController } from './plain.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { UserController } from './user.controller';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     DbModule,
   ],
-  controllers: [AppController, FlightController, PlainController],
+  controllers: [AppController, FlightController, PlainController, UserController],
   providers: [AppService],
 })
 export class AppModule { }

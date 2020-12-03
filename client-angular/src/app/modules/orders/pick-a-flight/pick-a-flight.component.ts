@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AppService } from 'src/app/app.service';
 import { Flight } from 'src/app/models/flight';
 import { OrdersService } from '../orders.service';
 
@@ -37,12 +38,20 @@ export class PickaflightComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private service: OrdersService) { }
+  constructor(
+    private appService:AppService,
+    private service: OrdersService
+    ) { }
 
   ngOnInit(): void {
     this.service.getAllFuturedLightFlights().subscribe(
       data => {
         this.flights = data;
+
+        if (this.flights.length == 0) {
+          this.appService.openMessageDialog("כרגע לא צפויות טיסות אצלנו, מחכים לך ביום אחר");
+          this.service.navigateToHome();
+        }
 
         this.flights.forEach((flight) => {
           flight.departure = new Date(flight.departure);

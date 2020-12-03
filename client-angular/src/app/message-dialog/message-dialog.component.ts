@@ -10,16 +10,17 @@ export class MessageDialog implements OnInit {
 
   header: string;
   messages: string[];
+  confirm: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<MessageDialog>,
     @Inject(MAT_DIALOG_DATA) public data
-  ) {
-    this.header = data.header;
-    this.messages = data.message.split('\n')
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.header = this.data.header;
+    this.messages = this.data.message.split('\n');
+    this.confirm = this.data.confirm;
   }
 
 }

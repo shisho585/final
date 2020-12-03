@@ -17,6 +17,11 @@ export class PlainController {
         return Plain.find({ select: ['type'] });
     }
 
+    @Get(':type')
+    getPlain(@Param('type') type: string) {
+        return Plain.findOne({ type });
+    }
+
     @Post()
     createNewPlain(@Body(ValidationPipe) newPlain: Plain) {
         return Plain.save(newPlain);
@@ -24,6 +29,6 @@ export class PlainController {
 
     @Delete(':type')
     deletePlain(@Param('type') type: string) {
-        return Plain.delete({ type: type });
+        return Plain.delete({ type });
     }
 }

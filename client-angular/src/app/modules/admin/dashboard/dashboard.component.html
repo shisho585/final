@@ -1,7 +1,7 @@
-<div class="flexed-div">
-    <div class="head" style="flex: 2;">
+<div class="flexed-div" style="flex-wrap: wrap; justify-content: space-around; overflow: auto; max-height: 85%;">
+    <div class="head">
         <div class="nested">
-            <h3>כל הטיסות במערכת</h3>
+            <h3 style="text-align: center;">טיסות</h3>
             <table mat-table [dataSource]="flightsDataSource" matSort>
                 <ng-container matColumnDef="number">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר טיסה </th>
@@ -62,9 +62,9 @@
                 טיסה</button>
         </div>
     </div>
-    <div class="head" style="flex: 1;">
+    <div class="head">
         <div class="nested">
-            <h3>כל המטוסים</h3>
+            <h3 style="text-align: center;">מטוסים</h3>
             <table mat-table [dataSource]="plainsDataSource" matSort>
                 <ng-container matColumnDef="type">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> סוג מטוס </th>
@@ -91,12 +91,67 @@
                     <td mat-cell *matCellDef="let plain"> {{plain.seats_to_row}} </td>
                 </ng-container>
 
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> פעולות </th>
+                    <td mat-cell *matCellDef="let plain">
+                        <button mat-mini-fab style="background-color: seagreen; color: white;"
+                            routerLink="../plain/edit/{{plain.type}}" routerLinkActive="active">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-mini-fab style="background-color: rgb(230, 0, 0); color: white;"
+                            (click)="deletePlain(plain.type)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumnsOfPlains"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumnsOfPlains;"></tr>
             </table>
             <button mat-raised-button color="primary" routerLink="../plain/add" routerLinkActive="active">הוסף
                 מטוס</button>
+        </div>
+    </div>
+    <div class="head">
+        <div class="nested">
+            <h3 style="text-align: center;">משתמשים</h3>
+            <table mat-table [dataSource]="usersDataSource" matSort>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> שם </th>
+                    <td mat-cell *matCellDef="let user"> {{user.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> אימייל </th>
+                    <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> מספר טלפון </th>
+                    <td mat-cell *matCellDef="let user"> {{user.phone}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="role">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> הרשאה </th>
+                    <td mat-cell *matCellDef="let user"> {{user.role}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> פעולות </th>
+                    <td mat-cell *matCellDef="let user">
+                        <button mat-mini-fab style="background-color: seagreen; color: white;">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-mini-fab style="background-color: rgb(230, 0, 0); color: white;"
+                            (click)="deleteUser(user.email,user.name)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsOfUsers"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsOfUsers;"></tr>
+            </table>
         </div>
     </div>
 </div>

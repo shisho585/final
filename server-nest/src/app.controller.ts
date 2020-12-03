@@ -36,20 +36,6 @@ export class AppController {
     }
   }
 
-  @UseGuards(AuthGuard)
-  @SetMetadata('role', 'admin')
-  @Get('user')
-  getAllUsers() {
-    return User.find({ relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
-  }
-
-  @UseGuards(AuthGuard)
-  @SetMetadata('role', 'user')
-  @Get('user/:email')
-  getUser(@Param('email') user_email: string) {
-    return User.findOne({ email: user_email }, { relations: ['orders', 'orders.tickets', 'orders.tickets.flight', 'orders.tickets.passenger'] })
-  }
-
   @Get('passenger/:passport')
   getPassenger(@Param('passport') passport: number) {
     return Passenger.findOne({ passport });
@@ -68,15 +54,5 @@ export class AppController {
   @Post('order')
   createNewOrder(@Body(ValidationPipe) newOrder: Order) {
     return Order.saveOrder(newOrder);
-  }
-
-  @Post('user')
-  async createNewUser(@Body(ValidationPipe) newUser: User) {
-    try {
-      await User.insertUser(newUser);
-      return this.jwtService.sign({ name: newUser.name, email: newUser.email, role: newUser.role })
-    } catch (error) {
-      throw new BadRequestException(error);
-    }
   }
 }

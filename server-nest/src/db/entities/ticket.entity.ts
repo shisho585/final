@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn, Unique } from 'typeorm';
-import { IsString, ValidateNested, IsNumber, IsOptional } from 'class-validator';
+import { IsString, ValidateNested, IsNumber, IsOptional, ValidateIf } from 'class-validator';
 import { Passenger } from './passenger.entity';
 import { Flight } from './flight.entity';
 import { Order } from './order.entity';
@@ -35,18 +35,21 @@ export class Ticket extends BaseEntity {
     @IsOptional()
     seat: number;
 
+    @Column()
+    paydSeat: boolean;
+
     @ManyToOne('Passenger', { cascade: ['insert', 'update'] })
     @JoinColumn({ name: 'passenger_passport', referencedColumnName: 'passport' })
+    @ValidateIf(t => t.passenger_passport == null)
     @ValidateNested()
-    @IsOptional()
     @Type(() => Passenger)
     passenger: Passenger;
 
-    @ManyToOne('Flight', { onDelete: 'CASCADE' })
+    @ManyToOne('Flight', { onDelete: "CASCADE", onUpdate: 'CASCADE' })
     @JoinColumn({ name: 'flight_number', referencedColumnName: 'flight_no' })
     flight: Flight;
 
-    @ManyToOne('Order')
+    @ManyToOne('Order', { onDelete: "CASCADE", onUpdate: 'CASCADE' })
     @JoinColumn({ name: 'order_number' })
     order: Order;
 

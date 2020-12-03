@@ -16,12 +16,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class DetailedComponent implements OnInit {
 
-  flight: Flight;
   freeRows: number[];
   passengers = 1;
   inSeats = false;
   passengersForms: FormArray;
-
 
   constructor(
     private route: ActivatedRoute,
@@ -138,57 +136,62 @@ export class DetailedComponent implements OnInit {
   saveData() {
     if (this.passengersForms.invalid) return;
 
+    let user_name;
+    let promises = [];
     this.service.newTickets.forEach(
       (ticket, index) => {
         const rawPassenger = this.passengersForms.getRawValue()[index];
         ticket.passenger = rawPassenger;
         ticket.passenger.passport = parseInt(rawPassenger.passport);
-        this.service.getPassenger(ticket.passenger.passport).subscribe(
-          results => {
-            if (results != null) {
-              ticket.passenger_passport = ticket.passenger.passport;
-              ticket.passenger = null;
+        promises.push(this.service.getPassenger(ticket.passenger.passport)
+          .toPromise()
+          .then(
+            results => {
+              if (results != null) {
+                ticket.passenger_passport = ticket.passenger.passport;
+                ticket.passenger = null;
+              }
+              return 'pass'
+            },
+            err => {
+              console.error(err);
+            }
+          )
+        )
+      }
+    );
+    Promise.all(promises).then(
+      data => {
+        this.service.newTickets = this.service.newTickets
+          .filter(ticket =>
+            ticket.passenger_passport != null ||
+            (ticket.passenger.hebrew_name != '' &&
+              ticket.passenger.english_name != '' &&
+              ticket.passenger.passport != null));
+
+        this.appService.authenticate().then(
+          res => {
+            if (res != 'fail') {
+              user_name = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).name;
             }
           },
-          err => {
-            console.error(err);
-          }
+          err => console.log(err.error)
+        ).finally(() =>
+          this.dialog.open(
+            DialogComponent,
+            { data: user_name, disableClose: true, autoFocus: false }
+          ).afterClosed().subscribe(
+            data => {
+              if (data != 'cancel') {
+                this.service.navigate('finish')
+              }
+            },
+            err => {
+              console.error('אין משתמש מחובר');
+            }
+          )
         )
       }
     )
-
-    this.service.newTickets = this.service.newTickets
-      .filter(ticket =>
-        ticket.passenger_passport != null ||
-        (ticket.passenger.hebrew_name != '' &&
-          ticket.passenger.english_name != '' &&
-          ticket.passenger.passport != null));
-
-    let user_name;
-    this.appService.authenticate().pipe(
-      finalize(() => {
-        this.dialog.open(
-          DialogComponent,
-          { data: user_name, disableClose: true, autoFocus: false }
-        ).afterClosed().subscribe(
-          data => {
-            if (data != 'cancel') {
-              this.service.navigate('finish')
-            }
-          },
-          err => {
-            console.error('אין משתמש מחובר');
-          }
-        )
-      })
-    ).subscribe(
-      res => {
-        if (res != 'fail') {
-          user_name = JSON.parse(atob(localStorage.getItem('loggedInToken').split('.')[1])).name;
-        }
-      },
-      err => console.log(err.error)
-    )
   }
-
 }

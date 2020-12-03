@@ -17,7 +17,7 @@ export class OrderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  displayedColumns: string[] = ['number', 'flight_number', 'passenger_hebrew_name', 'passenger_passport', 'row', 'seat'];
+  displayedColumns: string[] = ['number', 'flight_number', 'passenger_hebrew_name', 'passenger_passport', 'row', 'seat', 'paid_seat'];
 
   @ViewChild(MatSort) sort: MatSort;
 

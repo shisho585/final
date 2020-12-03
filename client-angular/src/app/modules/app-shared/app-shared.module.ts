@@ -12,6 +12,7 @@ import { FlightDetailesComponent } from './flight-detailes/flight-detailes.compo
 import { OrderComponent } from './order/order.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [LoginComponent, FlightDetailesComponent, OrderComponent],
@@ -25,7 +26,8 @@ import { MatSortModule } from '@angular/material/sort';
     FormsModule,
     MatButtonModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatIconModule
   ]
 })
 export class AppSharedModule { }

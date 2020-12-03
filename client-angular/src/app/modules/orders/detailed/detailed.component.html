@@ -1,12 +1,13 @@
-<div class="flexed-div" style="height: 100%;">
-    <app-flight-detailes *ngIf="service.flight" class="nested-flex head" style="flex:1;" [flight]="service.flight">
+<div class="flexed-div" style="height: 100%;" *ngIf="service.flight">
+    <app-flight-detailes class="nested-flex head" style="flex:1;" [flight]="service.flight">
     </app-flight-detailes>
     <div class="head" style="flex:2;background: transparent; padding:0px;height: 70%;">
-        <div class="head" style="max-height: 80%; overflow: auto; padding-bottom: 0px; margin:auto; width:80%">
+        <div class="head"
+            style="max-height: 80%;min-height: 230px; overflow: auto; padding-bottom: 0px; margin:auto; width:80%">
             <ng-container *ngIf="!inSeats else additionals">
                 <mat-form-field>
                     <mat-label>כמה נוסעים אתם?</mat-label>
-                    <input matInput type="number" min="1" max="{{flight?.freeSeats}}" [(ngModel)]="passengers"
+                    <input matInput type="number" min="1" max="{{service.flight.freeSeats}}" [(ngModel)]="passengers"
                         (change)="changePassengersNumber()" />
                 </mat-form-field>
                 <div id="passengerDetailes" *ngFor="let form of passengersForms.controls; let x = index"
@@ -14,8 +15,7 @@
                     <mat-label>{{x+1}}. </mat-label>
                     <mat-form-field>
                         <mat-label>שם מלא בעברית</mat-label>
-                        <input matInput type="text" formControlName="hebrew_name" required
-                            onkeypress="return /[\u0590-\u05fe ]/i.test(event.key)" />
+                        <input matInput type="text" formControlName="hebrew_name" required />
                         <mat-error *ngIf="asFormGroup(form).getError('required','hebrew_name')">
                             <mat-label>שדה חובה</mat-label>
                         </mat-error>
@@ -25,8 +25,7 @@
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>שם מלא באנגלית</mat-label>
-                        <input matInput type="text" formControlName="english_name" required
-                            onkeypress="return /[a-zA-Z ]/i.test(event.key)" />
+                        <input matInput type="text" formControlName="english_name" required />
                         <mat-error *ngIf="asFormGroup(form).getError('required','english_name')">
                             <mat-label>שדה חובה</mat-label>
                         </mat-error>
@@ -36,8 +35,7 @@
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>מספר דרכון</mat-label>
-                        <input matInput type="text" formControlName="passport" required
-                            onkeypress="return /[0-9]/i.test(event.key)" />
+                        <input matInput type="text" formControlName="passport" required />
                         <mat-error *ngIf="asFormGroup(form).getError('required','passport')">
                             <mat-label>שדה חובה</mat-label>
                         </mat-error>
@@ -48,8 +46,10 @@
                 </div>
             </ng-container>
             <ng-template #additionals>
+                <h3>תרצה לבחור כסא במטוס? (20₪)</h3>
                 <div *ngFor="let ticket of service.newTickets; let i = index">
-                    <span>{{i+1}}. {{asFormGroup(passengersForms.controls[i]).get('hebrew_name').value.split(' ')[0]}}</span>
+                    <span>{{i+1}}.
+                        {{asFormGroup(passengersForms.controls[i]).get('hebrew_name').value.split(' ')[0]}}</span>
                     <mat-form-field class="small-form-field">
                         <mat-label>שורה</mat-label>
                         <mat-select [(ngModel)]="ticket.row" (selectionChange)="catchSeat(ticket)"
@@ -73,18 +73,21 @@
                     <button mat-raised-button color="primary" (click)="clearChoises(ticket)">ניקוי</button>
                 </div>
             </ng-template>
-            <div style="position: sticky; bottom: 20px; background-color: seagreen; height: 36px; padding: 20px;">
+            <div
+                style="position: sticky; bottom: 20px; background-color:rgba(0, 0, 0, 0.1); height: 20px; padding: 20px;">
                 <button mat-raised-button color="primary" *ngIf="!inSeats" (click)="inSeats = true"
-                    style="position: absolute; left: 20px;" [disabled]="!isThereUsers()">לבחירת מקומות</button>
-                <button mat-raised-button color="primary" *ngIf="inSeats" (click)="inSeats = false">חזרה לפרטי
-                    הנוסעים</button>
+                    style="position: absolute; left: 20px;bottom:7px" [disabled]="!isThereUsers()">לבחירת
+                    מקומות ></button>
+                <button mat-raised-button color="primary" *ngIf="inSeats" (click)="inSeats = false"
+                    style="position: absolute; bottom:7px">
+                    < חזרה לפרטי הנוסעים</button>
             </div>
             <div style="position: sticky; bottom: 0px; height: 20px;background: rgb(200, 230, 250);"> </div>
         </div>
         <div class="head" style="background-color: seagreen; width: 75%;margin-right:auto;margin-left:auto;">
-            <span>מחיר כולל: {{flight?.price * passengers}}</span>
+            <span style="color:white">מחיר כולל: {{service.flight.price * passengers + service.chosenSeats * 20}}</span>
             <button mat-raised-button color="primary" (click)="saveData()"
-                style="position: absolute; left: 20px; bottom: 14px;">אישור</button>
+                style="position: absolute; left: 20px; bottom: 7px;">אישור והמשך לתשלום</button>
         </div>
     </div>
 </div>
