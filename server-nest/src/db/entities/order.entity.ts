@@ -33,6 +33,8 @@ export class Order extends BaseEntity {
     tickets: Ticket[];
 
     static async saveOrder(order: Order) {
+        console.log(order);
+        
         const flight = await Flight.findOneWithRelations(order.tickets[0].flight_number);
         order.tickets.filter(ticket => ticket.seat != undefined && ticket.seat != null)
             .forEach(ticket => {
@@ -42,6 +44,7 @@ export class Order extends BaseEntity {
 
         order.tickets.filter(ticket => ticket.seat == undefined || ticket.seat == null)
             .forEach(ticket => {
+                ticket.paydSeat = false;
                 for (let rowIndex = 0; rowIndex < flight.plain.number_of_rows; rowIndex++) {
                     if (ticket.seat == undefined || ticket.seat == null) {
                         for (let seatIndex = 0; seatIndex < flight.plain.seats_to_row; seatIndex++) {

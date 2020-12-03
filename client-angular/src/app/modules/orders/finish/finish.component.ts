@@ -42,7 +42,7 @@ export class FinishComponent implements OnInit {
       total: this.service.chosenSeats * 20
     }]
 
-    this.total = this.service.chosenSeats * 20 + this.service.flight.price * this.service.order.tickets.length;
+    this.total = this.service.chosenSeats * 20 + this.service.flight.price * this.service.newTickets.length;
 
     this.initConfig();
   }

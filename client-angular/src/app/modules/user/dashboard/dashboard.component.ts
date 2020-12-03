@@ -43,6 +43,8 @@ export class DashboardComponent implements OnInit {
         if (res == 'pass')
           this.service.deleteUser(this.user.email).subscribe(
             res2 => {
+              console.log(res2);
+              
               this.appService.navigateToHome();
               this.appService.authenticate();
             }

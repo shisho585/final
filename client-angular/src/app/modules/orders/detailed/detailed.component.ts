@@ -138,6 +138,7 @@ export class DetailedComponent implements OnInit {
 
     let user_name;
     let promises = [];
+
     this.service.newTickets.forEach(
       (ticket, index) => {
         const rawPassenger = this.passengersForms.getRawValue()[index];
@@ -146,7 +147,7 @@ export class DetailedComponent implements OnInit {
         promises.push(this.service.getPassenger(ticket.passenger.passport)
           .toPromise()
           .then(
-            results => {
+            results => {              
               if (results != null) {
                 ticket.passenger_passport = ticket.passenger.passport;
                 ticket.passenger = null;
@@ -160,8 +161,11 @@ export class DetailedComponent implements OnInit {
         )
       }
     );
+
     Promise.all(promises).then(
       data => {
+        console.log(this.service.newTickets);
+
         this.service.newTickets = this.service.newTickets
           .filter(ticket =>
             ticket.passenger_passport != null ||

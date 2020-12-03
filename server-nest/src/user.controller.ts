@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, SetMetadata, UseGuards, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, SetMetadata, UseGuards, ValidationPipe, Put } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from './auth.guard';
 import { User } from './db/entities/user.entity';
@@ -32,10 +32,15 @@ export class UserController {
         }
     }
 
+    @Put(':id')
+    updateUser(@Param('id') id: number, @Body() newUser: User) {
+        return User.updateUser(id, newUser);
+    }
+
     @UseGuards(AuthGuard)
     @SetMetadata('role', 'user')
     @Delete(':email')
-    deletUser(@Param('email') email: string) {
+    deleteUser(@Param('email') email: string) {
         return User.delete({ email });
     }
 }

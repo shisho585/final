@@ -5,14 +5,25 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { AppSharedModule } from '../app-shared/app-shared.module';
 import { MatButtonModule } from '@angular/material/button';
+import { EditComponent } from './edit/edit.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [DashboardComponent, EditComponent],
   imports: [
     CommonModule,
     UserRoutingModule,
     AppSharedModule,
-    MatButtonModule
+    MatButtonModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule,
   ]
 })
 export class UserModule { }

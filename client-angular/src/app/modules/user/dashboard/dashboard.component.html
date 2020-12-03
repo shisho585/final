@@ -5,11 +5,10 @@
         <p>כתובת אימייל: <b>{{user.email}}</b></p>
         <p>מס' טלפון: <b>{{user.phone}}</b></p>
         <div>
-            <button *ngIf="admin" mat-raised-button style="background-color: rgb(230, 0, 0); color: white;"
-                (click)="delete()">מחק
-                טיסה</button>
-            <button mat-raised-button style="background-color: seagreen; color: white;" routerLink=""
-                routerLinkActive="active">ערוך פרטי טיסה</button>
+            <button mat-raised-button style="background-color: rgb(230, 0, 0); color: white;" (click)="delete()">מחק
+                משתמש</button>
+            <button mat-raised-button style="background-color: seagreen; color: white;" routerLink="../edit"
+                routerLinkActive="active">ערוך פרטי משתמש</button>
         </div>
     </div>
     <div *ngIf="user" class="flexed-div"
