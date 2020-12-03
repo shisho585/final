@@ -98,13 +98,6 @@ export class AdminService {
     );
   }
 
-  deleteUser(id: string) {
-    return this.http.delete(
-      'http://localhost:3000/api/user/' + id,
-      { headers: { authorization: localStorage.getItem('loggedInToken') } }
-    )
-  }
-
   navigateToHome() {
     this.router.navigate(['admin']);
   }

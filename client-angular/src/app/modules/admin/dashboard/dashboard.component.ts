@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
   usersDataSource;
   displayedColumnsOfFlights: string[] = ['number', 'plain_type', 'departure', 'from', 'to', 'distance', 'price'];
   displayedColumnsOfPlains: string[] = ['type', 'speed', 'range', 'number_of_rows', 'seats_to_row', 'actions'];
-  displayedColumnsOfUsers: string[] = ['name', 'email', 'phone', 'role', 'actions'];
+  displayedColumnsOfUsers: string[] = ['name', 'email', 'phone', 'role'];
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -71,17 +71,17 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  deleteUser(email: string, name: string) {
-    const header = "זהירות!";
-    const message = "אתה עומד למחוק את משתמש " + name + ".\nזה יגרום גם למחיקת כל ההזמנות שבוצעו על ידו.\nאתה בטוח שברצונך להמשיך?";
-    this.appService.openMessageDialog(message, header, true, true).afterClosed().subscribe(
-      res => {
-        if (res == 'pass')
-          this.service.deleteUser(email).subscribe(
-            res2 => this.updateUsers()
-          )
-      }
-    )
-  }
+  // deleteUser(email: string, name: string) {
+  //   const header = "זהירות!";
+  //   const message = "אתה עומד למחוק את משתמש " + name + ".\nזה יגרום גם למחיקת כל ההזמנות שבוצעו על ידו.\nאתה בטוח שברצונך להמשיך?";
+  //   this.appService.openMessageDialog(message, header, true, true).afterClosed().subscribe(
+  //     res => {
+  //       if (res == 'pass')
+  //         this.service.deleteUser(email).subscribe(
+  //           res2 => this.updateUsers()
+  //         )
+  //     }
+  //   )
+  // }
 
 }

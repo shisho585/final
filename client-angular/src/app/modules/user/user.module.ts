@@ -4,6 +4,7 @@ import { UserRoutingModule } from './user-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { AppSharedModule } from '../app-shared/app-shared.module';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -11,6 +12,7 @@ import { AppSharedModule } from '../app-shared/app-shared.module';
     CommonModule,
     UserRoutingModule,
     AppSharedModule,
+    MatButtonModule
   ]
 })
 export class UserModule { }

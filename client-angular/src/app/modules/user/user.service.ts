@@ -15,4 +15,12 @@ export class UserService {
       { headers: { authorization: localStorage.getItem('loggedInToken') } }
     );
   }
+
+  deleteUser(id: string) {
+    return this.http.delete(
+      'http://localhost:3000/api/user/' + id,
+      { headers: { authorization: localStorage.getItem('loggedInToken') } }
+    )
+  }
+
 }
