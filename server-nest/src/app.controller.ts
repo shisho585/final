@@ -1,17 +1,18 @@
-import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException, Param, UseGuards, SetMetadata } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, Get, Headers, BadRequestException, Param } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import { Passenger } from './db/entities/passenger.entity';
 import { Ticket } from './db/entities/ticket.entity';
 import { User } from './db/entities/user.entity';
 import { Order } from './db/entities/order.entity';
 import bcrypt = require('bcrypt');
-import { AuthGuard } from './auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('api')
 export class AppController {
 
   constructor(private jwtService: JwtService) { }
 
+  @ApiTags('authenticate')
   @Get('login')
   async login(@Headers() user_data) {
     let user: User;
@@ -27,6 +28,7 @@ export class AppController {
     }
   }
 
+  @ApiTags('authenticate')
   @Get('authenticate')
   async authenticate(@Headers() user_data) {
     try {
@@ -36,21 +38,25 @@ export class AppController {
     }
   }
 
+  @ApiTags('passengers')
   @Get('passenger/:passport')
   getPassenger(@Param('passport') passport: number) {
     return Passenger.findOne({ passport });
   }
 
+  @ApiTags('passengers')
   @Post('passenger')
   createNewPassenger(@Body(ValidationPipe) newPassenger: Passenger) {
     return Passenger.save(newPassenger);
   }
 
+  @ApiTags('tickets')
   @Post('ticket')
   createNewTicket(@Body() ticketsToAdd: Ticket[]) {
     return Ticket.save(ticketsToAdd);
   }
 
+  @ApiTags('orders')
   @Post('order')
   createNewOrder(@Body(ValidationPipe) newOrder: Order) {
     return Order.saveOrder(newOrder);

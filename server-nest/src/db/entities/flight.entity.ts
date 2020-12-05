@@ -5,7 +5,6 @@ import { Plain } from './plain.entity';
 import { Ticket } from './ticket.entity';
 import { BadRequestException } from '@nestjs/common';
 
-
 @Entity('flights')
 export class Flight extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -60,7 +59,7 @@ export class Flight extends BaseEntity {
     freeSeats: number;
 
     static async findOneWithRelations(flightNumber: string) {
-        let flight;
+        let flight: Flight;
         try {
             flight = await this.getRepository().findOneOrFail({ flight_no: flightNumber }, { relations: ['plain', 'tickets'] });
         } catch (error) {

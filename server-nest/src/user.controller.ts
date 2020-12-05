@@ -1,8 +1,10 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Post, SetMetadata, UseGuards, ValidationPipe, Put } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from './auth.guard';
 import { User } from './db/entities/user.entity';
 
+@ApiTags('users')
 @Controller('api/user')
 export class UserController {
 

@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, SetMetadata, UseGuards, ValidationPipe } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from './auth.guard';
 import { Plain } from './db/entities/plain.entity';
 
+@ApiTags('plains')
 @Controller('api/plain')
 @UseGuards(AuthGuard)
 @SetMetadata('role', 'admin')

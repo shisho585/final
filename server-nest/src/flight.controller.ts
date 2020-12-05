@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, SetMetadata, UseGuards, ValidationPipe } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from './auth.guard';
 import { Flight } from './db/entities/flight.entity';
 
+@ApiTags('flights')
 @Controller('api/flight')
 export class FlightController {
     @Get()
